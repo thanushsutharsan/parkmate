@@ -354,3 +354,97 @@ Features such as:
 - guaranteed live parking availability
 
 are not included in the current project.
+
+# Strategy
+
+The Strategy plane defines what ParkMate is trying to achieve, who the website is for and what problems it needs to solve.
+
+## Target Audience
+
+The target audience is UK drivers including:
+
+- commuters
+- delivery drivers
+- local residents
+- drivers attending appointments
+- drivers attending events
+- people travelling to unfamiliar locations
+
+Visitors can use the main parking search without creating an account.
+
+Accounts are mainly used for additional personal features.
+
+## Content
+
+The main parking content includes:
+
+- parking name
+- address
+- postcode
+- local authority
+- price
+- parking spaces
+- disabled spaces
+- charging times
+- restrictions
+- operator
+- payment information
+- verification
+- official source
+- parking image
+- map location
+
+Account content includes:
+
+- registration
+- login
+- logout
+- favourites
+- My ParkMate
+- personal parking submissions
+
+## Problems and Solutions
+
+| Problem | ParkMate Solution |
+| --- | --- |
+| Parking information can be spread across several websites. | ParkMate brings useful parking information together. |
+| A user may only know a postcode. | ParkMate supports postcode searching. |
+| A user may only know the town or area. | ParkMate searches location-related database fields. |
+| Users may not know where parking is. | Parking locations are displayed on a map. |
+| Users may not know whether information has an official source. | ParkMate shows verification labels. |
+| Users may want to remember a useful location. | Registered users can save favourites. |
+| Useful parking may be missing. | Registered users can add community parking. |
+| Users should not change another person's parking record. | Ownership checks restrict editing and deleting. |
+| A parking image may fail to load. | ParkMate uses a local fallback image. |
+
+## Business Goals
+
+The main goals of ParkMate are to:
+
+- solve a realistic parking problem
+- create a full-stack Django project
+- demonstrate Python
+- demonstrate relational database functionality
+- demonstrate CRUD
+- use authentication
+- provide responsive design
+- provide interactive map functionality
+- provide useful search functionality
+- make parking information easier to understand
+- create a project that is realistic for MS3
+
+## User Needs
+
+Users need to:
+
+- search quickly
+- search without registering
+- search using different information
+- compare parking
+- view parking details
+- view parking on a map
+- understand parking verification
+- use the website on different devices
+- save favourite parking
+- add community parking
+- manage their own submissions
