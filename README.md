@@ -448,3 +448,196 @@ Users need to:
 - save favourite parking
 - add community parking
 - manage their own submissions
+
+
+# Scope
+
+The Scope plane defines the features that are included in ParkMate.
+
+I keep the scope focused on the main parking problem instead of adding features that are not needed for the project.
+
+## Minimum Viable Product (MVP)
+
+The MVP contains:
+
+- parking search
+- postcode search
+- parking result cards
+- parking detail pages
+- Leaflet map
+- OpenStreetMap
+- parking prices
+- parking restrictions
+- verification status
+- registration
+- login
+- logout
+- My ParkMate
+- favourites
+- community parking
+- CRUD
+- responsive design
+
+
+## Features
+
+### Parking Search
+
+Users can search using:
+
+- parking name
+- address
+- postcode
+- postcode district or area
+- local authority
+
+### Parking Results
+
+Results can display:
+
+- parking name
+- address
+- postcode
+- price
+- spaces
+- local authority
+- verification
+- image
+- detail-page link
+
+### Parking Details
+
+Parking details can display:
+
+- name
+- address
+- postcode
+- tariff information
+- total spaces
+- charging times
+- operator
+- restrictions
+- payment information
+- official source
+- parking image
+
+### Interactive Map
+
+The map uses:
+
+- Leaflet
+- OpenStreetMap
+- parking coordinates stored in the database
+
+Map markers are created from parking records stored in ParkMate.
+
+### Parking Images
+
+Parking images can come from:
+
+1. a stored parking image URL
+2. Wikimedia Commons
+3. a local fallback image
+
+### Accounts
+
+Accounts include:
+
+- registration
+- login
+- logout
+- authenticated pages
+
+### My ParkMate
+
+My ParkMate gives registered users access to:
+
+- favourite parking
+- their own parking submissions
+
+### Favourites
+
+Registered users can:
+
+- save a parking location
+- remove a favourite
+- view saved parking
+
+### Community Parking
+
+Registered users can add community parking locations.
+
+Community parking is not automatically marked as Council/NPP price verified.
+
+## CRUD Functionality
+
+ParkMate demonstrates all four CRUD operations.
+
+| CRUD Operation | ParkMate Function |
+| --- | --- |
+| **Create** | A registered user adds a parking location. |
+| **Read** | Users search and view parking locations. |
+| **Update** | A user edits a parking location they personally submitted. |
+| **Delete** | A user deletes a parking location they personally submitted. |
+
+Ownership checks stop normal users from editing or deleting parking records submitted by somebody else.
+
+## Functional Requirements
+
+ParkMate needs to:
+
+- accept parking searches
+- search several database fields
+- return matching results
+- display parking cards
+- display parking detail pages
+- display parking locations on the map
+- allow registration
+- allow login
+- allow logout
+- protect account-only pages
+- save favourites
+- remove favourites
+- display favourites
+- allow parking locations to be added
+- allow owners to edit parking
+- allow owners to delete parking
+- validate parking forms
+- display verification information
+- display a fallback image when required
+
+## Non-Functional Requirements
+
+ParkMate also needs to:
+
+- work on mobile
+- work on tablet
+- work on desktop
+- be easy to navigate
+- use readable text
+- have consistent buttons
+- have consistent parking cards
+- use secure authentication
+- protect forms
+- validate user input
+- stop unauthorised editing
+- use suitable colour contrast
+- load static files correctly
+- work when deployed
+
+## Further Developments
+
+Possible future improvements include:
+
+- adding more parking records
+- adding more Council/NPP verified records
+- improving parking image matching
+- adding more search filters
+- increasing automated test coverage
+- completing the availability-reporting workflow
+
+Features that are outside the current project scope include:
+
+- parking booking
+- parking payments
+- guaranteed live parking-space information
