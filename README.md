@@ -223,3 +223,134 @@ They may need to find parking information quickly while travelling between diffe
 - As a frequent delivery driver, I want to edit parking locations I personally submitted when information changes.
 - As a frequent delivery driver, I want to delete one of my own parking submissions when it is no longer useful.
 - As a frequent delivery driver, I want to compare verified and mapped parking records so I can understand which information has an official source.
+
+# Research
+
+Research is used to make sure ParkMate solves a realistic problem rather than me guessing what users may need.
+
+Drivers may search for parking using different information.
+
+One user may know a postcode while another user may only know:
+
+- a town
+- a district
+- an address
+- a parking name
+
+Because of this, ParkMate searches different database fields including:
+
+- parking name
+- address
+- postcode
+- postcode area
+- local authority
+
+Official council parking information commonly contains information such as:
+
+- prices
+- spaces
+- charging times
+- restrictions
+
+These types of information are stored in ParkMate where they are available.
+
+The map is also important because location information can be easier to understand visually.
+
+ParkMate uses Leaflet and OpenStreetMap to display parking locations stored in the database.
+
+
+## Research Findings and Features
+
+| Research Finding | Evidence Source | ParkMate Response |
+| --- | --- | --- |
+| Drivers may search using a location, postcode or parking name. | Medway Council Car Park Directory | ParkMate supports location, postcode and parking-name searching. |
+| Official parking pages provide prices and charging information. | Lewisham Council Car Parks | ParkMate stores tariff information, charging times and official source details. |
+| Parking restrictions depend on signs and operating conditions. | GOV.UK Highway Code - Waiting and Parking | Parking detail pages contain restriction information and users are reminded that mapped information can change. |
+| Drivers benefit from having parking information in one place. | GOV.UK Plan for Drivers | ParkMate brings different parking information together in one application. |
+| Interactive maps help users understand where a location is. | Leaflet Documentation | ParkMate uses a Leaflet map with OpenStreetMap tiles. |
+
+
+## Competitor Research
+
+I look at other parking and mapping services to understand what users already expect from this type of website.
+
+The main examples include:
+
+- Parkopedia
+- JustPark
+- RingGo
+- council parking websites
+- OpenStreetMap
+
+## Parkopedia
+
+Parkopedia allows users to search for parking and compare information about different locations.
+
+Useful ideas include:
+
+- location searching
+- clear parking information
+- parking maps
+- simple comparison of parking locations
+
+## JustPark
+
+JustPark focuses on finding and booking parking.
+
+Useful design ideas include:
+- clear search
+- location-based results
+- simple parking cards
+- easy-to-understand parking information
+
+ParkMate does not include parking booking because this is outside the scope of the project.
+
+## RingGo
+
+RingGo focuses more on parking payments and parking sessions.
+
+It shows that drivers value:
+
+- clear location information
+- parking prices
+- simple mobile interfaces
+
+ParkMate does not process parking payments.
+
+## Council Parking Websites
+
+Council parking websites are important because they can provide official information including:
+
+- car park names
+- tariffs
+- charging hours
+- parking spaces
+- restrictions
+
+Official council information is useful when deciding whether a ParkMate record can be shown as Council/NPP price verified.
+
+## OpenStreetMap
+
+OpenStreetMap provides geographic map information.
+
+ParkMate uses OpenStreetMap tiles through Leaflet to create the interactive parking map.
+
+## Competitor Research Conclusion
+
+The competitor research shows that the most useful features for ParkMate are:
+
+- search
+- map
+- price information
+- parking details
+- clear parking cards
+
+ParkMate remains smaller than large commercial parking services.
+
+Features such as:
+
+- booking
+- payment
+- guaranteed live parking availability
+
+are not included in the current project.
