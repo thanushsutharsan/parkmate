@@ -22,7 +22,6 @@ Registered users have access to additional features including:
 
 ParkMate also separates **Council/NPP price verified** parking from **Mapped parking** so users can understand whether parking information has an official source.
 
-
 ## Purpose
 
 The purpose of ParkMate is to make finding parking easier and clearer for UK drivers.
@@ -59,32 +58,29 @@ User accounts also have a clear purpose.
 
 Registered users can save parking locations and contribute their own parking locations to ParkMate.
 
-
 ## Technologies Used
 
-| Technology | Use in ParkMate |
-| --- | --- |
-| Python 3.13.15 | Runs the backend Python code |
-| Django 5.2.17 | Provides routing, templates, authentication, forms, validation and database functionality |
-| HTML | Structures the website pages |
-| CSS | Controls the appearance and responsive layouts |
-| JavaScript | Controls interactive map behaviour and parking image loading |
-| SQLite | Used as the local development database |
-| PostgreSQL | Supported as the production database |
-| Django ORM | Handles database queries and relationships |
-| Leaflet | Displays the interactive parking map |
-| OpenStreetMap | Provides the map tiles |
-| Wikimedia Commons API | Attempts to find relevant parking and location images |
-| WhiteNoise | Serves static files in production |
-| Gunicorn | Runs the Django application in production |
-| dj-database-url | Reads the production database connection |
-| Heroku | Used as the intended deployment platform |
-| Git | Tracks changes made during development |
-| GitHub | Stores the project repository and commit history |
-
+| Technology            | Use in ParkMate                                                                           |
+| --------------------- | ----------------------------------------------------------------------------------------- |
+| Python 3.13.15        | Runs the backend Python code                                                              |
+| Django 5.2.17         | Provides routing, templates, authentication, forms, validation and database functionality |
+| HTML                  | Structures the website pages                                                              |
+| CSS                   | Controls the appearance and responsive layouts                                            |
+| JavaScript            | Controls interactive map behaviour and parking image loading                              |
+| SQLite                | Used as the local development database                                                    |
+| PostgreSQL            | Supported as the production database                                                      |
+| Django ORM            | Handles database queries and relationships                                                |
+| Leaflet               | Displays the interactive parking map                                                      |
+| OpenStreetMap         | Provides the map tiles                                                                    |
+| Wikimedia Commons API | Attempts to find relevant parking and location images                                     |
+| WhiteNoise            | Serves static files in production                                                         |
+| Gunicorn              | Runs the Django application in production                                                 |
+| dj-database-url       | Reads the production database connection                                                  |
+| Heroku                | Used as the intended deployment platform                                                  |
+| Git                   | Tracks changes made during development                                                    |
+| GitHub                | Stores the project repository and commit history                                          |
 
 # User Experience Design (UX)
-
 
 ## User Studies - Planning
 
@@ -121,8 +117,6 @@ Feedback from these tasks is used to improve:
 - map usability
 - responsive layouts
 
-
-
 # Target Users
 
 ParkMate mainly targets three groups of UK drivers:
@@ -131,13 +125,11 @@ ParkMate mainly targets three groups of UK drivers:
 2. Drivers Attending Appointments or Events
 3. Delivery Drivers
 
-
 ## 1. Commuters
 
 Commuters regularly travel to work, train stations, town centres or other places of employment.
 
 They may use ParkMate regularly and benefit from being able to save useful parking locations.
-
 
 ### First-Time Users
 
@@ -146,14 +138,12 @@ They may use ParkMate regularly and benefit from being able to save useful parki
 - As a first-time commuter, I want to compare parking prices so I can find a suitable option.
 - As a first-time commuter, I want to view parking on a map so I can see where it is located.
 
-
 ### Returning Users
 
 - As a returning commuter, I want to register for an account so I can use the personal features.
 - As a returning commuter, I want to log in so I can access My ParkMate.
 - As a returning commuter, I want to save useful parking locations so I can find them again.
 - As a returning commuter, I want to view my favourites so I do not have to search for the same parking every time.
-
 
 ### Frequent Users
 
@@ -162,13 +152,11 @@ They may use ParkMate regularly and benefit from being able to save useful parki
 - As a frequent commuter, I want to edit a parking location I submitted if the information needs correcting.
 - As a frequent commuter, I want to delete one of my own parking submissions if it is no longer needed.
 
-
 ## 2. Drivers Attending Appointments or Events
 
 These users may be travelling to an unfamiliar hospital, medical centre, event venue or town centre.
 
 They may mainly use ParkMate when travelling somewhere they do not normally visit.
-
 
 ### First-Time Users
 
@@ -177,14 +165,12 @@ They may mainly use ParkMate when travelling somewhere they do not normally visi
 - As a first-time visitor, I want to check parking restrictions so I know important conditions before travelling.
 - As a first-time visitor, I want to see whether parking information is Council/NPP price verified so I understand where the information comes from.
 
-
 ### Returning Users
 
 - As a returning visitor, I want to check parking details again before starting my journey.
 - As a returning visitor, I want to check charging times so I know when parking charges apply.
 - As a returning visitor, I want to check payment information so I know how the parking location accepts payment.
 - As a returning visitor, I want to save a suitable parking location so I can easily find it again.
-
 
 ### Frequent Users
 
@@ -193,13 +179,11 @@ They may mainly use ParkMate when travelling somewhere they do not normally visi
 - As a frequent visitor, I want to follow an official source when one is available so I can check the original parking information.
 - As a frequent visitor, I want to contribute a useful parking location if I find one that is missing from ParkMate.
 
-
 ## 3. Delivery Drivers
 
 Delivery drivers regularly travel to different towns, streets and postcodes.
 
 They may need to find parking information quickly while travelling between different areas.
-
 
 ### First-Time Users
 
@@ -208,14 +192,12 @@ They may need to find parking information quickly while travelling between diffe
 - As a first-time delivery driver, I want to view several parking results so I can choose a suitable location.
 - As a first-time delivery driver, I want to open a parking detail page so I can check the address and restrictions.
 
-
 ### Returning Users
 
 - As a returning delivery driver, I want to use the map so I can see where stored parking locations are positioned.
 - As a returning delivery driver, I want to search directly for parking locations I have previously used.
 - As a returning delivery driver, I want to save useful parking locations so they are easier to find later.
 - As a returning delivery driver, I want to view saved locations from My ParkMate so I can access them quickly.
-
 
 ### Frequent Users
 
@@ -258,17 +240,15 @@ The map is also important because location information can be easier to understa
 
 ParkMate uses Leaflet and OpenStreetMap to display parking locations stored in the database.
 
-
 ## Research Findings and Features
 
-| Research Finding | Evidence Source | ParkMate Response |
-| --- | --- | --- |
-| Drivers may search using a location, postcode or parking name. | Medway Council Car Park Directory | ParkMate supports location, postcode and parking-name searching. |
-| Official parking pages provide prices and charging information. | Lewisham Council Car Parks | ParkMate stores tariff information, charging times and official source details. |
-| Parking restrictions depend on signs and operating conditions. | GOV.UK Highway Code - Waiting and Parking | Parking detail pages contain restriction information and users are reminded that mapped information can change. |
-| Drivers benefit from having parking information in one place. | GOV.UK Plan for Drivers | ParkMate brings different parking information together in one application. |
-| Interactive maps help users understand where a location is. | Leaflet Documentation | ParkMate uses a Leaflet map with OpenStreetMap tiles. |
-
+| Research Finding                                                | Evidence Source                           | ParkMate Response                                                                                               |
+| --------------------------------------------------------------- | ----------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| Drivers may search using a location, postcode or parking name.  | Medway Council Car Park Directory         | ParkMate supports location, postcode and parking-name searching.                                                |
+| Official parking pages provide prices and charging information. | Lewisham Council Car Parks                | ParkMate stores tariff information, charging times and official source details.                                 |
+| Parking restrictions depend on signs and operating conditions.  | GOV.UK Highway Code - Waiting and Parking | Parking detail pages contain restriction information and users are reminded that mapped information can change. |
+| Drivers benefit from having parking information in one place.   | GOV.UK Plan for Drivers                   | ParkMate brings different parking information together in one application.                                      |
+| Interactive maps help users understand where a location is.     | Leaflet Documentation                     | ParkMate uses a Leaflet map with OpenStreetMap tiles.                                                           |
 
 ## Competitor Research
 
@@ -298,6 +278,7 @@ Useful ideas include:
 JustPark focuses on finding and booking parking.
 
 Useful design ideas include:
+
 - clear search
 - location-based results
 - simple parking cards
@@ -405,17 +386,17 @@ Account content includes:
 
 ## Problems and Solutions
 
-| Problem | ParkMate Solution |
-| --- | --- |
-| Parking information can be spread across several websites. | ParkMate brings useful parking information together. |
-| A user may only know a postcode. | ParkMate supports postcode searching. |
-| A user may only know the town or area. | ParkMate searches location-related database fields. |
-| Users may not know where parking is. | Parking locations are displayed on a map. |
-| Users may not know whether information has an official source. | ParkMate shows verification labels. |
-| Users may want to remember a useful location. | Registered users can save favourites. |
-| Useful parking may be missing. | Registered users can add community parking. |
-| Users should not change another person's parking record. | Ownership checks restrict editing and deleting. |
-| A parking image may fail to load. | ParkMate uses a local fallback image. |
+| Problem                                                        | ParkMate Solution                                    |
+| -------------------------------------------------------------- | ---------------------------------------------------- |
+| Parking information can be spread across several websites.     | ParkMate brings useful parking information together. |
+| A user may only know a postcode.                               | ParkMate supports postcode searching.                |
+| A user may only know the town or area.                         | ParkMate searches location-related database fields.  |
+| Users may not know where parking is.                           | Parking locations are displayed on a map.            |
+| Users may not know whether information has an official source. | ParkMate shows verification labels.                  |
+| Users may want to remember a useful location.                  | Registered users can save favourites.                |
+| Useful parking may be missing.                                 | Registered users can add community parking.          |
+| Users should not change another person's parking record.       | Ownership checks restrict editing and deleting.      |
+| A parking image may fail to load.                              | ParkMate uses a local fallback image.                |
 
 ## Business Goals
 
@@ -449,7 +430,6 @@ Users need to:
 - add community parking
 - manage their own submissions
 
-
 # Scope
 
 The Scope plane defines the features that are included in ParkMate.
@@ -477,7 +457,6 @@ The MVP contains:
 - community parking
 - CRUD
 - responsive design
-
 
 ## Features
 
@@ -573,12 +552,12 @@ Community parking is not automatically marked as Council/NPP price verified.
 
 ParkMate demonstrates all four CRUD operations.
 
-| CRUD Operation | ParkMate Function |
-| --- | --- |
-| **Create** | A registered user adds a parking location. |
-| **Read** | Users search and view parking locations. |
-| **Update** | A user edits a parking location they personally submitted. |
-| **Delete** | A user deletes a parking location they personally submitted. |
+| CRUD Operation | ParkMate Function                                            |
+| -------------- | ------------------------------------------------------------ |
+| **Create**     | A registered user adds a parking location.                   |
+| **Read**       | Users search and view parking locations.                     |
+| **Update**     | A user edits a parking location they personally submitted.   |
+| **Delete**     | A user deletes a parking location they personally submitted. |
 
 Ownership checks stop normal users from editing or deleting parking records submitted by somebody else.
 
@@ -642,7 +621,6 @@ Features that are outside the current project scope include:
 - parking payments
 - guaranteed live parking-space information
 
-
 # Python and Django Files
 
 ParkMate will use several Python and Django files because Django will separate different parts of the application into different files.
@@ -664,24 +642,24 @@ Instead of placing all backend logic in one Python file, ParkMate will separate:
 
 ## Python and Django File Functions
 
-| File | Function in ParkMate |
-| --- | --- |
-| `manage.py` | This file will be used to run Django commands from the terminal. It will allow me to start the development server, apply migrations, run tests and use custom management commands. |
-| `parkmate/settings.py` | This file will contain the main Django settings. It will control the installed apps, database, static files, security settings, allowed hosts and deployment configuration. |
-| `parkmate/urls.py` | This file will contain the main project URL configuration and will connect the project to the parking app URLs and Django authentication URLs. |
-| `parking/urls.py` | This file will contain the ParkMate page routes. It will connect URLs such as Home, Parking, Map, My ParkMate, Add, Edit and Delete to the correct views. |
-| `parking/models.py` | This file will define the database models used by ParkMate. It will contain the structure for parking locations, favourites and availability reports. |
-| `parking/views.py` | This file will contain most of the backend logic. It will process searches, retrieve parking data, display pages, handle favourites, manage user parking submissions and enforce ownership checks. |
-| `parking/forms.py` | This file will define Django forms. It will collect and validate user input when parking records are created or edited. |
-| `parking/admin.py` | This file will register the database models with Django Admin so authorised staff can manage stored records. |
-| `parking/apps.py` | This file will contain the configuration for the parking Django application. |
-| `parking/tests.py` | This file will contain automated tests for important ParkMate functionality. |
-| `parking/error_handlers.py` | This file will contain custom error-handling functions used when ParkMate displays error pages. |
-| `parkmate/wsgi.py` | This file will provide the WSGI entry point used by Gunicorn when ParkMate is deployed. |
-| `parkmate/asgi.py` | This file will provide Django's ASGI application configuration. |
-| `__init__.py` | These files will allow Python to recognise the folders as Python packages. |
-| `parking/migrations/*.py` | These files will record changes to the database structure when models or fields are changed. |
-| `parking/management/commands/*.py` | These files will contain custom Django terminal commands such as the command used to seed parking records. |
+| File                               | Function in ParkMate                                                                                                                                                                               |
+| ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `manage.py`                        | This file will be used to run Django commands from the terminal. It will allow me to start the development server, apply migrations, run tests and use custom management commands.                 |
+| `parkmate/settings.py`             | This file will contain the main Django settings. It will control the installed apps, database, static files, security settings, allowed hosts and deployment configuration.                        |
+| `parkmate/urls.py`                 | This file will contain the main project URL configuration and will connect the project to the parking app URLs and Django authentication URLs.                                                     |
+| `parking/urls.py`                  | This file will contain the ParkMate page routes. It will connect URLs such as Home, Parking, Map, My ParkMate, Add, Edit and Delete to the correct views.                                          |
+| `parking/models.py`                | This file will define the database models used by ParkMate. It will contain the structure for parking locations, favourites and availability reports.                                              |
+| `parking/views.py`                 | This file will contain most of the backend logic. It will process searches, retrieve parking data, display pages, handle favourites, manage user parking submissions and enforce ownership checks. |
+| `parking/forms.py`                 | This file will define Django forms. It will collect and validate user input when parking records are created or edited.                                                                            |
+| `parking/admin.py`                 | This file will register the database models with Django Admin so authorised staff can manage stored records.                                                                                       |
+| `parking/apps.py`                  | This file will contain the configuration for the parking Django application.                                                                                                                       |
+| `parking/tests.py`                 | This file will contain automated tests for important ParkMate functionality.                                                                                                                       |
+| `parking/error_handlers.py`        | This file will contain custom error-handling functions used when ParkMate displays error pages.                                                                                                    |
+| `parkmate/wsgi.py`                 | This file will provide the WSGI entry point used by Gunicorn when ParkMate is deployed.                                                                                                            |
+| `parkmate/asgi.py`                 | This file will provide Django's ASGI application configuration.                                                                                                                                    |
+| `__init__.py`                      | These files will allow Python to recognise the folders as Python packages.                                                                                                                         |
+| `parking/migrations/*.py`          | These files will record changes to the database structure when models or fields are changed.                                                                                                       |
+| `parking/management/commands/*.py` | These files will contain custom Django terminal commands such as the command used to seed parking records.                                                                                         |
 
 ## Main Files I Will Work With
 
