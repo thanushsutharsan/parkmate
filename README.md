@@ -790,3 +790,113 @@ For example:
 - configuration will go in `settings.py`
 
 This structure will make ParkMate easier to manage as the project develops.
+
+# Structure
+
+The Structure plane defines how the different pages and features connect together.
+
+## Information Architecture
+
+```text
+ParkMate
+│
+├── Home
+│   └── Main Search
+│
+├── Parking
+│   ├── Search Results
+│   └── Parking Detail
+│
+├── Map
+│   ├── Map Search
+│   └── Parking Markers
+│
+├── Account
+│   ├── Register
+│   ├── Login
+│   └── Logout
+│
+└── My ParkMate
+    ├── Favourites
+    └── My Parking
+        ├── Add
+        ├── Edit
+        └── Delete
+```
+
+## Logical Organisation
+
+The main feature is parking search, so it is kept easy to reach.
+
+The normal user journey is:
+
+1. Search
+2. View results
+3. Select parking
+4. View details
+
+The map provides another way to view stored parking locations.
+
+Account features are kept separate because visitors do not need an account to search for parking.
+
+## User Flow
+
+### Visitor Flow
+
+```text
+Home
+ ↓
+Search
+ ↓
+Parking Results
+ ↓
+Parking Detail
+```
+
+### Map Flow
+
+```text
+Map
+ ↓
+Search / View Markers
+ ↓
+Select Parking
+ ↓
+View Parking Information
+```
+
+### Account Flow
+
+```text
+Register
+ ↓
+Login
+ ↓
+My ParkMate
+```
+
+### Favourite Flow
+
+```text
+Parking
+ ↓
+Save Favourite
+ ↓
+My ParkMate
+ ↓
+Saved Parking
+```
+
+### CRUD Flow
+
+```text
+Login
+ ↓
+My ParkMate
+ ↓
+My Parking
+ ↓
+Add / Edit / Delete
+```
+
+# Skeleton
