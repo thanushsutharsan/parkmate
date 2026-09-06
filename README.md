@@ -1375,3 +1375,215 @@ For example:
 - **Mapped parking**
 
 During accessibility testing I check the colour combinations and adjust any areas that do not meet the required contrast standard.
+
+# Database Design
+
+ParkMate uses Django ORM with a relational database.
+
+SQLite is used during local development.
+
+PostgreSQL is supported for the production version.
+
+
+## Database Overview
+
+The main database models are:
+
+- `ParkingLocation`
+- `Favourite`
+- `AvailabilityReport`
+- Django `User`
+
+The main data in the application is based around parking locations.
+
+Users are connected to parking locations through:
+
+- parking submissions
+- favourites
+
+
+## Entity Relationship Diagram (ERD)
+
+```text
+┌──────────────────────┐
+│     Django User      │
+└──────────┬───────────┘
+           │
+           │ submits
+           ▼
+┌──────────────────────────┐
+│     ParkingLocation      │
+├──────────────────────────┤
+│ name                     │
+│ address                  │
+│ postcode                 │
+│ nation                   │
+│ local_authority          │
+│ latitude                 │
+│ longitude                │
+│ parking_type             │
+│ operator_name            │
+│ spaces_total             │
+│ disabled_spaces          │
+│ tariff_info              │
+│ charging_times           │
+│ restrictions             │
+│ payment_info             │
+│ source information       │
+│ verification             │
+│ image information        │
+│ submitted_by             │
+│ timestamps               │
+└────────────┬─────────────┘
+             │
+             │ saved through
+             ▼
+      ┌───────────────┐
+      │   Favourite   │
+      ├───────────────┤
+      │ user          │
+      │ parking       │
+      │ created_at    │
+      └───────┬───────┘
+              │
+              ▼
+        Django User
+```
+
+
+## Database Models
+
+### ParkingLocation
+
+`ParkingLocation` is the main database model.
+
+It stores information including:
+
+- name
+- address
+- postcode
+- nation
+- local authority
+- latitude
+- longitude
+- parking type
+- operator
+- total spaces
+- disabled spaces
+- tariff information
+- charging times
+- restrictions
+- payment information
+- payment location code
+- official source name
+- official source URL
+- verification status
+- last checked date
+- image URL
+- image source
+- image credit
+- submitting user
+- active status
+- timestamps
+
+
+### Favourite
+
+The `Favourite` model connects a registered user with a parking location they save.
+
+A database constraint prevents the same user from saving the same parking location more than once.
+
+
+### Django User
+
+Django's built-in User model handles:
+
+- user accounts
+- usernames
+- passwords
+- authentication
+
+The user is connected to:
+
+- favourite parking locations
+- parking locations they submit
+
+
+### AvailabilityReport
+
+The project contains an `AvailabilityReport` model.
+
+It stores:
+
+- parking location
+- user
+- status
+- spaces available
+- note
+- date and time
+
+The current URL configuration does not contain a completed user-facing availability-report submission route.
+
+Because of this, availability reporting is not treated as one of the completed MVP user features.
+
+
+## Database Relationships
+
+### User to ParkingLocation
+
+One user can submit multiple parking locations.
+
+Each submitted parking record can store the user who created it.
+
+
+### User to Favourite
+
+One user can have multiple favourite records.
+
+
+### ParkingLocation to Favourite
+
+One parking location can be saved by multiple users.
+
+
+### User to AvailabilityReport
+
+One user can be linked to multiple availability reports in the database model.
+
+
+### ParkingLocation to AvailabilityReport
+
+One parking location can contain multiple availability reports.
+
+
+## Database Fields and Data Types
+
+| Field | Django Type |
+| --- | --- |
+| `name` | `CharField` |
+| `address` | `CharField` |
+| `postcode` | `CharField` |
+| `nation` | `CharField` with choices |
+| `local_authority` | `CharField` |
+| `latitude` | `DecimalField` |
+| `longitude` | `DecimalField` |
+| `parking_type` | `CharField` with choices |
+| `operator_name` | `CharField` |
+| `spaces_total` | `PositiveIntegerField` |
+| `disabled_spaces` | `PositiveIntegerField` |
+| `tariff_info` | `TextField` |
+| `charging_times` | `CharField` |
+| `restrictions` | `TextField` |
+| `payment_info` | `CharField` |
+| `payment_location_code` | `CharField` |
+| `source_name` | `CharField` |
+| `source_url` | `URLField` |
+| `council_verified` | `BooleanField` |
+| `last_checked` | `DateTimeField` |
+| `image_url` | `URLField` |
+| `image_source_url` | `URLField` |
+| `image_credit` | `CharField` |
+| `submitted_by` | `ForeignKey` |
+| `is_active` | `BooleanField` |
+| `created_at` | `DateTimeField` |
+| `updated_at` | `DateTimeField` |
