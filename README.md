@@ -905,3 +905,254 @@ The main design decisions are:
 - users do not need an account to search
 - map controls remain familiar
 - layouts work across different screen sizes
+
+
+
+# Surface
+
+## Colour
+
+### How I Choose the Colours
+
+I first thought about what suits a parking and navigation website and then looked at existing design guidance to see how colours are used for different types of information.
+
+I looked at the GOV.UK Design System because it is designed for clear public-facing digital services. One thing I noticed is that colours are given clear purposes. Green is used for positive or success information, red is used for errors and dark text is used against light backgrounds to keep information easy to read.
+
+
+For ParkMate itself, I choose navy as the main navigation colour because I want the website to have a professional and trustworthy appearance. I use green for the main actions because it stands out clearly against the navy and white backgrounds. I use white and light grey for the main content because I want parking cards and information to remain easy to scan.
+
+I then use blue for mapped parking because it makes it clearly different from verified parking. Red is kept for errors and delete actions so it is not confused with normal actions.
+
+The exact colour shades are my own ParkMate colour choices. The external research mainly helps me decide how the colours are used.
+
+
+### Colour Research Evidence
+
+| Evidence Source | What I Find | How I Use It in ParkMate |
+| --- | --- | --- |
+| GOV.UK Design System - Colour | Colours are given specific purposes and the guidance includes success, error, text, background and interactive colours. | This supports my use of green for positive/verified information and red for destructive or error information. |
+| GOV.UK Design System - Colour Contrast | Text and interactive elements need enough contrast against their backgrounds. | I will use dark text on white/light backgrounds and white text on the dark navy navigation. |
+| Department for Education Design System - Typography | The DfE uses Inter for digital services and describes it as suitable for readable digital interfaces. | This supports my choice of Inter as the preferred ParkMate typeface. |
+| GOV.UK Design System - Type Scale | Typography changes depending on screen size and uses a clear hierarchy. | ParkMate will use a responsive font sizes and different sizes for headings, supporting information and labels. |
+
+
+### Main ParkMate Colour Palette
+
+These are the main colour variables that will be used in my ParkMate CSS:
+
+| CSS Variable | Colour | Use |
+| --- | --- | --- |
+| `--navy` | `#072742` | Main navigation and dark branded areas |
+| `--navy-2` | `#0B3557` | Secondary navy shade |
+| `--green` | `#13A957` | Main buttons and primary actions |
+| `--green-dark` | `#0C8543` | Hover states and smaller green highlights |
+| `--green-soft` | `#E8F7EE` | Soft green status backgrounds |
+| `--ink` | `#0E2235` | Main text |
+| `--muted` | `#63717F` | Secondary text |
+| `--line` | `#DFE6EB` | Borders and dividers |
+| `--page` | `#F7F9FA` | Main page background |
+| `--card` | `#FFFFFF` | Cards and content panels |
+| `--danger` | `#DE342D` | Delete and destructive actions |
+| `--danger-soft` | `#FFE9E7` | Error and delete-warning backgrounds |
+| `--info-soft` | `#E9F4FF` | Informational message backgrounds |
+
+
+### Navigation Colours
+
+The navigation uses:
+
+```css
+background: linear-gradient(100deg, #072742, #082C4A);
+```
+
+I use a darker navigation because it clearly separates the header from the lighter page content.
+
+The normal navigation text uses:
+
+```text
+#FFFFFF
+```
+
+The **Mate** part of the ParkMate brand uses:
+
+```text
+#37D77A
+```
+
+The navigation hover colour is:
+
+```text
+#70E8A0
+```
+
+I use the brighter green on the ParkMate name and hover states because it gives the website a small branded highlight without making the whole header too bright.
+
+
+### Button Colours
+
+The main buttons use a green gradient:
+
+```css
+linear-gradient(#19B85F, #0D9B4D)
+```
+
+The main green CSS variable is:
+
+```text
+#13A957
+```
+
+The darker hover colour is:
+
+```text
+#0C8543
+```
+
+I use green for the main actions because I want actions such as searching, viewing details and submitting forms to stand out from the normal page content.
+
+
+### Verified Parking Colours
+
+Council/NPP price verified information uses a soft green background:
+
+```text
+#E8F7EE
+```
+
+with darker green text:
+
+```text
+#08753A
+```
+
+The verified map marker also uses:
+
+```text
+#19B77D
+```
+
+with a darker border:
+
+```text
+#075B3E
+```
+
+I use green because I want verified information to be easy to identify as a positive status.
+
+The written verification label is still shown so the user does not need to rely only on colour.
+
+
+### Mapped Parking Colours
+
+Mapped parking uses:
+
+```text
+#E8F3FF
+```
+
+for the light background and:
+
+```text
+#174F91
+```
+
+for the text.
+
+Mapped map markers use:
+
+```text
+#5AA6EF
+```
+
+with:
+
+```text
+#174F91
+```
+
+as the darker border.
+
+Some mapped parking sections also use:
+
+```text
+#397FC1
+```
+
+as the blue accent.
+
+I use blue because it is clearly different from the green used for verified parking.
+
+
+### Community Parking Colours
+
+Community-submitted parking uses amber colours including:
+
+```text
+#D99A32
+```
+
+for the accent and:
+
+```text
+#FFF8EC
+```
+
+for a light background.
+
+Darker community text uses:
+
+```text
+#6D4200
+```
+
+I use amber because community submissions need to look different from both verified and mapped parking.
+
+
+### Availability Status Colours
+
+The project also contains styles for availability statuses.
+
+Available:
+
+```text
+Background: #E5F7EC
+Text: #08753A
+```
+
+Busy:
+
+```text
+Background: #FFF4D6
+Text: #7E5C00
+```
+
+Full:
+
+```text
+Background: #FFE6E4
+Text: #A62720
+```
+
+Neutral:
+
+```text
+Background: #EDF2F5
+Text: #506473
+```
+
+These status colours are designed to make different states visually clear.
+
+
+### Colour Scheme
+
+The final ParkMate design will mainly use navy, green, white and light grey.
+
+I will use navy for the navigation because it gives the website a strong and professional appearance.
+
+Green is used for main actions and verified information because it stands out clearly from the navy and light backgrounds.
+
+White and light grey are used for most of the content because I want parking cards and information to be easy to read.
+
+Blue is used for mapped parking and amber is used for community parking so these types of records remain visually different.
+
+Red is mainly kept for errors and destructive actions.
