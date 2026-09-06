@@ -1320,3 +1320,20 @@ font-weight: 750;
 
 I use a heavier button weight because important actions need to look clickable and stand out from normal text.
 
+## Images and Visuals
+
+Visuals include:
+
+- parking images
+- OpenStreetMap
+- Leaflet map markers
+- parking cards
+- status badges
+- interface icons
+- ParkMate hero artwork
+
+Parking images can use:
+
+- stored image URLs
+- Wikimedia Commons
+- local fallback images
