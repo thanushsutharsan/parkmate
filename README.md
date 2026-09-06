@@ -1352,3 +1352,26 @@ They include:
 - smooth scrolling
 
 Large animations are avoided because the main purpose of ParkMate is to find information quickly.
+
+## Accessibility Planning
+
+Accessibility planning includes:
+
+- readable text sizes
+- clear colour contrast
+- visible form labels
+- meaningful button text
+- keyboard-accessible controls
+- responsive layouts
+- form validation feedback
+- suitable alternative text
+- not relying only on colour
+
+I also use written labels alongside status colours.
+
+For example:
+
+- **Council/NPP price verified**
+- **Mapped parking**
+
+During accessibility testing I check the colour combinations and adjust any areas that do not meet the required contrast standard.
