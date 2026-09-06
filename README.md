@@ -1156,3 +1156,167 @@ White and light grey are used for most of the content because I want parking car
 Blue is used for mapped parking and amber is used for community parking so these types of records remain visually different.
 
 Red is mainly kept for errors and destructive actions.
+
+
+## Typography
+
+### Research
+
+For typography, I want ParkMate to be easy to read rather than using decorative fonts.
+
+I look at the Department for Education Design System as an example of a public digital service that uses Inter. It uses Inter for digital products because it works well for readable interfaces across different screen sizes.
+
+I also look at the GOV.UK type scale. It uses a clear hierarchy between headings and normal text and changes sizes depending on the screen width.
+
+This influences my decision to use a simple sans-serif font stack and responsive heading sizes.
+
+
+### Typography Research Evidence
+
+| Evidence Source | What I Find | How I Use It in ParkMate |
+| --- | --- | --- |
+| Department for Education Design System - Typography | Inter is used as a digital typeface for DfE services. | I set Inter as the first font in my ParkMate font stack. |
+| GOV.UK Design System - Type Scale | Different sizes and line heights create a clear text hierarchy. | ParkMate uses larger headings and smaller supporting information. |
+| GOV.UK Design System - Responsive Type Scale | Font sizes change depending on screen size. | ParkMate uses `clamp()` for important headings. |
+| W3C Accessibility Guidance | Text needs to remain readable and understandable. | I keep the typography simple and avoid using lots of different fonts. |
+
+### Typography chosen
+
+The main typography used in ParkMate is:
+
+```css
+font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+```
+
+I choose a sans-serif font style because ParkMate is mainly an information and search website.
+
+I want users to be able to quickly scan parking names, prices, addresses and restrictions without decorative text getting in the way.
+
+`Inter` is set as my preferred font.
+
+The CSS also contains system font fallbacks:
+
+- `ui-sans-serif`
+- `-apple-system`
+- `BlinkMacSystemFont`
+- `"Segoe UI"`
+- `sans-serif`
+
+This means if Inter is not available on the device, the browser can use the next suitable system font.
+
+
+### ParkMate Brand
+
+The ParkMate brand uses:
+
+```css
+font-size: 1.35rem;
+font-weight: 800;
+letter-spacing: -0.03em;
+```
+
+I use a heavier weight for the ParkMate name because I want it to stand out from the navigation links.
+
+
+### Main Home Heading
+
+The main heading uses:
+
+```css
+font-size: clamp(3rem, 6vw, 5.2rem);
+line-height: 0.98;
+letter-spacing: -0.055em;
+```
+
+I use a large heading because it is the first text I want users to notice.
+
+I use `clamp()` so the size can change depending on the screen width.
+
+
+### Supporting Home Text
+
+The supporting paragraph uses:
+
+```css
+font-size: 1.08rem;
+```
+
+This keeps it smaller than the main heading while still making the description easy to read.
+
+
+### Navigation
+
+Navigation links use:
+
+```css
+font-size: 0.9rem;
+font-weight: 600;
+```
+
+I keep the navigation clear without making it compete with the main page headings.
+
+
+### Parking Result Names
+
+Parking result names use:
+
+```css
+font-size: 1.12rem;
+```
+
+The parking name is made larger than secondary information because this is one of the first things the user needs to identify.
+
+
+### Supporting Parking Information
+
+Smaller parking information uses font sizes such as:
+
+```css
+font-size: 0.82rem;
+```
+
+and:
+
+```css
+font-size: 0.84rem;
+```
+
+This is used for information that is useful but not as important as the parking name.
+
+
+### Parking Detail Heading
+
+The detail heading uses:
+
+```css
+font-size: clamp(2rem, 4vw, 3.1rem);
+letter-spacing: -0.035em;
+```
+
+This makes the selected parking location clear while still allowing the heading to resize.
+
+
+### Labels
+
+Small labels use:
+
+```css
+font-size: 0.75rem;
+font-weight: 800;
+text-transform: uppercase;
+letter-spacing: 0.08em;
+```
+
+I use uppercase labels and a heavier weight to separate small status information from normal paragraph text.
+
+
+### Buttons
+
+Buttons use:
+
+```css
+font-weight: 750;
+```
+
+I use a heavier button weight because important actions need to look clickable and stand out from normal text.
+
