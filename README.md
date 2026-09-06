@@ -1689,3 +1689,106 @@ Registered users can also:
 - add parking
 - edit their own parking
 - delete their own parking
+
+
+# Testing Planning
+
+Testing covers the backend functionality and the visible website.
+
+
+## Automated Testing
+
+Django tests are stored in:
+
+```text
+parking/tests.py
+```
+
+The test suite is run using:
+
+```bash
+python3 manage.py test
+```
+
+Django system checks are run using:
+
+```bash
+python3 manage.py check
+```
+
+
+## Manual Testing
+
+Manual testing covers:
+
+- registration
+- login
+- logout
+- parking search
+- postcode search
+- postcode-area search
+- parking results
+- parking detail pages
+- map display
+- favourites
+- Create
+- Read
+- Update
+- Delete
+- form validation
+- mobile layout
+- tablet layout
+- desktop layout
+- browser compatibility
+
+
+## Validation Testing
+
+The final website is also checked using:
+
+- HTML validation
+- CSS validation
+- Lighthouse
+
+
+# Success Criteria
+
+ParkMate is successful when a user can:
+
+- search using a town or city
+- search using a postcode
+- search using a postcode area
+- search using a parking name
+- view matching parking results
+- open parking details
+- view parking on a map
+- identify Council/NPP price verified parking
+- identify mapped parking
+- register
+- log in
+- log out
+- save favourites
+- remove favourites
+- view My ParkMate
+- add parking
+- edit their own parking
+- delete their own parking
+- use the website on mobile
+- use the website on tablet
+- use the website on desktop
+
+The technical success criteria include demonstrating:
+
+- Python
+- Django
+- relational database functionality
+- Django ORM
+- authentication
+- CRUD
+- forms
+- validation
+- security
+- responsive design
+- interactive maps
+- testing
+- deployment
