@@ -1661,3 +1661,31 @@ Verified records require:
 Community parking is not automatically marked as verified.
 
 This makes the source of the parking information clearer to the user.
+
+# Authentication and Authorisation Planning
+
+Authentication controls whether a user is signed into ParkMate.
+
+Authorisation controls what the signed-in user is allowed to do.
+
+
+## Visitors
+
+Visitors can:
+
+- search parking
+- view parking results
+- view parking details
+- view the map
+
+
+## Registered Users
+
+Registered users can also:
+
+- save favourites
+- remove favourites
+- view My ParkMate
+- add parking
+- edit their own parking
+- delete their own parking
