@@ -1559,3 +1559,37 @@ One parking location can contain multiple availability reports.
 | `is_active`             | `BooleanField`           |
 | `created_at`            | `DateTimeField`          |
 | `updated_at`            | `DateTimeField`          |
+
+# Validation and Security Planning
+
+Validation will be used to reduce incorrect parking information being added to the database.
+
+Validation includes:
+
+- UK latitude range checks
+- UK longitude range checks
+- disabled-space validation
+- official source URL validation
+- verified-record requirements
+- Django form validation
+- authentication checks
+- ownership checks
+
+Verified parking records require:
+
+- an official source URL
+- a last checked date
+- tariff information
+
+Security includes:
+
+- Django CSRF protection
+- password validation
+- authenticated routes
+- ownership protection
+- secure production cookies
+- HTTPS redirect
+- HSTS
+- content type protection
+
+Normal registered users cannot edit or delete another user's parking submission.
