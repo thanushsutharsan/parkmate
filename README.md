@@ -878,3 +878,30 @@ Add / Edit / Delete
 ```
 
 # Skeleton
+ParkMate follows a mobile-first approach.
+
+
+## Mobile Wireframes
+![mobile-wireframes](assets/wireframes/mobile-vw.jpeg)
+
+## Tablet Wireframes
+![tablet-wireframes](assets/wireframes/tablet-vw.jpeg)
+
+
+## Desktop Wireframes
+![desktop-wireframes](assets/wireframes/desktop-vw.jpeg)
+
+## Design Decisions
+
+The main design decisions are:
+
+- search is kept easy to find
+- parking cards use a consistent layout
+- navigation stays consistent
+- verified, mapped and community parking are visually separated
+- forms are kept simple
+- buttons are easy to recognise
+- delete actions are clearly separated from normal actions
+- users do not need an account to search
+- map controls remain familiar
+- layouts work across different screen sizes
