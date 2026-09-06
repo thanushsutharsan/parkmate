@@ -1615,3 +1615,29 @@ The following remain consistent across different screen sizes:
 - verification badges
 
 The layout changes depending on the available screen width while the main functionality stays the same.
+
+# Data and Map Planning
+
+ParkMate will use parking records stored in its database.
+
+The parking map will use:
+
+- Leaflet
+- OpenStreetMap
+
+Each map marker will use coordinates stored with a parking record.
+
+ParkMate does not depend on a live parking API to create its stored parking markers.
+
+
+# Image Planning
+
+ParkMate will use parking images to help users recognise locations.
+
+The image system will use:
+
+1. a stored image URL where available
+2. Wikimedia Commons
+3. a local fallback parking image
+
+The fallback image prevents broken images from being displayed.
