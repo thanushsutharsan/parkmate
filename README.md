@@ -1641,3 +1641,23 @@ The image system will use:
 3. a local fallback parking image
 
 The fallback image prevents broken images from being displayed.
+
+# Verification Planning
+
+ParkMate separates parking records into:
+
+- **Council/NPP price verified**
+- **Mapped parking**
+- community-submitted parking
+
+Parking should only be shown as officially price verified when suitable official source information is stored.
+
+Verified records require:
+
+- an official council/GOV.UK or NPP source
+- official tariff information
+- a last checked date
+
+Community parking is not automatically marked as verified.
+
+This makes the source of the parking information clearer to the user.
