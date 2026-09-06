@@ -1337,3 +1337,18 @@ Parking images can use:
 - stored image URLs
 - Wikimedia Commons
 - local fallback images
+
+
+## Animations and Effects
+
+Effects are kept simple.
+
+They include:
+
+- navigation hover colours
+- button hover states
+- form focus states
+- card shadows
+- smooth scrolling
+
+Large animations are avoided because the main purpose of ParkMate is to find information quickly.
