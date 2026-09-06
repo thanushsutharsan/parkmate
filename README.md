@@ -878,17 +878,19 @@ Add / Edit / Delete
 ```
 
 # Skeleton
+
 ParkMate follows a mobile-first approach.
 
-
 ## Mobile Wireframes
+
 ![mobile-wireframes](assets/wireframes/mobile-vw.jpeg)
 
 ## Tablet Wireframes
+
 ![tablet-wireframes](assets/wireframes/tablet-vw.jpeg)
 
-
 ## Desktop Wireframes
+
 ![desktop-wireframes](assets/wireframes/desktop-vw.jpeg)
 
 ## Design Decisions
@@ -906,8 +908,6 @@ The main design decisions are:
 - map controls remain familiar
 - layouts work across different screen sizes
 
-
-
 # Surface
 
 ## Colour
@@ -918,51 +918,47 @@ I first thought about what suits a parking and navigation website and then looke
 
 I looked at the GOV.UK Design System because it is designed for clear public-facing digital services. One thing I noticed is that colours are given clear purposes. Green is used for positive or success information, red is used for errors and dark text is used against light backgrounds to keep information easy to read.
 
-
 For ParkMate itself, I choose navy as the main navigation colour because I want the website to have a professional and trustworthy appearance. I use green for the main actions because it stands out clearly against the navy and white backgrounds. I use white and light grey for the main content because I want parking cards and information to remain easy to scan.
 
 I then use blue for mapped parking because it makes it clearly different from verified parking. Red is kept for errors and delete actions so it is not confused with normal actions.
 
 The exact colour shades are my own ParkMate colour choices. The external research mainly helps me decide how the colours are used.
 
-
 ### Colour Research Evidence
 
-| Evidence Source | What I Find | How I Use It in ParkMate |
-| --- | --- | --- |
-| GOV.UK Design System - Colour | Colours are given specific purposes and the guidance includes success, error, text, background and interactive colours. | This supports my use of green for positive/verified information and red for destructive or error information. |
-| GOV.UK Design System - Colour Contrast | Text and interactive elements need enough contrast against their backgrounds. | I will use dark text on white/light backgrounds and white text on the dark navy navigation. |
-| Department for Education Design System - Typography | The DfE uses Inter for digital services and describes it as suitable for readable digital interfaces. | This supports my choice of Inter as the preferred ParkMate typeface. |
-| GOV.UK Design System - Type Scale | Typography changes depending on screen size and uses a clear hierarchy. | ParkMate will use a responsive font sizes and different sizes for headings, supporting information and labels. |
-
+| Evidence Source                                     | What I Find                                                                                                             | How I Use It in ParkMate                                                                                       |
+| --------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| GOV.UK Design System - Colour                       | Colours are given specific purposes and the guidance includes success, error, text, background and interactive colours. | This supports my use of green for positive/verified information and red for destructive or error information.  |
+| GOV.UK Design System - Colour Contrast              | Text and interactive elements need enough contrast against their backgrounds.                                           | I will use dark text on white/light backgrounds and white text on the dark navy navigation.                    |
+| Department for Education Design System - Typography | The DfE uses Inter for digital services and describes it as suitable for readable digital interfaces.                   | This supports my choice of Inter as the preferred ParkMate typeface.                                           |
+| GOV.UK Design System - Type Scale                   | Typography changes depending on screen size and uses a clear hierarchy.                                                 | ParkMate will use a responsive font sizes and different sizes for headings, supporting information and labels. |
 
 ### Main ParkMate Colour Palette
 
 These are the main colour variables that will be used in my ParkMate CSS:
 
-| CSS Variable | Colour | Use |
-| --- | --- | --- |
-| `--navy` | `#072742` | Main navigation and dark branded areas |
-| `--navy-2` | `#0B3557` | Secondary navy shade |
-| `--green` | `#13A957` | Main buttons and primary actions |
-| `--green-dark` | `#0C8543` | Hover states and smaller green highlights |
-| `--green-soft` | `#E8F7EE` | Soft green status backgrounds |
-| `--ink` | `#0E2235` | Main text |
-| `--muted` | `#63717F` | Secondary text |
-| `--line` | `#DFE6EB` | Borders and dividers |
-| `--page` | `#F7F9FA` | Main page background |
-| `--card` | `#FFFFFF` | Cards and content panels |
-| `--danger` | `#DE342D` | Delete and destructive actions |
-| `--danger-soft` | `#FFE9E7` | Error and delete-warning backgrounds |
-| `--info-soft` | `#E9F4FF` | Informational message backgrounds |
-
+| CSS Variable    | Colour    | Use                                       |
+| --------------- | --------- | ----------------------------------------- |
+| `--navy`        | `#072742` | Main navigation and dark branded areas    |
+| `--navy-2`      | `#0B3557` | Secondary navy shade                      |
+| `--green`       | `#13A957` | Main buttons and primary actions          |
+| `--green-dark`  | `#0C8543` | Hover states and smaller green highlights |
+| `--green-soft`  | `#E8F7EE` | Soft green status backgrounds             |
+| `--ink`         | `#0E2235` | Main text                                 |
+| `--muted`       | `#63717F` | Secondary text                            |
+| `--line`        | `#DFE6EB` | Borders and dividers                      |
+| `--page`        | `#F7F9FA` | Main page background                      |
+| `--card`        | `#FFFFFF` | Cards and content panels                  |
+| `--danger`      | `#DE342D` | Delete and destructive actions            |
+| `--danger-soft` | `#FFE9E7` | Error and delete-warning backgrounds      |
+| `--info-soft`   | `#E9F4FF` | Informational message backgrounds         |
 
 ### Navigation Colours
 
 The navigation uses:
 
 ```css
-background: linear-gradient(100deg, #072742, #082C4A);
+background: linear-gradient(100deg, #072742, #082c4a);
 ```
 
 I use a darker navigation because it clearly separates the header from the lighter page content.
@@ -987,7 +983,6 @@ The navigation hover colour is:
 
 I use the brighter green on the ParkMate name and hover states because it gives the website a small branded highlight without making the whole header too bright.
 
-
 ### Button Colours
 
 The main buttons use a green gradient:
@@ -1009,7 +1004,6 @@ The darker hover colour is:
 ```
 
 I use green for the main actions because I want actions such as searching, viewing details and submitting forms to stand out from the normal page content.
-
 
 ### Verified Parking Colours
 
@@ -1040,7 +1034,6 @@ with a darker border:
 I use green because I want verified information to be easy to identify as a positive status.
 
 The written verification label is still shown so the user does not need to rely only on colour.
-
 
 ### Mapped Parking Colours
 
@@ -1082,7 +1075,6 @@ as the blue accent.
 
 I use blue because it is clearly different from the green used for verified parking.
 
-
 ### Community Parking Colours
 
 Community-submitted parking uses amber colours including:
@@ -1106,7 +1098,6 @@ Darker community text uses:
 ```
 
 I use amber because community submissions need to look different from both verified and mapped parking.
-
 
 ### Availability Status Colours
 
@@ -1142,7 +1133,6 @@ Text: #506473
 
 These status colours are designed to make different states visually clear.
 
-
 ### Colour Scheme
 
 The final ParkMate design will mainly use navy, green, white and light grey.
@@ -1157,7 +1147,6 @@ Blue is used for mapped parking and amber is used for community parking so these
 
 Red is mainly kept for errors and destructive actions.
 
-
 ## Typography
 
 ### Research
@@ -1170,22 +1159,27 @@ I also look at the GOV.UK type scale. It uses a clear hierarchy between headings
 
 This influences my decision to use a simple sans-serif font stack and responsive heading sizes.
 
-
 ### Typography Research Evidence
 
-| Evidence Source | What I Find | How I Use It in ParkMate |
-| --- | --- | --- |
-| Department for Education Design System - Typography | Inter is used as a digital typeface for DfE services. | I set Inter as the first font in my ParkMate font stack. |
-| GOV.UK Design System - Type Scale | Different sizes and line heights create a clear text hierarchy. | ParkMate uses larger headings and smaller supporting information. |
-| GOV.UK Design System - Responsive Type Scale | Font sizes change depending on screen size. | ParkMate uses `clamp()` for important headings. |
-| W3C Accessibility Guidance | Text needs to remain readable and understandable. | I keep the typography simple and avoid using lots of different fonts. |
+| Evidence Source                                     | What I Find                                                     | How I Use It in ParkMate                                              |
+| --------------------------------------------------- | --------------------------------------------------------------- | --------------------------------------------------------------------- |
+| Department for Education Design System - Typography | Inter is used as a digital typeface for DfE services.           | I set Inter as the first font in my ParkMate font stack.              |
+| GOV.UK Design System - Type Scale                   | Different sizes and line heights create a clear text hierarchy. | ParkMate uses larger headings and smaller supporting information.     |
+| GOV.UK Design System - Responsive Type Scale        | Font sizes change depending on screen size.                     | ParkMate uses `clamp()` for important headings.                       |
+| W3C Accessibility Guidance                          | Text needs to remain readable and understandable.               | I keep the typography simple and avoid using lots of different fonts. |
 
 ### Typography chosen
 
 The main typography used in ParkMate is:
 
 ```css
-font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+font-family:
+  Inter,
+  ui-sans-serif,
+  -apple-system,
+  BlinkMacSystemFont,
+  "Segoe UI",
+  sans-serif;
 ```
 
 I choose a sans-serif font style because ParkMate is mainly an information and search website.
@@ -1204,7 +1198,6 @@ The CSS also contains system font fallbacks:
 
 This means if Inter is not available on the device, the browser can use the next suitable system font.
 
-
 ### ParkMate Brand
 
 The ParkMate brand uses:
@@ -1216,7 +1209,6 @@ letter-spacing: -0.03em;
 ```
 
 I use a heavier weight for the ParkMate name because I want it to stand out from the navigation links.
-
 
 ### Main Home Heading
 
@@ -1232,7 +1224,6 @@ I use a large heading because it is the first text I want users to notice.
 
 I use `clamp()` so the size can change depending on the screen width.
 
-
 ### Supporting Home Text
 
 The supporting paragraph uses:
@@ -1242,7 +1233,6 @@ font-size: 1.08rem;
 ```
 
 This keeps it smaller than the main heading while still making the description easy to read.
-
 
 ### Navigation
 
@@ -1255,7 +1245,6 @@ font-weight: 600;
 
 I keep the navigation clear without making it compete with the main page headings.
 
-
 ### Parking Result Names
 
 Parking result names use:
@@ -1265,7 +1254,6 @@ font-size: 1.12rem;
 ```
 
 The parking name is made larger than secondary information because this is one of the first things the user needs to identify.
-
 
 ### Supporting Parking Information
 
@@ -1283,7 +1271,6 @@ font-size: 0.84rem;
 
 This is used for information that is useful but not as important as the parking name.
 
-
 ### Parking Detail Heading
 
 The detail heading uses:
@@ -1294,7 +1281,6 @@ letter-spacing: -0.035em;
 ```
 
 This makes the selected parking location clear while still allowing the heading to resize.
-
 
 ### Labels
 
@@ -1308,7 +1294,6 @@ letter-spacing: 0.08em;
 ```
 
 I use uppercase labels and a heavier weight to separate small status information from normal paragraph text.
-
 
 ### Buttons
 
@@ -1337,7 +1322,6 @@ Parking images can use:
 - stored image URLs
 - Wikimedia Commons
 - local fallback images
-
 
 ## Animations and Effects
 
@@ -1384,7 +1368,6 @@ SQLite is used during local development.
 
 PostgreSQL is supported for the production version.
 
-
 ## Database Overview
 
 The main database models are:
@@ -1400,7 +1383,6 @@ Users are connected to parking locations through:
 
 - parking submissions
 - favourites
-
 
 ## Entity Relationship Diagram (ERD)
 
@@ -1450,7 +1432,6 @@ Users are connected to parking locations through:
         Django User
 ```
 
-
 ## Database Models
 
 ### ParkingLocation
@@ -1486,13 +1467,11 @@ It stores information including:
 - active status
 - timestamps
 
-
 ### Favourite
 
 The `Favourite` model connects a registered user with a parking location they save.
 
 A database constraint prevents the same user from saving the same parking location more than once.
-
 
 ### Django User
 
@@ -1507,7 +1486,6 @@ The user is connected to:
 
 - favourite parking locations
 - parking locations they submit
-
 
 ### AvailabilityReport
 
@@ -1526,7 +1504,6 @@ The current URL configuration does not contain a completed user-facing availabil
 
 Because of this, availability reporting is not treated as one of the completed MVP user features.
 
-
 ## Database Relationships
 
 ### User to ParkingLocation
@@ -1535,55 +1512,50 @@ One user can submit multiple parking locations.
 
 Each submitted parking record can store the user who created it.
 
-
 ### User to Favourite
 
 One user can have multiple favourite records.
-
 
 ### ParkingLocation to Favourite
 
 One parking location can be saved by multiple users.
 
-
 ### User to AvailabilityReport
 
 One user can be linked to multiple availability reports in the database model.
-
 
 ### ParkingLocation to AvailabilityReport
 
 One parking location can contain multiple availability reports.
 
-
 ## Database Fields and Data Types
 
-| Field | Django Type |
-| --- | --- |
-| `name` | `CharField` |
-| `address` | `CharField` |
-| `postcode` | `CharField` |
-| `nation` | `CharField` with choices |
-| `local_authority` | `CharField` |
-| `latitude` | `DecimalField` |
-| `longitude` | `DecimalField` |
-| `parking_type` | `CharField` with choices |
-| `operator_name` | `CharField` |
-| `spaces_total` | `PositiveIntegerField` |
-| `disabled_spaces` | `PositiveIntegerField` |
-| `tariff_info` | `TextField` |
-| `charging_times` | `CharField` |
-| `restrictions` | `TextField` |
-| `payment_info` | `CharField` |
-| `payment_location_code` | `CharField` |
-| `source_name` | `CharField` |
-| `source_url` | `URLField` |
-| `council_verified` | `BooleanField` |
-| `last_checked` | `DateTimeField` |
-| `image_url` | `URLField` |
-| `image_source_url` | `URLField` |
-| `image_credit` | `CharField` |
-| `submitted_by` | `ForeignKey` |
-| `is_active` | `BooleanField` |
-| `created_at` | `DateTimeField` |
-| `updated_at` | `DateTimeField` |
+| Field                   | Django Type              |
+| ----------------------- | ------------------------ |
+| `name`                  | `CharField`              |
+| `address`               | `CharField`              |
+| `postcode`              | `CharField`              |
+| `nation`                | `CharField` with choices |
+| `local_authority`       | `CharField`              |
+| `latitude`              | `DecimalField`           |
+| `longitude`             | `DecimalField`           |
+| `parking_type`          | `CharField` with choices |
+| `operator_name`         | `CharField`              |
+| `spaces_total`          | `PositiveIntegerField`   |
+| `disabled_spaces`       | `PositiveIntegerField`   |
+| `tariff_info`           | `TextField`              |
+| `charging_times`        | `CharField`              |
+| `restrictions`          | `TextField`              |
+| `payment_info`          | `CharField`              |
+| `payment_location_code` | `CharField`              |
+| `source_name`           | `CharField`              |
+| `source_url`            | `URLField`               |
+| `council_verified`      | `BooleanField`           |
+| `last_checked`          | `DateTimeField`          |
+| `image_url`             | `URLField`               |
+| `image_source_url`      | `URLField`               |
+| `image_credit`          | `CharField`              |
+| `submitted_by`          | `ForeignKey`             |
+| `is_active`             | `BooleanField`           |
+| `created_at`            | `DateTimeField`          |
+| `updated_at`            | `DateTimeField`          |
