@@ -1593,3 +1593,25 @@ Security includes:
 - content type protection
 
 Normal registered users cannot edit or delete another user's parking submission.
+
+# Responsive Design Planning
+
+ParkMate will follow a mobile-first approach.
+
+The design supports:
+
+- mobile phones
+- tablets
+- desktop computers
+
+The following remain consistent across different screen sizes:
+
+- navigation
+- forms
+- parking cards
+- buttons
+- spacing
+- typography
+- verification badges
+
+The layout changes depending on the available screen width while the main functionality stays the same.
