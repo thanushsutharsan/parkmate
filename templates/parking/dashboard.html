@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+<!-- user dashboard page -->
+
+{% block title %} My ParkMate {% endblock %} {% block content %}
+
+<section class="page-shell dashboard-page">
+  <!-- dashboard heading -->
+  <div class="dashboard-hero">
+    <!-- signed in user details -->
+    <div>
+      <p class="mini-label">Signed in as {{ user.username }}</p>
+
+      <h1>My ParkMate</h1>
+
+      <p>Your saved parking and your own parking submissions.</p>
+    </div>
+
+    <!-- add parking button -->
+    <a class="green-button" href="{% url 'parking:create' %}">
+      ＋ Add parking
+    </a>
+  </div>
+
+  <!-- dashboard sections -->
+  <div class="dashboard-grid">
+    <!-- saved parking section -->
+    <section class="dashboard-panel">
+      <!-- saved parking heading -->
+      <div class="panel-heading">
+        <div>
+          <p class="mini-label">Favourites</p>
+
+          <h2>Saved parking</h2>
+        </div>
+
+        <!-- find more parking -->
+        <a href="{% url 'parking:list' %}"> Find parking </a>
+      </div>
+
+      <!-- saved parking list -->
+      {% for favourite in favourites %}
+
+      <article class="dashboard-row">
+        <!-- saved parking details -->
+        <div>
+          <h3>
+            <a href="{{ favourite.parking.get_absolute_url }}">
+              {{ favourite.parking.name }}
+            </a>
+          </h3>
+
+          <p>
+            {{ favourite.parking.tariff_info|default:"Price not supplied" }}
+          </p>
+        </div>
+
+        <!-- removes parking from favourites -->
+        <form
+          method="post"
+          action="{% url 'parking:toggle_favourite' favourite.parking.pk %}"
+        >
+          {% csrf_token %}
+
+          <!-- returns to the dashboard -->
+          <input
+            type="hidden"
+            name="next"
+            value="{% url 'parking:dashboard' %}"
+          />
+
+          <button class="text-button" type="submit">Remove</button>
+        </form>
+      </article>
+
+      {% empty %}
+
+      <!-- shown when there are no favourites -->
+      <p class="muted">You have not saved any parking yet.</p>
+
+      {% endfor %}
+    </section>
+
+    <!-- user parking section -->
+    <section class="dashboard-panel">
+      <!-- parking submissions heading -->
+      <div class="panel-heading">
+        <div>
+          <p class="mini-label">Your contributions</p>
+
+          <h2>My parking</h2>
+        </div>
+
+        <!-- add another parking location -->
+        <a href="{% url 'parking:create' %}"> Add parking </a>
+      </div>
+
+      <!-- submitted parking list -->
+      {% for location in submissions %}
+
+      <article class="dashboard-row">
+        <!-- submitted parking details -->
+        <div>
+          <h3>
+            <a href="{{ location.get_absolute_url }}"> {{ location.name }} </a>
+          </h3>
+
+          <p>{{ location.address }}</p>
+        </div>
+
+        <!-- edit and delete actions -->
+        <div class="row-actions">
+          <a href="{% url 'parking:edit' location.pk %}"> Edit </a>
+
+          <a class="danger-link" href="{% url 'parking:delete' location.pk %}">
+            Delete
+          </a>
+        </div>
+      </article>
+
+      {% empty %}
+
+      <!-- shown when the user has no submissions -->
+      <p class="muted">You have not added any parking locations.</p>
+
+      {% endfor %}
+    </section>
+  </div>
+</section>
+
+{% endblock %}
