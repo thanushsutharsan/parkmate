@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+<!-- login page -->
+
+{% block title %} Log in - ParkMate {% endblock %} {% block content %}
+
+<section class="form-page page-shell">
+  <!-- login card -->
+  <div class="form-card auth-card">
+    <!-- login heading -->
+    <p class="mini-label">Your saved parking</p>
+
+    <h1>Welcome Back</h1>
+
+    <p class="form-intro">
+      Log in to open My ParkMate, manage your parking submissions and save
+      favourite parking locations.
+    </p>
+
+    <!-- login form -->
+    <form method="post" class="auth-form">
+      <!-- protects the form from csrf attacks -->
+      {% csrf_token %}
+
+      <!-- form errors not linked to one field -->
+      {% if form.non_field_errors %}
+      <div class="form-errors">{{ form.non_field_errors }}</div>
+      {% endif %}
+
+      <!-- username field -->
+      <div class="field">
+        <label for="{{ form.username.id_for_label }}"> Username </label>
+
+        {{ form.username }}
+
+        <!-- username errors -->
+        {% for error in form.username.errors %}
+        <span class="field-error"> {{ error }} </span>
+        {% endfor %}
+      </div>
+
+      <!-- password field -->
+      <div class="field">
+        <label for="{{ form.password.id_for_label }}"> Password </label>
+
+        {{ form.password }}
+
+        <!-- password errors -->
+        {% for error in form.password.errors %}
+        <span class="field-error"> {{ error }} </span>
+        {% endfor %}
+      </div>
+
+      <!-- returns the user to the requested page -->
+      {% if next %}
+      <input type="hidden" name="next" value="{{ next }}" />
+      {% endif %}
+
+      <!-- login button -->
+      <button class="green-button full" type="submit">
+        Log in to My ParkMate
+      </button>
+    </form>
+
+    <!-- registration link -->
+    <p class="auth-foot">
+      Don't have an account?
+      <a href="{% url 'parking:register' %}"> Register </a>
+    </p>
+  </div>
+</section>
+
+{% endblock %}
