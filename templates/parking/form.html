@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+<!-- parking form page -->
+
+{% block title %} {% if mode == 'edit' %} Edit Parking {% else %} Add Parking {%
+endif %} - ParkMate {% endblock %} {% block content %}
+
+<section class="form-page page-shell">
+  <!-- main form card -->
+  <div class="form-card wide-form-card">
+    <!-- staff form heading -->
+    {% if official_form %}
+
+    <p class="mini-label">Staff verification</p>
+
+    <h1>
+      {% if mode == 'edit' %} Edit Official Parking Location {% else %} Add
+      Official Parking Location {% endif %}
+    </h1>
+
+    <p class="form-intro">
+      Only use the official form after checking the current council, GOV.UK or
+      National Parking Platform source.
+    </p>
+
+    <!-- community form heading -->
+    {% else %}
+
+    <p class="mini-label">Community contribution</p>
+
+    <h1>
+      {% if mode == 'edit' %} Edit Your Parking Location {% else %} Add a
+      Parking Location {% endif %}
+    </h1>
+
+    <p class="form-intro">
+      Add a real parking location that other drivers can find. Your submission
+      will be labelled
+      <strong>Community submitted</strong>
+      and will not be shown as Council/NPP verified.
+    </p>
+
+    {% endif %}
+
+    <!-- parking form -->
+    <form method="post" class="parking-form">
+      <!-- protects the form from csrf attacks -->
+      {% csrf_token %}
+
+      <!-- form errors not linked to one field -->
+      {% if form.non_field_errors %}
+      <div class="form-errors">{{ form.non_field_errors }}</div>
+      {% endif %}
+
+      <!-- form fields -->
+      <div class="form-grid">
+        {% for field in form %}
+
+        <!-- individual form field -->
+        <div
+          class="field {% if field.name == 'tariff_info' or field.name == 'restrictions' or field.name == 'source_url' or field.name == 'image_url' %}span-2{% endif %}"
+        >
+          <!-- field label -->
+          <label for="{{ field.id_for_label }}"> {{ field.label }} </label>
+
+          <!-- django form input -->
+          {{ field }}
+
+          <!-- extra help text -->
+          {% if field.help_text %}
+          <small> {{ field.help_text }} </small>
+          {% endif %}
+
+          <!-- field validation errors -->
+          {% for error in field.errors %}
+          <span class="field-error"> {{ error }} </span>
+          {% endfor %}
+        </div>
+
+        {% endfor %}
+      </div>
+
+      <!-- form buttons -->
+      <div class="form-actions">
+        <!-- submit button -->
+        <button class="green-button" type="submit">
+          {% if mode == 'edit' %} Save Changes {% else %} Add Parking {% endif
+          %}
+        </button>
+
+        <!-- returns without saving -->
+        <a
+          class="cancel-button"
+          href="{% if location %}{{ location.get_absolute_url }}{% else %}{% url 'parking:dashboard' %}{% endif %}"
+        >
+          Cancel
+        </a>
+      </div>
+    </form>
+  </div>
+</section>
+
+{% endblock %}
