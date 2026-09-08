@@ -1,0 +1,107 @@
+{% extends 'base.html' %} {% load static %}
+
+<!-- home page content -->
+
+{% block title %} ParkMate - Find Parking {% endblock %} {% block content %}
+
+<!-- main hero section -->
+<section class="home-hero">
+  <!-- hero text and search -->
+  <div class="home-copy">
+    <h1>
+      Find parking.
+      <br />
+      <span>Keep it simple.</span>
+    </h1>
+
+    <p>
+      Search ParkMate's stored UK parking locations by town, postcode or car
+      park name.
+    </p>
+
+    <!-- parking search form -->
+    <form
+      action="{% url 'parking:list' %}"
+      method="get"
+      class="hero-search"
+      role="search"
+    >
+      <label class="sr-only" for="home-q"> Search for parking </label>
+
+      <input id="home-q" name="q" required />
+
+      <button type="submit">Search</button>
+    </form>
+
+    <!-- verification message -->
+    <p class="trust-line">
+      ✓ Official Council/NPP price records are clearly marked.
+    </p>
+  </div>
+
+  <!-- hero image -->
+  <div class="hero-art" aria-hidden="true">
+    <img src="{% static 'images/parkmate-hero.svg' %}" alt="" />
+  </div>
+</section>
+
+<!-- main parkmate features -->
+<section class="home-features" id="about">
+  <!-- search feature -->
+  <article>
+    <div class="feature-icon">⌕</div>
+
+    <h2>Search</h2>
+
+    <p>Search parking locations by town, postcode or parking name.</p>
+  </article>
+
+  <!-- map feature -->
+  <article>
+    <div class="feature-icon">⌖</div>
+
+    <h2>Map</h2>
+
+    <p>See stored parking locations on a Leaflet map.</p>
+  </article>
+
+  <!-- save feature -->
+  <article>
+    <div class="feature-icon">♥</div>
+
+    <h2>Save</h2>
+
+    <p>Create an account and save useful parking.</p>
+  </article>
+</section>
+
+<!-- account section -->
+<section class="account-band page-shell">
+  <!-- account information -->
+  <div>
+    <span class="mini-label"> Account features </span>
+
+    <h2>More with an account</h2>
+
+    <h3>Make ParkMate useful to you.</h3>
+
+    <p>
+      Save parking for later, report availability and contribute parking
+      locations. Community submissions stay clearly separate from Council/NPP
+      verified records.
+    </p>
+  </div>
+
+  <!-- account button -->
+  {% if user.is_authenticated %}
+  <a class="green-button" href="{% url 'parking:dashboard' %}">
+    Open My ParkMate
+  </a>
+  {% else %}
+  <a class="green-button" href="{% url 'parking:register' %}">
+    Create account
+  </a>
+  {% endif %}
+</section>
+
+{% endblock %}
