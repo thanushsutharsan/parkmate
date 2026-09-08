@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+<!-- Error message -->
+{% block title %}{{ status_code }} · ParkMate{% endblock %}
+{% block content %}
+<section class="page-shell error-page">
+    <p class="mini-label">Error {{ status_code }}</p>
+    <h1>{{ error_title }}</h1>
+    <p>{{ error_message }}</p>
+    <div class="form-actions">
+        <a class="green-button" href="{% url 'parking:home' %}">Return home</a>
+        <a class="outline-button" href="{% url 'parking:list' %}">Find parking</a>
+    </div>
+</section>
+{% endblock %}
