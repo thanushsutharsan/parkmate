@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+<!-- delete confirmation page -->
+
+{% block title %} Delete Parking - ParkMate {% endblock %} {% block content %}
+
+<section class="form-page page-shell">
+  <!-- delete confirmation card -->
+  <div class="form-card delete-card">
+    <!-- page heading -->
+    <h1>Delete Parking Location</h1>
+
+    <!-- warning message -->
+    <div class="delete-warning">
+      <strong> Are you sure you want to delete “{{ location.name }}”? </strong>
+
+      <p>This action cannot be undone.</p>
+    </div>
+
+    <!-- delete form -->
+    <form method="post" class="form-actions">
+      <!-- protects the form from csrf attacks -->
+      {% csrf_token %}
+
+      <!-- confirms the delete -->
+      <button class="danger-button" type="submit">Yes, Delete</button>
+
+      <!-- returns to the parking details -->
+      <a class="cancel-button" href="{{ location.get_absolute_url }}">
+        Cancel
+      </a>
+    </form>
+  </div>
+</section>
+
+{% endblock %}
