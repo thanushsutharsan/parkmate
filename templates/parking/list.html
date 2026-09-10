@@ -1,117 +1,179 @@
-{% extends 'base.html' %} {% load static %}
+{% extends 'base.html' %}
+{% load static %}
 
 <!-- parking results page -->
 
-{% block title %} Find Parking - ParkMate {% endblock %} {% block content %}
+{% block title %}
+Find Parking - ParkMate
+{% endblock %}
+
+{% block content %}
 
 <section class="page-shell search-page">
+
   <!-- parking search and filter -->
+
   <form method="get" class="results-search" role="search">
+
     <!-- search input -->
+
     <div class="search-input-wrap">
+
       <span aria-hidden="true">⌕</span>
 
-      <input name="q" value="{{ q }}" />
+      <input
+        name="q"
+        value="{{ q }}"
+      />
+
     </div>
 
     <!-- nation filter -->
+
     <select name="nation" aria-label="Nation">
+
       <option value="">All UK</option>
 
       {% for value, label in nations %}
+
       <option
         value="{{ value }}"
-        {%
-        if
-        nation=""
-        ="value"
-        %}selected{%
-        endif
-        %}
+        {% if nation = value %}selected{% endif %}
       >
         {{ label }}
       </option>
+
       {% endfor %}
+
     </select>
 
-    <button type="submit" class="green-button">Search</button>
+    <button type="submit" class="green-button">
+      Search
+    </button>
+
   </form>
 
   <!-- results title -->
+
   <div class="results-heading">
+
     <div>
-      <p class="mini-label">Parking search</p>
+
+      <p class="mini-label">
+        Parking search
+      </p>
 
       <h1>
-        {% if q %} Results for “{{ q }}” {% else %} Parking locations {% endif
-        %}
+
+        {% if q %}
+          Results for “{{ q }}”
+        {% else %}
+          Parking locations
+        {% endif %}
+
       </h1>
+
     </div>
 
     <!-- map link -->
+
     <a
       class="outline-button"
       href="{% url 'parking:map' %}{% if q %}?q={{ q|urlencode }}{% endif %}"
     >
       View on map
     </a>
+
   </div>
 
   <!-- number of results -->
+
   <div class="result-count">
-    {{ locations|length }} parking location{{ locations|length|pluralize }}
+
+    {{ locations|length }}
+    parking location{{ locations|length|pluralize }}
     shown
+
   </div>
 
   <!-- parking result cards -->
+
   <div class="result-list">
+
     {% for location in locations %}
 
     <!-- parking location card -->
+
     <article
       class="result-card {% if location.council_verified %}verified-result-card{% else %}mapped-result-card{% endif %}"
     >
+
       <!-- parking image -->
+
       <a
         class="result-photo"
         href="{{ location.get_absolute_url }}"
         aria-label="View {{ location.name }}"
       >
+
         <img
           src="{% if location.image_url %}{{ location.image_url }}{% else %}{% static 'images/parking-fallback.svg' %}{% endif %}"
           data-parking-image="{{ location.name }} {{ location.address }}"
           alt="Parking near {{ location.name }}"
           loading="lazy"
         />
+
       </a>
 
       <!-- main parking information -->
+
       <div class="result-main">
+
         <!-- parking name and verification -->
+
         <div class="result-title-row">
+
           <div>
-            <h2>{{ location.name }}</h2>
+
+            <h2>
+              {{ location.name }}
+            </h2>
 
             <p>
-              {{ location.address }} {% if location.postcode %} · {{
-              location.postcode }} {% endif %}
+              {{ location.address }}
+
+              {% if location.postcode %}
+                · {{ location.postcode }}
+              {% endif %}
             </p>
+
           </div>
 
           <!-- verification status -->
+
           {% if location.council_verified %}
-          <span class="verified-pill"> ✓ Council/NPP price verified </span>
+
+          <span class="verified-pill">
+            ✓ Council/NPP price verified
+          </span>
+
           {% else %}
-          <span class="mapped-pill"> Mapped parking </span>
+
+          <span class="mapped-pill">
+            Mapped parking
+          </span>
+
           {% endif %}
+
         </div>
 
         <!-- parking details -->
+
         <div class="result-meta">
+
           <span>
             <b>Price:</b>
-            {{ location.tariff_info|default:"Price not
-            supplied"|truncatechars:80 }}
+            {{ location.tariff_info|default:"Price not supplied"|truncatechars:80 }}
           </span>
 
           <span>
@@ -119,52 +181,87 @@
             {{ location.spaces_total|default:"Not supplied" }}
           </span>
 
-          <span> {{ location.local_authority }} </span>
+          <span>
+            {{ location.local_authority }}
+          </span>
+
         </div>
+
       </div>
 
       <!-- card buttons -->
+
       <div class="result-actions">
+
         <!-- details button -->
-        <a class="detail-button" href="{{ location.get_absolute_url }}">
+
+        <a
+          class="detail-button"
+          href="{{ location.get_absolute_url }}"
+        >
           View details
         </a>
 
         <!-- save button for signed in users -->
+
         {% if user.is_authenticated %}
+
         <form
           method="post"
           action="{% url 'parking:toggle_favourite' location.pk %}"
         >
+
           {% csrf_token %}
 
           <!-- returns user to the same page -->
+
           <input
             type="hidden"
             name="next"
             value="{{ request.get_full_path }}"
           />
 
-          <button class="outline-button small-button" type="submit">
-            {% if location.pk in favourite_ids %} ♥ Saved {% else %} ♡ Save {%
-            endif %}
+          <button
+            class="outline-button small-button"
+            type="submit"
+          >
+
+            {% if location.pk in favourite_ids %}
+              ♥ Saved
+            {% else %}
+              ♡ Save
+            {% endif %}
+
           </button>
+
         </form>
+
         {% endif %}
+
       </div>
+
     </article>
 
     {% empty %}
 
     <!-- shown when no parking matches -->
-    <div class="empty-state">
-      <h2>No parking found</h2>
 
-      <p>Try a broader town, postcode or parking name.</p>
+    <div class="empty-state">
+
+      <h2>
+        No parking found
+      </h2>
+
+      <p>
+        Try a broader town, postcode or parking name.
+      </p>
+
     </div>
 
     {% endfor %}
+
   </div>
+
 </section>
 
 {% endblock %}

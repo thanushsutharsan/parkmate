@@ -73,10 +73,13 @@
         {% if user.is_authenticated %}
         <a href="{% url 'parking:dashboard' %}"> My ParkMate </a>
 
-        <a href="{% url 'parking:create' %}">
-          {% if user.is_staff %} Add official parking {% else %} Add parking {%
-          endif %}
-        </a>
+       <a href="{% url 'parking:create' %}">
+    {% if user.is_staff %}
+        Add official parking
+    {% else %}
+        Add parking
+    {% endif %}
+    </a>
 
         <!-- signed in username -->
         <span class="nav-user"> {{ user.username }} </span>

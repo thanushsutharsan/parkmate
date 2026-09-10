@@ -1,13 +1,23 @@
-{% extends 'base.html' %} {% load static %}
+
+{% extends 'base.html' %}
+{% load static %}
 
 <!-- parking map page -->
 
-{% block title %} Parking Map - ParkMate {% endblock %} {% block content %}
+{% block title %}
+Parking Map - ParkMate
+{% endblock %}
+
+{% block content %}
 
 <section class="page-shell map-page">
+
   <!-- page heading -->
+
   <div class="results-heading">
+
     <div>
+
       <p class="mini-label">Parking map</p>
 
       <h1>Parking map</h1>
@@ -16,117 +26,178 @@
         Every marker comes from the ParkMate database, so the map does not
         depend on live parking APIs.
       </p>
+
     </div>
+
   </div>
 
   <!-- map search form -->
-  <form method="get" class="results-search" role="search">
-    <!-- search input -->
-    <div class="search-input-wrap">
-      <span aria-hidden="true"> ⌕ </span>
 
-      <input name="q" value="{{ q }}" />
+  <form method="get" class="results-search" role="search">
+
+    <!-- search input -->
+
+    <div class="search-input-wrap">
+
+      <span aria-hidden="true">⌕</span>
+
+      <input
+        name="q"
+        value="{{ q }}"
+      />
+
     </div>
 
     <!-- search button -->
-    <button type="submit" class="green-button">Search map</button>
+
+    <button type="submit" class="green-button">
+      Search map
+    </button>
 
     <!-- clears the current search -->
+
     {% if q %}
-    <a class="outline-button" href="{% url 'parking:map' %}"> Show all </a>
+
+    <a
+      class="outline-button"
+      href="{% url 'parking:map' %}"
+    >
+      Show all
+    </a>
+
     {% endif %}
+
   </form>
 
   <!-- leaflet map -->
+
   <div
     id="parking-map"
     style="height: 580px; border-radius: 18px; overflow: hidden"
   ></div>
 
   <!-- shown when no parking matches -->
+
   {% if not map_locations %}
+
   <div class="empty-state">
+
     <h2>No matching parking found</h2>
 
-    <p>Try another town, postcode or parking name.</p>
+    <p>
+      Try another town, postcode or parking name.
+    </p>
+
   </div>
+
   {% endif %}
+
 </section>
 
 <!-- sends parking data to javascript -->
-{{ map_locations|json_script:"parkmate-map-data" }} {% endblock %} {% block
-scripts %}
+
+{{ map_locations|json_script:"parkmate-map-data" }}
+
+{% endblock %}
+
+{% block scripts %}
 
 <script>
   (() => {
+
     // gets the map and parking data
+
     const element = document.getElementById("parking-map");
     const dataElement = document.getElementById("parkmate-map-data");
 
     // stops the script if the map cannot load
+
     if (!element || !dataElement || typeof L === "undefined") {
       return;
     }
 
     // converts the django data into javascript
+
     const locations = JSON.parse(dataElement.textContent);
 
     // creates the map with a uk starting view
+
     const map = L.map(element).setView([54.2, -2.7], 6);
 
     // adds openstreetmap map tiles
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      maxZoom: 19,
-      attribution: "&copy; OpenStreetMap contributors",
-    }).addTo(map);
+
+    L.tileLayer(
+      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      {
+        maxZoom: 19,
+        attribution: "&copy; OpenStreetMap contributors",
+      }
+    ).addTo(map);
 
     // stores marker positions
+
     const bounds = [];
 
     // adds a marker for each parking location
+
     locations.forEach((item) => {
-      const marker = L.marker([item.lat, item.lon]).addTo(map);
+
+      const marker = L.marker([
+        item.lat,
+        item.lon,
+      ]).addTo(map);
 
       // shows if the parking is verified
+
       const badge = item.verified
         ? "Council/NPP price verified"
         : "Mapped parking";
 
       // adds parking details to the marker popup
-      marker.bindPopup(
-        `
-                <strong>${item.name}</strong>
-                <br>
-                ${item.address}
-                <br>
-                ${item.postcode || ""}
-                <br>
-                <b>${item.price}</b>
-                <br>
-                <small>${badge}</small>
-                <br>
-                <a href="/parking/${item.id}/">
-                    View details
-                </a>
-                `,
-      );
+
+      marker.bindPopup(`
+        <strong>${item.name}</strong>
+        <br>
+        ${item.address}
+        <br>
+        ${item.postcode || ""}
+        <br>
+        <b>${item.price}</b>
+        <br>
+        <small>${badge}</small>
+        <br>
+        <a href="/parking/${item.id}/">
+          View details
+        </a>
+      `);
 
       // adds the marker position to the bounds
-      bounds.push([item.lat, item.lon]);
+
+      bounds.push([
+        item.lat,
+        item.lon,
+      ]);
+
     });
 
     // zooms in when one result is shown
+
     if (bounds.length === 1) {
       map.setView(bounds[0], 15);
     }
 
     // fits all markers on the map
+
     if (bounds.length > 1) {
+
       map.fitBounds(bounds, {
         padding: [30, 30],
       });
+
     }
+
   })();
 </script>
 
 {% endblock %}
+
