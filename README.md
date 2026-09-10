@@ -1792,3 +1792,1553 @@ The technical success criteria include demonstrating:
 - interactive maps
 - testing
 - deployment
+
+
+## Bugs and Fixes
+
+During the development of ParkMate, I identified several issues within the
+Django templates. These included an actual Django template syntax error,
+template blocks and conditional statements that were difficult to read, and
+HTML and JavaScript that required restructuring to make the code easier to
+debug and maintain.
+
+The fixes were completed across two commits:
+
+`7f567ff - fix: correct template syntax errors`
+
+`c939fc3 - fix: correct parking filter syntax`
+
+The first commit updated three files:
+
+- `templates/base.html`
+- `templates/parking/list.html`
+- `templates/parking/map.html`
+
+This commit contained 237 additions and 66 deletions.
+
+During further testing and review, I found that the nation parking filter still
+contained an incorrect comparison operator. This was corrected in the second
+commit:
+
+`c939fc3 - fix: correct parking filter syntax`
+
+This follow-up commit changed one file with one addition and one deletion.
+
+The debugging process involved both correcting genuine syntax problems and
+refactoring surrounding code to improve readability, maintainability and
+consistency.
+
+---
+
+### Navigation Conditional
+
+**File:** `templates/base.html`
+
+The navigation contains a link that displays different text depending on
+whether the logged-in user is a staff member.
+
+Previously, the complete Django conditional was written inline:
+
+```html
+<a href="{% url 'parking:create' %}">
+    {% if user.is_staff %} Add official parking {% else %} Add parking {% endif %}
+</a>
+```
+
+This was changed to:
+
+```html
+<a href="{% url 'parking:create' %}">
+    {% if user.is_staff %}
+        Add official parking
+    {% else %}
+        Add parking
+    {% endif %}
+</a>
+```
+
+#### Why this was changed
+
+The condition has two possible outcomes:
+
+- Staff users see `Add official parking`.
+- Other authenticated users see `Add parking`.
+
+Writing the `{% if %}`, `{% else %}` and `{% endif %}` statements separately
+makes the conditional easier to understand.
+
+It also makes future changes to the navigation easier because the opening,
+alternative and closing parts of the condition can be identified immediately.
+
+The functionality of the link was retained.
+
+---
+
+## Parking List Template Fixes
+
+### Template Inheritance
+
+**File:** `templates/parking/list.html`
+
+The Django template inheritance and static-file loading statements were
+originally placed together:
+
+```django
+{% extends 'base.html' %} {% load static %}
+```
+
+They were separated into:
+
+```django
+{% extends 'base.html' %}
+{% load static %}
+```
+
+#### Why this was changed
+
+`{% extends %}` tells Django which parent template should be used.
+
+`{% load static %}` loads Django's static template functionality.
+
+Putting these statements on separate lines makes the template structure
+clearer and makes template-related problems easier to identify during
+debugging.
+
+---
+
+### Page Title and Content Blocks
+
+The title and content blocks were originally written together:
+
+```django
+{% block title %} Find Parking - ParkMate {% endblock %} {% block content %}
+```
+
+They were changed to:
+
+```django
+{% block title %}
+Find Parking - ParkMate
+{% endblock %}
+
+{% block content %}
+```
+
+#### Why this was changed
+
+Django template blocks define sections that are inserted into the parent
+template.
+
+Separating each block makes it much easier to identify:
+
+- Where the title block begins.
+- Where the title block ends.
+- Where the content block begins.
+- Where the content block eventually ends.
+
+This makes the template hierarchy clearer and reduces the risk of incorrectly
+nesting template content.
+
+---
+
+### Parking Search Input
+
+The parking search input originally appeared on a single line:
+
+```html
+<input name="q" value="{{ q }}" />
+```
+
+It was reformatted to:
+
+```html
+<input
+    name="q"
+    value="{{ q }}"
+/>
+```
+
+#### Why this was changed
+
+This was a readability improvement rather than a functional change.
+
+Separating the attributes makes the input easier to read and makes it easier
+to add additional attributes later.
+
+The `{{ q }}` value remains in place so that the user's previous search term
+can remain visible when the results page reloads.
+
+---
+
+### Parking Filter Syntax Error
+
+**File:** `templates/parking/list.html`
+
+While correcting the template structure, the nation filter was also reviewed.
+
+The filter is responsible for checking which nation the user selected and
+adding the HTML `selected` attribute to the correct option.
+
+After the first template-fixing commit, the condition appeared as:
+
+```django
+{% if nation = value %}selected{% endif %}
+```
+
+This still contained a syntax error because a single equals sign was being
+used for the comparison.
+
+The issue was found during further review and corrected in:
+
+`c939fc3 - fix: correct parking filter syntax`
+
+The condition was changed to:
+
+```django
+{% if nation == value %}selected{% endif %}
+```
+
+The complete corrected option is:
+
+```django
+<option
+    value="{{ value }}"
+    {% if nation == value %}selected{% endif %}
+>
+    {{ label }}
+</option>
+```
+
+#### Why this was a bug
+
+The purpose of the condition is to compare two values:
+
+```django
+nation
+```
+
+and:
+
+```django
+value
+```
+
+The original condition used:
+
+```django
+nation = value
+```
+
+The comparison needed to use:
+
+```django
+nation == value
+```
+
+The corrected `==` operator checks whether the selected nation is equal to the
+current nation option being processed by the template.
+
+#### How the corrected filter works
+
+The template loops through the available nations.
+
+For each option Django checks:
+
+```django
+{% if nation == value %}
+```
+
+If the values match, Django outputs:
+
+```html
+selected
+```
+
+This allows the browser to keep that nation selected after the user submits
+the search form.
+
+For example, the resulting HTML could contain:
+
+```html
+<option value="ENG" selected>
+    England
+</option>
+```
+
+If the nation does not match the current option, the `selected` attribute is
+not added.
+
+#### Result of the fix
+
+Changing:
+
+```django
+{% if nation = value %}
+```
+
+to:
+
+```django
+{% if nation == value %}
+```
+
+corrected the nation filter comparison.
+
+The fix ensures that:
+
+- The Django template uses the correct comparison syntax.
+- The nation value can be compared correctly.
+- The correct option can receive the `selected` attribute.
+- The user's selected nation can remain selected after a search.
+- The incorrect single `=` condition is no longer present.
+
+---
+
+### Search Button
+
+The search button was changed from:
+
+```html
+<button type="submit" class="green-button">Search</button>
+```
+
+to:
+
+```html
+<button type="submit" class="green-button">
+    Search
+</button>
+```
+
+#### Why this was changed
+
+This was a code readability improvement.
+
+The functionality remained unchanged, but the button now follows the
+multi-line formatting used by other interactive elements in the project.
+
+---
+
+### Parking Search Label
+
+The parking search label changed from:
+
+```html
+<p class="mini-label">Parking search</p>
+```
+
+to:
+
+```html
+<p class="mini-label">
+    Parking search
+</p>
+```
+
+#### Why this was changed
+
+This keeps the formatting consistent with the surrounding HTML and makes the
+template easier to scan.
+
+There was no functional change.
+
+---
+
+### Parking Search Results Heading
+
+The search heading previously contained the whole conditional on one line:
+
+```django
+{% if q %} Results for “{{ q }}” {% else %} Parking locations {% endif %}
+```
+
+It was separated into:
+
+```django
+{% if q %}
+    Results for “{{ q }}”
+{% else %}
+    Parking locations
+{% endif %}
+```
+
+#### Why this was changed
+
+The heading has two possible states.
+
+If a search query exists, the page displays:
+
+`Results for "search term"`
+
+If no query exists, the page displays:
+
+`Parking locations`
+
+Separating these states makes the conditional much easier to understand and
+maintain.
+
+---
+
+### Parking Result Count
+
+The parking result count was reorganised into:
+
+```django
+{{ locations|length }}
+parking location{{ locations|length|pluralize }}
+shown
+```
+
+#### Why this was changed
+
+The expression uses:
+
+```django
+locations|length
+```
+
+to determine the number of parking locations returned.
+
+It also uses Django's:
+
+```django
+pluralize
+```
+
+filter to automatically display the correct singular or plural text.
+
+For example:
+
+```text
+1 parking location shown
+```
+
+or:
+
+```text
+5 parking locations shown
+```
+
+The functionality was retained while the template became easier to read.
+
+---
+
+### Parking Result Card Structure
+
+Each parking result is displayed inside an `<article>`.
+
+The result card includes a Django condition that controls which CSS class is
+applied depending on the verification status of the parking location.
+
+The condition uses:
+
+```django
+{% if location.council_verified %}
+```
+
+to distinguish between verified and mapped parking locations.
+
+#### Why this was changed
+
+The `<article>` and conditional class structure were reorganised to make the
+relationship between the parking data and its CSS class easier to understand.
+
+This was mainly a readability improvement and did not remove the existing
+verification functionality.
+
+---
+
+### Parking Image
+
+The parking result card continues to use the location image when one is
+available.
+
+If no parking image is available, the template uses:
+
+```django
+{% static 'images/parking-fallback.svg' %}
+```
+
+as a fallback.
+
+The image also retains descriptive alternative text and:
+
+```html
+loading="lazy"
+```
+
+#### Why this is important
+
+The fallback prevents a parking card from being left without an image when no
+specific image URL exists.
+
+The alternative text helps describe the image.
+
+Lazy loading prevents images further down the results page from being loaded
+before they are required.
+
+The surrounding code was reformatted for readability while this functionality
+was retained.
+
+---
+
+### Parking Location Heading
+
+The location heading changed from:
+
+```html
+<h2>{{ location.name }}</h2>
+```
+
+to:
+
+```html
+<h2>
+    {{ location.name }}
+</h2>
+```
+
+#### Why this was changed
+
+This separates the Django variable from the surrounding HTML tags and makes
+the result-card structure easier to read.
+
+No functional change was made.
+
+---
+
+### Address and Postcode Conditional
+
+The parking address and postcode had previously been placed together with the
+postcode condition inline.
+
+The code was changed so that the optional postcode condition is easier to
+identify:
+
+```django
+<p>
+    {{ location.address }}
+
+    {% if location.postcode %}
+        · {{ location.postcode }}
+    {% endif %}
+</p>
+```
+
+#### Why this was changed
+
+Not every parking location is guaranteed to contain a postcode.
+
+The condition ensures that:
+
+```django
+{{ location.postcode }}
+```
+
+is only displayed when the location contains a postcode.
+
+It also avoids displaying the separator when no postcode exists.
+
+The separated structure makes the optional nature of the postcode much easier
+to understand.
+
+---
+
+### Parking Verification Badge
+
+Council/NPP verified parking locations display:
+
+```html
+<span class="verified-pill">
+    ✓ Council/NPP price verified
+</span>
+```
+
+Other parking locations display:
+
+```html
+<span class="mapped-pill">
+    Mapped parking
+</span>
+```
+
+#### Why this was changed
+
+The badge elements were separated from the surrounding Django conditional.
+
+This makes the two possible verification states much easier to identify when
+reading the source code.
+
+It also makes the badge text and styling easier to modify later.
+
+The underlying verification logic remained unchanged.
+
+---
+
+### Parking Tariff Information
+
+The tariff information continues to use:
+
+```django
+{{ location.tariff_info|default:"Price not supplied"|truncatechars:80 }}
+```
+
+#### Why this was changed
+
+The expression had previously been split awkwardly across multiple lines.
+
+Keeping the Django variable and its filters together makes the expression
+easier to understand.
+
+The:
+
+```django
+default:"Price not supplied"
+```
+
+filter displays `Price not supplied` when no tariff information exists.
+
+The:
+
+```django
+truncatechars:80
+```
+
+filter prevents a very long tariff description from taking up too much space
+inside a parking result card.
+
+---
+
+### Parking Spaces
+
+The number of parking spaces continues to use:
+
+```django
+{{ location.spaces_total|default:"Not supplied" }}
+```
+
+#### Why this is important
+
+If the number of parking spaces has not been provided, ParkMate displays:
+
+```text
+Not supplied
+```
+
+instead of leaving the information blank.
+
+No functional change was made to this expression during the restructuring.
+
+---
+
+### Local Authority
+
+The local authority output changed from:
+
+```html
+<span> {{ location.local_authority }} </span>
+```
+
+to:
+
+```html
+<span>
+    {{ location.local_authority }}
+</span>
+```
+
+#### Why this was changed
+
+This was a readability and formatting improvement.
+
+Separating the Django variable makes it easier to identify the information
+being displayed inside the result card.
+
+---
+
+### View Details Link
+
+The parking details link was changed from a compact element to:
+
+```html
+<a
+    class="detail-button"
+    href="{{ location.get_absolute_url }}"
+>
+    View details
+</a>
+```
+
+#### Why this was changed
+
+Separating the attributes makes the HTML easier to read.
+
+The link continues to use:
+
+```django
+{{ location.get_absolute_url }}
+```
+
+which directs the user to the detail page belonging to the selected parking
+location.
+
+The navigation behaviour was retained.
+
+---
+
+### Favourite Parking Form
+
+Authenticated users can save parking locations to their favourites.
+
+The form continues to contain:
+
+```django
+{% csrf_token %}
+```
+
+and:
+
+```html
+<input
+    type="hidden"
+    name="next"
+    value="{{ request.get_full_path }}"
+/>
+```
+
+#### Why these are needed
+
+The CSRF token protects the POST request made when the user saves or removes a
+parking location.
+
+The hidden `next` field stores the current page location.
+
+This allows the application to return the user to the same page after the
+favourite action has been completed.
+
+---
+
+### Favourite Button Conditional
+
+The favourite button previously contained its complete conditional inline.
+
+It was restructured to:
+
+```django
+<button
+    class="outline-button small-button"
+    type="submit"
+>
+    {% if location.pk in favourite_ids %}
+        ♥ Saved
+    {% else %}
+        ♡ Save
+    {% endif %}
+</button>
+```
+
+#### Why this was changed
+
+The button has two possible states.
+
+If the location already exists within:
+
+```django
+favourite_ids
+```
+
+the user sees:
+
+```text
+♥ Saved
+```
+
+Otherwise the user sees:
+
+```text
+♡ Save
+```
+
+Separating the `{% if %}`, `{% else %}` and `{% endif %}` statements makes
+this logic much easier to follow.
+
+The favourite functionality itself remained unchanged.
+
+---
+
+### Empty Parking Search State
+
+When the parking search returns no matching locations, the `{% empty %}`
+section of the Django loop is displayed.
+
+The markup changed from:
+
+```html
+<h2>No parking found</h2>
+<p>Try a broader town, postcode or parking name.</p>
+```
+
+to:
+
+```html
+<h2>
+    No parking found
+</h2>
+
+<p>
+    Try a broader town, postcode or parking name.
+</p>
+```
+
+#### Why this was changed
+
+The empty-state markup was reformatted so that it follows the same structure
+as the other elements in the template.
+
+The message shown to the user remained unchanged.
+
+---
+
+### Closing Parking List Content Block
+
+The final:
+
+```django
+{% endblock %}
+```
+
+was placed clearly on its own line.
+
+#### Why this was changed
+
+This makes it easier to identify where the parking list's main content block
+finishes.
+
+It also makes it easier to match the closing tag with:
+
+```django
+{% block content %}
+```
+
+when editing or debugging the template later.
+
+---
+
+## Parking Map Template Fixes
+
+### Template Inheritance
+
+**File:** `templates/parking/map.html`
+
+The map template originally contained:
+
+```django
+{% extends 'base.html' %} {% load static %}
+```
+
+This was changed to:
+
+```django
+{% extends 'base.html' %}
+{% load static %}
+```
+
+#### Why this was changed
+
+This separates the parent-template declaration from static-file loading.
+
+It also keeps the beginning of the map template consistent with the corrected
+parking list template.
+
+---
+
+### Parking Map Title and Content Blocks
+
+The title and content blocks were originally written together:
+
+```django
+{% block title %} Parking Map - ParkMate {% endblock %} {% block content %}
+```
+
+They were changed to:
+
+```django
+{% block title %}
+Parking Map - ParkMate
+{% endblock %}
+
+{% block content %}
+```
+
+#### Why this was changed
+
+The change makes it immediately clear where the title block finishes and where
+the main map content begins.
+
+This makes the Django template hierarchy easier to understand and maintain.
+
+---
+
+### Parking Map Heading
+
+The map page contains:
+
+```html
+<p class="mini-label">Parking map</p>
+
+<h1>Parking map</h1>
+```
+
+The page also explains that its markers come from the ParkMate database rather
+than depending on live parking APIs.
+
+The surrounding template structure was reformatted to make the heading and
+content easier to identify.
+
+#### Why this was changed
+
+The change improves the organisation of the HTML without altering what the
+user sees.
+
+---
+
+### Map Search Input
+
+The map search field changed from:
+
+```html
+<input name="q" value="{{ q }}" />
+```
+
+to:
+
+```html
+<input
+    name="q"
+    value="{{ q }}"
+/>
+```
+
+The search icon markup was also cleaned up.
+
+#### Why this was changed
+
+The search field is easier to read when its attributes are separated.
+
+The `{{ q }}` value remains so that the user's current search can remain
+visible when the page reloads.
+
+No search functionality was removed.
+
+---
+
+### Search Map Button
+
+The button changed from:
+
+```html
+<button type="submit" class="green-button">Search map</button>
+```
+
+to:
+
+```html
+<button type="submit" class="green-button">
+    Search map
+</button>
+```
+
+#### Why this was changed
+
+This makes the button formatting consistent with the other buttons within
+ParkMate.
+
+The functionality remained unchanged.
+
+---
+
+### Show All Link
+
+When a map search is active, ParkMate provides a **Show all** link.
+
+The link was reformatted to:
+
+```html
+<a
+    class="outline-button"
+    href="{% url 'parking:map' %}"
+>
+    Show all
+</a>
+```
+
+It remains inside:
+
+```django
+{% if q %}
+```
+
+#### Why this was changed
+
+The link should only be displayed when the user currently has an active search
+query.
+
+Selecting **Show all** returns the user to the complete parking map without
+the current search filter.
+
+Separating the class, URL and text makes the purpose of the link easier to
+understand.
+
+---
+
+### Leaflet Map Container
+
+The Leaflet map continues to use:
+
+```html
+<div
+    id="parking-map"
+    style="height: 580px; border-radius: 18px; overflow: hidden"
+></div>
+```
+
+#### Why this is important
+
+The JavaScript later searches for:
+
+```text
+parking-map
+```
+
+to find the HTML element where the Leaflet map should be created.
+
+The map container remained functionally unchanged.
+
+---
+
+### Empty Map Search State
+
+When no parking locations match the map search, the template checks:
+
+```django
+{% if not map_locations %}
+```
+
+and displays:
+
+```html
+<h2>No matching parking found</h2>
+
+<p>
+    Try another town, postcode or parking name.
+</p>
+```
+
+#### Why this was changed
+
+The paragraph was reformatted to make the empty-state structure consistent
+with the rest of the template.
+
+The behaviour and message shown to the user remained unchanged.
+
+---
+
+### Django Map Data and Scripts Block
+
+An important structural change was made around the data passed from Django to
+the Leaflet JavaScript.
+
+Previously, the `json_script`, content closing block and scripts opening block
+were placed together.
+
+They were separated into:
+
+```django
+{{ map_locations|json_script:"parkmate-map-data" }}
+
+{% endblock %}
+
+{% block scripts %}
+```
+
+#### Why this was changed
+
+The:
+
+```django
+json_script
+```
+
+template filter safely places the parking data into the page so that
+JavaScript can access it.
+
+The first:
+
+```django
+{% endblock %}
+```
+
+closes the main page content.
+
+The:
+
+```django
+{% block scripts %}
+```
+
+statement then starts the JavaScript section.
+
+Separating these statements makes the Django template hierarchy much clearer.
+
+It also reduces the risk of accidentally placing JavaScript code inside the
+wrong block when the template is updated later.
+
+---
+
+### Retrieving the Map and Parking Data
+
+The JavaScript retrieves the map element and the Django JSON data using:
+
+```javascript
+const element = document.getElementById("parking-map");
+const dataElement = document.getElementById("parkmate-map-data");
+```
+
+The code then checks:
+
+```javascript
+if (!element || !dataElement || typeof L === "undefined") {
+    return;
+}
+```
+
+#### Why this is important
+
+The JavaScript requires:
+
+- The `parking-map` HTML element.
+- The parking data generated by Django.
+- The Leaflet library.
+
+If one of these is unavailable, the script returns before attempting to create
+the map.
+
+This is defensive programming because it prevents later map code from
+attempting to work with missing elements or an unavailable Leaflet library.
+
+---
+
+### Converting Django Parking Data into JavaScript
+
+The parking location data is converted using:
+
+```javascript
+const locations = JSON.parse(dataElement.textContent);
+```
+
+#### Why this is needed
+
+Django's:
+
+```django
+json_script
+```
+
+output contains JSON text.
+
+`JSON.parse()` converts that text into JavaScript data.
+
+The resulting `locations` data can then be used when creating the Leaflet map
+markers.
+
+---
+
+### Creating the Leaflet Map
+
+The map is created using:
+
+```javascript
+const map = L.map(element).setView([54.2, -2.7], 6);
+```
+
+#### Why this is needed
+
+This creates the Leaflet map inside the `parking-map` element.
+
+The starting coordinates and zoom level provide an initial UK view before the
+map adjusts according to the locations being displayed.
+
+---
+
+### OpenStreetMap Tile Layer
+
+The OpenStreetMap tile layer was reformatted from a more compact function call
+into:
+
+```javascript
+L.tileLayer(
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    {
+        maxZoom: 19,
+        attribution: "&copy; OpenStreetMap contributors",
+    }
+).addTo(map);
+```
+
+#### Why this was changed
+
+Separating the URL and configuration object makes the Leaflet setup easier to
+understand.
+
+The functionality remained the same.
+
+ParkMate continues to:
+
+- Use OpenStreetMap tiles.
+- Use a maximum zoom level of `19`.
+- Display OpenStreetMap attribution.
+- Add the tile layer to the Leaflet map.
+
+---
+
+### Marker Bounds
+
+Before creating markers, an empty array is created:
+
+```javascript
+const bounds = [];
+```
+
+#### Why this is needed
+
+Each parking location's latitude and longitude can be added to this array.
+
+The complete collection of coordinates is then used later to determine the
+appropriate map zoom and position.
+
+---
+
+### Creating Parking Markers
+
+Each parking location is processed using:
+
+```javascript
+locations.forEach((item) => {
+```
+
+Marker creation changed from:
+
+```javascript
+const marker = L.marker([item.lat, item.lon]).addTo(map);
+```
+
+to:
+
+```javascript
+const marker = L.marker([
+    item.lat,
+    item.lon,
+]).addTo(map);
+```
+
+#### Why this was changed
+
+The latitude and longitude are easier to identify when placed on separate
+lines.
+
+This makes the map code easier to read when debugging marker coordinates.
+
+The actual marker functionality did not change.
+
+---
+
+### Marker Verification Status
+
+The JavaScript determines which verification message should be displayed
+using:
+
+```javascript
+const badge = item.verified
+    ? "Council/NPP price verified"
+    : "Mapped parking";
+```
+
+#### Why this is needed
+
+Each map marker can tell the user whether its parking information is verified.
+
+Verified locations display:
+
+```text
+Council/NPP price verified
+```
+
+Other locations display:
+
+```text
+Mapped parking
+```
+
+This functionality was retained during the restructuring.
+
+---
+
+### Parking Marker Popup
+
+The Leaflet marker popup was also reformatted.
+
+The popup now has a clearer structure:
+
+```javascript
+marker.bindPopup(`
+    <strong>${item.name}</strong>
+    <br>
+    ${item.address}
+    <br>
+    ${item.postcode || ""}
+    <br>
+    <b>${item.price}</b>
+    <br>
+    <small>${badge}</small>
+    <br>
+    <a href="/parking/${item.id}/">
+        View details
+    </a>
+`);
+```
+
+#### Why this was changed
+
+The previous popup formatting was harder to read.
+
+The reorganised structure makes each piece of information displayed in the
+popup easy to identify.
+
+The popup continues to contain:
+
+- Parking location name.
+- Address.
+- Postcode.
+- Price.
+- Verification status.
+- A `View details` link.
+
+The actual popup functionality remained unchanged.
+
+---
+
+### Adding Marker Coordinates to Bounds
+
+The coordinates were originally stored using:
+
+```javascript
+bounds.push([item.lat, item.lon]);
+```
+
+This was reformatted to:
+
+```javascript
+bounds.push([
+    item.lat,
+    item.lon,
+]);
+```
+
+#### Why this was changed
+
+The latitude and longitude are easier to distinguish when displayed
+separately.
+
+The coordinates are later used to determine how the map should be positioned.
+
+---
+
+### Single Parking Result Map View
+
+When exactly one parking result exists, the map uses:
+
+```javascript
+if (bounds.length === 1) {
+    map.setView(bounds[0], 15);
+}
+```
+
+#### Why this is needed
+
+If only one parking location matches the search, there is no need to calculate
+the bounds of several markers.
+
+Instead, ParkMate centres the map directly on the matching marker and uses a
+zoom level of `15`.
+
+This provides the user with a closer view of the individual parking location.
+
+---
+
+### Multiple Parking Result Map View
+
+When more than one parking marker exists, the map uses:
+
+```javascript
+if (bounds.length > 1) {
+    map.fitBounds(bounds, {
+        padding: [30, 30],
+    });
+}
+```
+
+#### Why this is needed
+
+`fitBounds()` automatically changes the Leaflet map position and zoom so that
+all matching parking locations can be seen.
+
+The:
+
+```javascript
+padding: [30, 30]
+```
+
+option provides additional space around the markers so they do not sit
+directly against the edge of the map.
+
+---
+
+## Additional Code Quality Improvements
+
+Not every line changed within the template-fixing commit represented a
+separate functional bug.
+
+A number of changes were refactoring and formatting improvements completed
+while correcting the template problems.
+
+These included:
+
+- Separating Django template statements onto individual lines.
+- Separating HTML attributes across multiple lines.
+- Separating Django variables from surrounding HTML.
+- Separating `{% if %}`, `{% else %}` and `{% endif %}` statements.
+- Separating `{% block %}` and `{% endblock %}` statements.
+- Making template inheritance easier to understand.
+- Making the parking search form easier to read.
+- Making optional postcode logic clearer.
+- Improving the structure of parking result cards.
+- Improving the structure of verification badges.
+- Improving the readability of the favourite button conditional.
+- Improving the structure of buttons and links.
+- Improving the readability of the empty-state sections.
+- Clearly separating the Django content and JavaScript scripts blocks.
+- Improving the formatting of Leaflet configuration.
+- Separating latitude and longitude values when creating map markers.
+- Reformatting marker popup content.
+- Reformatting the marker bounds array.
+- Adding clearer spacing between logical sections of the templates.
+- Making the overall formatting more consistent across the project.
+
+These changes did not significantly alter the intended functionality of
+ParkMate.
+
+Instead, they made the code easier to:
+
+- Read.
+- Debug.
+- Maintain.
+- Extend with additional features.
+- Review for future errors.
+
+---
+
+## Bug Fix Commits
+
+### Commit `7f567ff`
+
+**Commit message:**
+
+`fix: correct template syntax errors`
+
+**Files changed:**
+
+- `templates/base.html`
+- `templates/parking/list.html`
+- `templates/parking/map.html`
+
+**Changes:**
+
+- 237 additions.
+- 66 deletions.
+- Restructured Django template blocks.
+- Reorganised conditional statements.
+- Reformatted parking result HTML.
+- Improved favourite button structure.
+- Reformatted parking search elements.
+- Improved parking map template structure.
+- Clearly separated the content and scripts blocks.
+- Reformatted Leaflet map JavaScript.
+- Improved marker, popup and bounds readability.
+
+---
+
+### Commit `c939fc3`
+
+**Commit message:**
+
+`fix: correct parking filter syntax`
+
+**File changed:**
+
+- `templates/parking/list.html`
+
+**Changes:**
+
+- 1 addition.
+- 1 deletion.
+
+The incorrect comparison:
+
+```django
+{% if nation = value %}selected{% endif %}
+```
+
+was corrected to:
+
+```django
+{% if nation == value %}selected{% endif %}
+```
+
+This follow-up commit corrected the remaining nation filter syntax problem
+found after the larger template restructuring.
+
+---
+
+## Final Result
+
+After completing both commits, the affected ParkMate templates had a clearer
+and more consistent structure.
+
+The main results of the debugging process were:
+
+- The parking nation filter comparison was corrected.
+- Django conditional statements became easier to understand.
+- Template inheritance statements were clearly separated.
+- Django content blocks became easier to identify.
+- Search form markup became easier to maintain.
+- Parking result cards became easier to read.
+- Optional postcode handling became clearer.
+- Verification badge logic became easier to follow.
+- Favourite button logic became easier to understand.
+- Empty search states became more consistently structured.
+- The parking map template became easier to maintain.
+- Django parking data and JavaScript were clearly separated.
+- Leaflet map code became easier to read and debug.
+- Marker coordinate handling became clearer.
+- Marker popup content became easier to identify.
+- Single-result and multiple-result map behaviour remained intact.
+- Existing ParkMate functionality was retained while the code structure was
+  improved.
+
+This debugging process also helped me distinguish between an actual bug and a
+code-quality improvement.
+
+The incorrect nation comparison was a genuine syntax issue that required a
+code fix, while many of the surrounding changes were refactoring improvements
+made to improve readability and reduce the likelihood of similar errors being
+introduced in the future.
