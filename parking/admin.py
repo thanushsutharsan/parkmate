@@ -154,4 +154,5 @@ class FavouriteAdmin(admin.ModelAdmin):
     search_fields = (
         "user__username",
         "parking__name",
+
     )
