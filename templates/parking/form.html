@@ -2,8 +2,11 @@
 
 <!-- parking form page -->
 
-{% block title %} {% if mode == 'edit' %} Edit Parking {% else %} Add Parking {%
-endif %} - ParkMate {% endblock %} {% block content %}
+{% block title %}
+{% if mode == 'edit' %}Edit Parking{% else %}Add Parking{% endif %} - ParkMate
+{% endblock %}
+
+{% block content %}
 
 <section class="form-page page-shell">
   <!-- main form card -->
@@ -83,10 +86,9 @@ endif %} - ParkMate {% endblock %} {% block content %}
       <!-- form buttons -->
       <div class="form-actions">
         <!-- submit button -->
-        <button class="green-button" type="submit">
-          {% if mode == 'edit' %} Save Changes {% else %} Add Parking {% endif
-          %}
-        </button>
+       <button class="green-button" type="submit">
+       {% if mode == 'edit' %}Save Changes{% else %}Add Parking{% endif %}
+       </button>
 
         <!-- returns without saving -->
         <a
