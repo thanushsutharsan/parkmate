@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const params = new URLSearchParams({
             action: "query",
             generator: "search",
-            gsrsearch: `${searchText} car park`,
+            gsrsearch: searchText,
             gsrnamespace: "6",
             gsrlimit: "10",
             prop: "imageinfo",
@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
             generator: "geosearch",
             ggsprimary: "all",
             ggsnamespace: "6",
-            ggsradius: "500",
+            ggsradius: "1000",
             ggslimit: "10",
             ggscoord: `${latitude}|${longitude}`,
             prop: "imageinfo",
