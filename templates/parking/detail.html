@@ -83,12 +83,12 @@
   <div class="detail-image-wrap">
 
     <img
-      src="{% if location.image_url %}{{ location.image_url }}{% else %}{% static 'images/parking-fallback.svg' %}{% endif %}"
-      data-parking-image="{{ location.name }} {{ location.address }}"
-      data-latitude="{{ location.latitude }}"
-      data-longitude="{{ location.longitude }}"
-      alt="Parking near {{ location.name }}"
-    >
+  src="{% static 'images/parking-fallback.svg' %}"
+  data-parking-image="{{ location.name }}, {{ location.address }}, {{ location.postcode }}"
+  data-latitude="{{ location.latitude }}"
+  data-longitude="{{ location.longitude }}"
+  alt="Parking near {{ location.name }}"
+>
   </div>
 
   <!-- main parking facts -->

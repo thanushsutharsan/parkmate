@@ -1,4 +1,4 @@
-// Loads parking images and uses a fallback when needed.
+// loads parking images from wikimedia commons
 document.addEventListener("DOMContentLoaded", () => {
     const fallback =
         document.body.dataset.parkingFallback || "";
@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const commonsEndpoint =
         "https://commons.wikimedia.org/w/api.php";
 
-    async function findCommonsImage(searchText) {
+    async function searchCommons(searchText) {
         const params = new URLSearchParams({
             action: "query",
             generator: "search",
@@ -56,11 +56,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     info.thumburl ||
                     info.url;
 
-                if (!imageUrl) {
-                    continue;
+                if (imageUrl) {
+                    return imageUrl;
                 }
-
-                return imageUrl;
             }
         } catch (error) {
             return null;
@@ -69,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return null;
     }
 
-    async function findNearbyImage(
+    async function searchNearby(
         latitude,
         longitude
     ) {
@@ -124,11 +122,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     info.thumburl ||
                     info.url;
 
-                if (!imageUrl) {
-                    continue;
+                if (imageUrl) {
+                    return imageUrl;
                 }
-
-                return imageUrl;
             }
         } catch (error) {
             return null;
@@ -138,7 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     async function loadImage(image) {
-        const searchText =
+        const fullSearch =
             image.dataset.parkingImage || "";
 
         const latitude =
@@ -147,71 +143,36 @@ document.addEventListener("DOMContentLoaded", () => {
         const longitude =
             image.dataset.longitude || "";
 
-        let triedCommons = false;
+        let commonsImage = null;
 
-        async function useCommons() {
-            if (triedCommons) {
-                useFallback();
-                return;
-            }
-
-            triedCommons = true;
-
-            let commonsImage = null;
-
-            if (searchText) {
-                commonsImage =
-                    await findCommonsImage(
-                        searchText
-                    );
-            }
-
-            if (!commonsImage) {
-                commonsImage =
-                    await findNearbyImage(
-                        latitude,
-                        longitude
-                    );
-            }
-
-            if (commonsImage) {
-                image.src = commonsImage;
-                return;
-            }
-
-            useFallback();
+        if (fullSearch) {
+            commonsImage =
+                await searchCommons(fullSearch);
         }
 
-        function useFallback() {
-            if (
-                fallback &&
-                !image.src.endsWith(
-                    "parking-fallback.svg"
-                )
-            ) {
-                image.src = fallback;
-            }
+        if (!commonsImage && fullSearch) {
+            const locationName =
+                fullSearch.split(",")[0];
+
+            commonsImage =
+                await searchCommons(locationName);
         }
 
-        image.addEventListener(
-            "error",
-            async () => {
-                await useCommons();
-            }
-        );
+        if (!commonsImage) {
+            commonsImage =
+                await searchNearby(
+                    latitude,
+                    longitude
+                );
+        }
 
-        const usingFallback =
-            fallback &&
-            image.src.includes(
-                "parking-fallback.svg"
-            );
+        if (commonsImage) {
+            image.src = commonsImage;
+            return;
+        }
 
-        if (
-            !image.getAttribute("src") ||
-            image.src === window.location.href ||
-            usingFallback
-        ) {
-            await useCommons();
+        if (fallback) {
+            image.src = fallback;
         }
     }
 
