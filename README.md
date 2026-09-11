@@ -3342,3 +3342,214 @@ The incorrect nation comparison was a genuine syntax issue that required a
 code fix, while many of the surrounding changes were refactoring improvements
 made to improve readability and reduce the likelihood of similar errors being
 introduced in the future.
+
+### Parking Form Template Syntax Error
+
+**Bug:**
+
+While checking my parking form page, I noticed that some of my Django template syntax was not structured correctly. The `{% block title %}` and `{% block content %}` tags were placed together on the same line and the conditional used for the form button was also split awkwardly.
+
+This made the template harder to read and could cause template syntax errors.
+
+**Before:**
+
+```html
+{% block title %} {% if mode == 'edit' %} Edit Parking {% else %}
+Add Parking {% endif %} - ParkMate {% endblock %} {% block content %}
+```
+
+The submit button was also written as:
+
+```html
+<button class="green-button" type="submit">
+    {% if mode == 'edit' %} Save Changes {% else %} Add Parking {% endif %}
+</button>
+```
+
+**Fix:**
+
+I separated the Django template blocks and made sure the conditional statements were correctly structured.
+
+```html
+{% block title %}
+    {% if mode == 'edit' %}Edit Parking{% else %}Add Parking{% endif %} - ParkMate
+{% endblock %}
+
+{% block content %}
+```
+
+I also corrected the submit button:
+
+```html
+<button class="green-button" type="submit">
+    {% if mode == 'edit' %}Save Changes{% else %}Add Parking{% endif %}
+</button>
+```
+
+**Result:**
+
+The parking form template is now structured correctly and is much easier to read. The same form can still be used for both adding and editing parking locations, while correctly changing the page title and button text depending on the mode.
+
+**Commit:** `48ab04e` - `fix: correct parking form template syntax`
+
+
+### Parking Detail Template Syntax Error
+
+**Bug:**
+
+While checking my parking detail page, I noticed that a lot of the Django template syntax and HTML had been placed together on the same lines.
+
+For example, the template originally started with:
+
+```html
+{% extends 'base.html' %} {% load static %}
+```
+
+The title and content blocks were also placed closely together:
+
+```html
+{% block title %} {{ location.name }} - ParkMate {% endblock %}
+{% block content %}
+```
+
+There were similar formatting and syntax issues throughout the page, including the parking address, postcode, verification status, save parking button, payment information and edit/delete buttons.
+
+**Fix:**
+
+I went through `templates/parking/detail.html` and separated the Django template tags and HTML into a clearer structure.
+
+I changed:
+
+```html
+{% extends 'base.html' %} {% load static %}
+```
+
+To:
+
+```html
+{% extends 'base.html' %}
+{% load static %}
+```
+
+I also corrected the title and content blocks:
+
+```html
+{% block title %}
+    {{ location.name }} - ParkMate
+{% endblock %}
+
+{% block content %}
+```
+
+The postcode conditional was also cleaned up:
+
+```html
+<p>
+    {{ location.address }}
+    {% if location.postcode %}
+        , {{ location.postcode }}
+    {% endif %}
+</p>
+```
+
+I also corrected the verification status:
+
+```html
+{% if location.council_verified %}
+    <span class="verified-pill">
+        ✓ Council/NPP price verified
+    </span>
+{% else %}
+    <span class="mapped-pill">
+        Mapped parking
+    </span>
+{% endif %}
+```
+
+The save parking conditional was also made clearer:
+
+```html
+<button class="green-button" type="submit">
+    {% if is_favourite %}
+        ♥ Saved
+    {% else %}
+        ♡ Save parking
+    {% endif %}
+</button>
+```
+
+I went through the rest of the page and cleaned up the:
+
+- Back to parking link
+- Parking address and postcode
+- Verification labels
+- Save parking form
+- Parking image
+- Restrictions
+- Payment information
+- Verification source
+- Official source link
+- Edit button
+- Delete button
+- Django `{% endif %}` and `{% endblock %}` tags
+
+**Result:**
+
+The parking detail template is now structured much more clearly. The Django conditionals and HTML are easier to follow and maintain, while keeping all of the existing functionality working.
+
+This also makes it easier for me to find and fix problems in the template in the future.
+
+**Commit:** `ca268aa` - `fix: correct parking detail template syntax`
+
+
+### Parking Image Fallback Search Bug
+
+**Bug:**
+
+I found a problem with the parking image fallback system.
+
+My JavaScript already checked if the parking image had no `src` or if the image source was pointing back to the current page.
+
+The original code was:
+
+```javascript
+if (
+    !image.getAttribute("src") ||
+    image.src === window.location.href
+) {
+    await useCommons();
+}
+```
+
+The problem was that if the parking location was already displaying my default `parking-fallback.svg` image, neither of these conditions were true.
+
+This meant that the default fallback image could stay on the page without the application trying to search for a more suitable parking image.
+
+**Fix:**
+
+I added a new `usingFallback` check:
+
+```javascript
+const usingFallback =
+    fallback &&
+    image.src.endsWith("parking-fallback.svg");
+
+if (
+    !image.getAttribute("src") ||
+    image.src === window.location.href ||
+    usingFallback
+) {
+    await useCommons();
+}
+```
+
+The new condition checks whether the image currently being displayed is `parking-fallback.svg`.
+
+If the image is missing, invalid or using the default fallback image, the application will now call `useCommons()` and attempt to find a more suitable image.
+
+**Result:**
+
+The parking image system now recognises when the default fallback image is being used and continues the image search instead of stopping there.
+This gives parking locations a better chance of displaying a relevant image while still keeping the fallback image available if another suitable image cannot be found.
+
+**Commit:** `202fd86` - `fix: restore parking image fallback search`
