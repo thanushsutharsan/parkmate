@@ -115,12 +115,17 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         );
 
-        if (
-            !image.getAttribute("src") ||
-            image.src === window.location.href
-        ) {
-            await useCommons();
-        }
+      const usingFallback =
+    fallback &&
+    image.src.endsWith("parking-fallback.svg");
+
+     if (
+    !image.getAttribute("src") ||
+    image.src === window.location.href ||
+    usingFallback
+    ) {
+    await useCommons();
+}
     }
 
     images.forEach((image) => {
