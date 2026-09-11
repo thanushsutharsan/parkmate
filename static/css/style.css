@@ -1492,4 +1492,10 @@ main {
         max-height: 200px;
         flex-basis: 200px;
     }
+
+}
+/* site footer */
+.site-footer {
+    text-align: center;
+    padding: 20px;
 }
