@@ -1,35 +1,52 @@
-{% extends 'base.html' %} {% load static %}
+{% extends 'base.html' %}
+{% load static %}
 
 <!-- parking details page -->
 
-{% block title %} {{ location.name }} - ParkMate {% endblock %} {% block content
-%}
+{% block title %}
+{{ location.name }} - ParkMate
+{% endblock %}
+
+{% block content %}
 
 <section class="page-shell detail-page">
+
   <!-- back to parking list -->
-  <a class="back-link" href="{% url 'parking:list' %}"> ← Back to parking </a>
+  <a class="back-link" href="{% url 'parking:list' %}">
+    ← Back to parking
+  </a>
 
   <!-- parking title and main actions -->
   <div class="detail-header-row">
+
     <!-- parking name and address -->
     <div>
+
       <!-- verification status -->
       {% if location.council_verified %}
-      <span class="verified-pill"> ✓ Council/NPP price verified </span>
+        <span class="verified-pill">
+          ✓ Council/NPP price verified
+        </span>
       {% else %}
-      <span class="mapped-pill"> Mapped parking </span>
+        <span class="mapped-pill">
+          Mapped parking
+        </span>
       {% endif %}
 
       <h1>{{ location.name }}</h1>
 
       <p>
-        {{ location.address }} {% if location.postcode %} , {{ location.postcode
-        }} {% endif %}
+        {{ location.address }}
+        {% if location.postcode %}
+          , {{ location.postcode }}
+        {% endif %}
       </p>
+
     </div>
 
     <!-- map and save buttons -->
     <div class="staff-actions">
+
       <!-- opens this location on the map -->
       <a
         class="outline-button"
@@ -40,32 +57,42 @@
 
       <!-- save button for signed in users -->
       {% if user.is_authenticated %}
-      <form
-        method="post"
-        action="{% url 'parking:toggle_favourite' location.pk %}"
-        class="inline-form"
-      >
-        {% csrf_token %}
+        <form
+          method="post"
+          action="{% url 'parking:toggle_favourite' location.pk %}"
+          class="inline-form"
+        >
+          {% csrf_token %}
 
-        <button class="green-button" type="submit">
-          {% if is_favourite %} ♥ Saved {% else %} ♡ Save parking {% endif %}
-        </button>
-      </form>
+          <button class="green-button" type="submit">
+            {% if is_favourite %}
+              ♥ Saved
+            {% else %}
+              ♡ Save parking
+            {% endif %}
+          </button>
+
+        </form>
       {% endif %}
+
     </div>
+
   </div>
 
   <!-- parking image -->
   <div class="detail-image-wrap">
+
     <img
       src="{% if location.image_url %}{{ location.image_url }}{% else %}{% static 'images/parking-fallback.svg' %}{% endif %}"
       data-parking-image="{{ location.name }} {{ location.address }}"
       alt="Parking near {{ location.name }}"
-    />
+    >
+
   </div>
 
   <!-- main parking facts -->
   <div class="detail-facts">
+
     <!-- parking price -->
     <div>
       <span class="fact-icon">£</span>
@@ -105,71 +132,99 @@
         {{ location.operator_name|default:"Not supplied" }}
       </p>
     </div>
+
   </div>
 
   <!-- extra parking information -->
   <div class="detail-lower">
+
     <div class="detail-content-stack">
+
       <!-- parking restrictions -->
       <article class="info-panel">
+
         <h2>Restrictions</h2>
 
         <p>
-          {{ location.restrictions|default:"Check signs at the parking
-          location." }}
+          {{ location.restrictions|default:"Check signs at the parking location." }}
         </p>
+
       </article>
 
       <!-- payment information -->
       <article class="info-panel">
+
         <h2>Payment</h2>
 
         <p>
-          {{ location.payment_info|default:"Payment information not supplied."
-          }}
+          {{ location.payment_info|default:"Payment information not supplied." }}
         </p>
+
       </article>
 
       <!-- official source for verified parking -->
       {% if location.council_verified and location.source_url %}
-      <article class="source-panel">
-        <!-- source details -->
-        <div>
-          <span class="mini-label"> Verification source </span>
 
-          <h2>{{ location.source_name }}</h2>
+        <article class="source-panel">
 
-          <p>Price information is stored from the official source.</p>
-        </div>
+          <!-- source details -->
+          <div>
 
-        <!-- link to the original source -->
-        <a
-          class="outline-button"
-          href="{{ location.source_url }}"
-          target="_blank"
-          rel="noopener"
-        >
-          View official source ↗
-        </a>
-      </article>
+            <span class="mini-label">
+              Verification source
+            </span>
+
+            <h2>{{ location.source_name }}</h2>
+
+            <p>
+              Price information is stored from the official source.
+            </p>
+
+          </div>
+
+          <!-- link to the original source -->
+          <a
+            class="outline-button"
+            href="{{ location.source_url }}"
+            target="_blank"
+            rel="noopener"
+          >
+            View official source ↗
+          </a>
+
+        </article>
+
       {% endif %}
+
     </div>
+
   </div>
 
   <!-- edit and delete buttons for allowed users -->
   {% if can_manage %}
-  <div class="staff-actions">
-    <!-- edit parking location -->
-    <a class="outline-button" href="{% url 'parking:edit' location.pk %}">
-      Edit
-    </a>
 
-    <!-- delete parking location -->
-    <a class="outline-button" href="{% url 'parking:delete' location.pk %}">
-      Delete
-    </a>
-  </div>
+    <div class="staff-actions">
+
+      <!-- edit parking location -->
+      <a
+        class="outline-button"
+        href="{% url 'parking:edit' location.pk %}"
+      >
+        Edit
+      </a>
+
+      <!-- delete parking location -->
+      <a
+        class="outline-button"
+        href="{% url 'parking:delete' location.pk %}"
+      >
+        Delete
+      </a>
+
+    </div>
+
   {% endif %}
+
 </section>
 
 {% endblock %}
