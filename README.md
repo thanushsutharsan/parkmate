@@ -82,6 +82,14 @@ Registered users can save parking locations and contribute their own parking loc
 
 # Deployment
 
+## Live Site
+
+The deployed version of ParkMate can be viewed here:
+
+[View the live ParkMate application](https://parkmate-4d1d2b372f8e.herokuapp.com/)
+
+ParkMate was deployed using **Heroku** so that the final Django application could be accessed online.
+
 ParkMate was deployed using **Heroku** so that the final Django application could be accessed online.
 
 ## Heroku Deployment
