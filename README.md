@@ -1848,6 +1848,55 @@ The technical success criteria include demonstrating:
 - testing
 - deployment
 
+# Changes During Development
+
+During the development of ParkMate, some parts of the original plan changed as the application was built and tested. These changes were made as new requirements became clearer, features were developed and the structure of the Django application evolved.
+
+Documenting these changes shows how the project developed from the original planning stage into the final application.
+
+| Original Plan | Change During Development | Reason for the Change |
+| --- | --- | --- |
+| ParkMate would use the main Django files such as `models.py`, `views.py`, `forms.py`, `urls.py` and `tests.py`. | Additional project files and functionality were introduced, including custom error handlers, Django Admin configuration, custom management commands and deployment configuration. | As the project became more complex, additional files were needed to separate responsibilities and keep the application organised. |
+| Parking data would mainly be added and managed through the application. | A custom Django management command was created to import official parking data from CSV files. A separate command was also used to seed parking data during development. | Importing structured parking data through management commands was more efficient and reliable than manually creating every record. |
+| Users would be able to create and manage parking information. | Community parking submissions were separated from trusted/official parking information. Community submissions cannot automatically mark themselves as Council/NPP verified. | This prevents normal users from falsely marking submitted parking information as officially verified. |
+| Basic Django authentication would be used for user accounts. | A custom registration form was added using Django's `UserCreationForm`, including email validation and checks for duplicate email addresses. | This provided additional validation and improved the account registration process. |
+| Users would be able to manage their own parking submissions. | Ownership checks were added so that users can only edit or delete parking records that they submitted, while authorised staff can also manage records. | This improved security and prevented users from changing another user's parking information. |
+| Parking search would allow users to locate parking records. | Search functionality was expanded to work with parking names, addresses, postcodes, postcode areas, local authorities and nations. | Testing showed that users may search for parking using different types of location information, so broader search functionality improved usability. |
+| Parking locations would be displayed to users. | An interactive Leaflet map was developed so that database parking locations could also be viewed geographically. | A map provides a more intuitive way for users to understand where parking locations are positioned. |
+| Users would be able to save parking locations. | A `Favourite` model and favourite toggle functionality were implemented and connected to the My ParkMate dashboard. | This allowed logged-in users to save useful parking locations and access them again easily. |
+| Availability reporting was planned as part of the parking system. | The `AvailabilityReport` model and `AvailabilityReportForm` were created, including validation, but the complete user-facing availability-reporting workflow was not implemented in the final version. | Development time was prioritised towards completing and testing the core parking search, map, favourites and CRUD functionality. Completing availability reporting has therefore been included as a future development. |
+| Standard Django error behaviour would initially be used. | Custom error handlers were added for HTTP 400, 403, 404 and 500 errors. | Custom error pages provide clearer feedback and maintain a consistent ParkMate user experience when an error occurs. |
+| The application would contain the main user-facing routes. | An application health-check route was also added. | This provides a simple way to confirm that the deployed application is running successfully. |
+| The project would use Django's standard database structure. | The database developed into three connected ParkMate models: `ParkingLocation`, `Favourite` and `AvailabilityReport`, alongside Django's built-in `User` model. | The additional models were required to support saved parking locations, user submissions and the planned availability-reporting functionality. |
+| The application would eventually be deployed online. | ParkMate was configured for production deployment using Heroku, Gunicorn, WhiteNoise, environment variables and a production database configuration. | These changes were required to run the Django application securely on a cloud-hosting platform rather than only in the local development environment. |
+
+## Features Not Fully Implemented
+
+One planned feature was not completed as a full user-facing feature during the development period.
+
+### Availability Reporting
+
+The database model and Django form for availability reporting were implemented. The form also contains validation to prevent the number of reported available spaces from exceeding the stored capacity of a parking location.
+
+However, the final version does not currently contain a complete user-facing URL, view and template workflow for submitting availability reports.
+
+Rather than presenting this as a completed feature, it has been retained as part of the project's future development plans.
+
+This allowed development and testing to focus on the core functionality of ParkMate, including:
+
+- parking search and filtering
+- interactive map functionality
+- user authentication
+- parking details
+- favourites
+- My ParkMate
+- creating parking records
+- editing parking records
+- deleting parking records
+- ownership and permission checks
+
+The availability-reporting workflow could be completed in a future version by connecting the existing model and form to dedicated views, URLs and user-interface controls.
+
 
 ## Bugs and Fixes
 
