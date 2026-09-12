@@ -80,6 +80,53 @@ Registered users can save parking locations and contribute their own parking loc
 | Git                   | Tracks changes made during development                                                    |
 | GitHub                | Stores the project repository and commit history                                          |
 
+# Deployment
+
+ParkMate was deployed using **Heroku** so that the final Django application could be accessed online.
+
+## Heroku Deployment
+
+The following steps were used to deploy the project:
+
+1. Create a new application on [Heroku](https://www.heroku.com/).
+
+2. Connect the Heroku application to the GitHub repository containing the ParkMate project.
+
+3. Add a PostgreSQL database for the deployed application. Heroku provides the database connection through the `DATABASE_URL` environment variable.
+
+4. In **Heroku → Settings → Config Vars**, add the required environment variables for the project. Sensitive information, such as the Django secret key and database credentials, should be stored as environment variables rather than committed to GitHub.
+
+5. Ensure that all required Python packages are included in the `requirements.txt` file.
+
+6. ParkMate uses a `Procfile` in the root directory of the project to tell Heroku how to run the Django application:
+
+    ```text
+    web: gunicorn parkmate.wsgi:application
+    ```
+
+7. The Django settings are configured to use the Heroku `DATABASE_URL` when the application is running in the deployed environment.
+
+8. WhiteNoise is used to manage and serve static files in the deployed application.
+
+9. Push the latest version of the project to GitHub.
+
+10. From Heroku, deploy the application using the connected GitHub repository.
+
+11. After deployment, run the Django migrations so that the production database contains the required database tables:
+
+    ```bash
+    python manage.py migrate
+    ```
+
+12. Open the deployed application and test the live version to ensure that it works correctly and matches the development version.
+
+The deployed application was checked to ensure that navigation, authentication, parking searches, database functionality, forms, static files and the interactive map worked correctly.
+
+## Updating the Deployment
+
+When changes are made to ParkMate, the changes are committed and pushed to GitHub. The latest version can then be deployed through Heroku so that the live application contains the most recent updates.
+
+
 # User Experience Design (UX)
 
 ## User Studies - Planning
