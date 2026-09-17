@@ -2075,6 +2075,17 @@ The page passed validation with no HTML errors, so no changes were required.
 
 ![Add Parking page validation](static/images/testing/validation/add-parking-page-validation.png)
 
+
+## Delete Page Validation
+
+The rendered Delete page was tested using the [W3C Markup Validation Service](https://validator.w3.org/) to check the final HTML output produced by Django.
+
+The Delete page is generated using `templates/base.html` and `templates/parking/delete.html`, with `delete.html` extending the main `base.html` template. I opened the Delete page in the browser, used **View Page Source**, and validated the final combined HTML that was sent to the browser.
+
+The page passed validation with no HTML errors, so no changes were required.
+
+![Delete page validation](static/images/testing/validation/delete-page-validation.png)
+
 # Bugs and Fixes
 
 During the development of ParkMate, I identified several issues within the
