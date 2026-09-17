@@ -18,7 +18,7 @@
     </p>
 
     <!-- account benefits -->
-    <div class="auth-benefits" aria-label="Account benefits">
+    <div class="auth-benefits">
       <span>♡ Save favourites</span>
       <span>＋ Add parking</span>
       <span>◷ Report availability</span>
@@ -46,7 +46,10 @@
 
         <!-- extra help text -->
         {% if field.help_text %}
-        <small> {{ field.help_text }} </small>
+
+     <div class="field-help">
+          {{ field.help_text|safe }}
+    </div>
         {% endif %}
 
         <!-- field validation errors -->
