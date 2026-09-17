@@ -2055,8 +2055,15 @@ The previous validation errors were resolved and the page successfully passed HT
 
 ![Registration page validation after fixes](static/images/testing/validation/registration-page-validation-after.png)
 
+## Dashboard Page Validation
 
+The rendered Dashboard page was tested using the [W3C Markup Validation Service](https://validator.w3.org/) to check the final HTML output produced by Django.
 
+The Dashboard page is generated using `templates/base.html` and `templates/parking/dashboard.html`, with `dashboard.html` extending the main `base.html` template. I opened the Dashboard page in the browser, used **View Page Source**, and validated the final combined HTML that was sent to the browser.
+
+The page passed validation with no HTML errors, so no changes were required.
+
+![Dashboard page validation](static/images/testing/validation/dashboard-page-validation.png)
 # Bugs and Fixes
 
 During the development of ParkMate, I identified several issues within the
