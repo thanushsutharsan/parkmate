@@ -1995,6 +1995,68 @@ The page passed validation with no HTML errors, so no changes were required.
 
 ![Login page validation](static/images/testing/validation/login-page-validation.png)
 
+
+
+## Registration Page Validation
+
+The Registration page was tested using the [W3C Markup Validation Service](https://validator.w3.org/).
+
+The page uses `base.html` for the main site layout and `registration/register.html` for the registration form.
+
+### Before Validation
+
+The first validation test identified two HTML errors.
+
+The first error was caused by an `aria-label` being used directly on the account benefits `<div>`. The `<div>` did not have a suitable ARIA role, so the `aria-label` was removed.
+
+The second error was caused by Django's automatically generated password help text. Django outputs the password requirements as a `<ul>` list, but the help text was being wrapped inside a `<small>` element. As a `<ul>` cannot be placed inside a `<small>` element, this caused an HTML validation error.
+
+![Registration page validation before fixes](static/images/testing/validation/registration-page-validation-before.png)
+
+### Changes Made
+
+The account benefits section was changed from:
+
+```html
+<div class="auth-benefits" aria-label="Account benefits">
+```
+
+to:
+
+```html
+<div class="auth-benefits">
+```
+
+The Django form help text was also changed from:
+
+```html
+{% if field.help_text %}
+  <small>{{ field.help_text|safe }}</small>
+{% endif %}
+```
+
+to:
+
+```html
+{% if field.help_text %}
+  <div class="field-help">
+    {{ field.help_text|safe }}
+  </div>
+{% endif %}
+```
+
+This allows Django's generated `<ul>` password requirements to be displayed inside a valid HTML container.
+
+### After Validation
+
+After making these changes, the Registration page was tested again using the W3C Markup Validation Service.
+
+The previous validation errors were resolved and the page successfully passed HTML validation.
+
+![Registration page validation after fixes](static/images/testing/validation/registration-page-validation-after.png)
+
+
+
 # Bugs and Fixes
 
 During the development of ParkMate, I identified several issues within the
