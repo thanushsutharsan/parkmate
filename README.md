@@ -1964,6 +1964,16 @@ After making the structural change, `home.html` was tested again using the W3C M
 
 The previous section-heading warning was resolved. The remaining trailing-slash messages were filtered because they were informational notices rather than errors affecting the structure or functionality of the website.
 
+## Parking Page Validation
+
+The rendered Parking page was tested using the [W3C Markup Validation Service](https://validator.w3.org/) to check the final HTML output produced by Django.
+
+The Parking page is generated using `templates/base.html` and `templates/parking/list.html`, with `list.html` extending the main `base.html` template. I opened the Parking page in the browser, used **View Page Source**, and validated the final combined HTML that was sent to the browser.
+
+The page passed validation with no HTML errors, so no changes were required.
+
+![Parking page validation](static/images/testing/validation/parking-page-validation.png)
+
 # Bugs and Fixes
 
 During the development of ParkMate, I identified several issues within the
