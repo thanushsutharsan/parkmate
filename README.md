@@ -1974,6 +1974,17 @@ The page passed validation with no HTML errors, so no changes were required.
 
 ![Parking page validation](static/images/testing/validation/parking-page-validation.png)
 
+
+## Map Page Validation
+
+The rendered Map page was tested using the [W3C Markup Validation Service](https://validator.w3.org/) to check the final HTML output produced by Django.
+
+The Map page is generated using `templates/base.html` and `templates/parking/map.html`, with `map.html` extending the main `base.html` template. I opened the Map page in the browser, used **View Page Source**, and validated the final combined HTML that was sent to the browser.
+
+The page passed validation with no HTML errors, so no changes were required.
+
+![Map page validation](static/images/testing/validation/map-page-validation.png)
+
 # Bugs and Fixes
 
 During the development of ParkMate, I identified several issues within the
