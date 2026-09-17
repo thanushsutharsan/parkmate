@@ -1985,6 +1985,16 @@ The page passed validation with no HTML errors, so no changes were required.
 
 ![Map page validation](static/images/testing/validation/map-page-validation.png)
 
+## Login Page Validation
+
+The rendered Login page was tested using the [W3C Markup Validation Service](https://validator.w3.org/) to check the final HTML output produced by Django.
+
+The Login page is generated using `templates/base.html` and `templates/registration/login.html`, with `login.html` extending the main `base.html` template. I opened the Login page in the browser, used **View Page Source**, and validated the final combined HTML that was sent to the browser.
+
+The page passed validation with no HTML errors, so no changes were required.
+
+![Login page validation](static/images/testing/validation/login-page-validation.png)
+
 # Bugs and Fixes
 
 During the development of ParkMate, I identified several issues within the
