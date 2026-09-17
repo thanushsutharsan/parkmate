@@ -2086,6 +2086,16 @@ The page passed validation with no HTML errors, so no changes were required.
 
 ![Delete page validation](static/images/testing/validation/delete-page-validation.png)
 
+
+# CSS Validation
+
+The ParkMate stylesheet was tested using the [W3C CSS Validation Service](https://jigsaw.w3.org/css-validator/) to check for CSS errors and ensure that the styling followed valid CSS standards.
+
+The stylesheet passed validation with no CSS errors found, so no changes were required.
+
+![CSS validation](static/images/testing/validation/css-validation.png)
+
+
 # Bugs and Fixes
 
 During the development of ParkMate, I identified several issues within the
