@@ -1897,8 +1897,74 @@ This allowed development and testing to focus on the core functionality of ParkM
 
 The availability-reporting workflow could be completed in a future version by connecting the existing model and form to dedicated views, URLs and user-interface controls.
 
+# HTML Validation
 
-## Bugs and Fixes
+The HTML was tested using the [W3C Markup Validation Service](https://validator.w3.org/) to check for structural and HTML errors.
+
+## HOME Validation
+
+### Initial Validation
+
+During the first validation of `home.html`, the validator reported a warning because the `home-features` area used a `<section>` element without an identifying heading for the overall section.
+
+![Initial HTML validation](static/images/testing/validation/home.html-validation-before.png)
+
+The original code used:
+
+```html
+<section class="home-features" id="about">
+```
+
+Although the individual feature cards contained their own `<h2>` headings, the main `<section>` itself did not have a heading describing the whole section.
+
+### Fix Applied
+
+To resolve the validation warning, I changed the `home-features` container in `home.html` from a `<section>` element to a `<div>`:
+
+```html
+<div class="home-features" id="about">
+```
+
+The matching closing tag was also changed from:
+
+```html
+</section>
+```
+
+to:
+
+```html
+</div>
+```
+
+A `<div>` was more appropriate because this element is mainly used as a container to group the Search, Map and Save feature cards rather than representing a separate semantic section of the page.
+
+I also cleaned up the formatting of `home.html`, including indentation and spacing, to make the HTML easier to read and maintain.
+
+### Trailing Slash Validation Messages
+
+The W3C validator also displayed informational messages about trailing slashes on void HTML elements, for example:
+
+```html
+<meta charset="utf-8" />
+<link rel="stylesheet" href="..." />
+```
+
+These trailing slashes are commonly seen in XHTML-style formatting. In HTML5, void elements such as `<meta>`, `<link>`, `<img>` and `<input>` do not need a closing slash, but using one does not stop the browser from interpreting the HTML correctly.
+
+I filtered these messages because they were informational notices rather than structural errors affecting the page. The formatting was also used consistently throughout the project, so I chose not to make unnecessary changes just to remove these notices.
+
+The main validation issue was the missing heading warning on the `home-features` `<section>`, which was fixed by changing the container to a `<div>`.
+
+### Final Validation
+
+After making the structural change, `home.html` was tested again using the W3C Markup Validation Service.
+
+![Final HTML validation](static/images/testing/validation/home.html-validation-after.png)
+
+The previous section-heading warning was resolved. The remaining trailing-slash messages were filtered because they were informational notices rather than errors affecting the structure or functionality of the website.
+
+# Bugs and Fixes
 
 During the development of ParkMate, I identified several issues within the
 Django templates. These included an actual Django template syntax error,
