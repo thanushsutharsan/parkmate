@@ -1897,6 +1897,73 @@ This allowed development and testing to focus on the core functionality of ParkM
 
 The availability-reporting workflow could be completed in a future version by connecting the existing model and form to dedicated views, URLs and user-interface controls.
 
+# Manual Functional Testing
+
+Manual functional testing was used to check that the main ParkMate features work as expected from a user's point of view. Testing covered navigation, parking search, parking information, the interactive map, user authentication, favourites, the My ParkMate dashboard, CRUD functionality, form validation and authorisation.
+
+The tests below were carried out using the deployed version of ParkMate.
+
+| Feature | Test | Expected Result | Actual Result | Status |
+| --- | --- | --- | --- | --- |
+| Home page | Open the ParkMate home page | The home page loads successfully with the main navigation, search area and account options visible | Home page loaded correctly | Pass |
+| Navigation | Use the Home, Parking and Map navigation links | Each navigation link opens the correct page | All navigation links opened the expected pages | Pass |
+| Parking list | Open the Parking page without entering a search | Active parking locations are displayed as parking cards | Parking locations displayed correctly | Pass |
+| Town/city search | Search using a supported town or city, such as Birmingham | Parking locations matching the town or city are displayed | Matching parking locations were returned | Pass |
+| Postcode search | Search using a postcode, such as `ME1` | Parking locations matching the postcode are displayed | Relevant postcode results were returned | Pass |
+| Postcode-area search | Search using a supported postcode area | ParkMate identifies the associated area and returns relevant parking locations | Relevant parking locations were displayed | Pass |
+| Parking name search | Search using the name or part of the name of a parking location | Matching parking locations are displayed | Matching parking locations were returned | Pass |
+| Case-insensitive search | Enter a search using different upper/lower-case characters | Search continues to return matching parking locations | Search worked regardless of letter case | Pass |
+| No search results | Enter a search term that does not match any parking location | A clear message is displayed explaining that no parking was found | No-results message displayed correctly | Pass |
+| Nation filter | Select a nation from the available parking filters | Only parking locations belonging to the selected nation are displayed | Parking results were filtered correctly | Pass |
+| Parking details | Select a parking location from the parking results | The parking detail page opens and displays information about the selected location | Correct parking details were displayed | Pass |
+| Verification status | View official and community/mapped parking records | Officially verified parking is clearly distinguished from other parking records | Verification information displayed correctly | Pass |
+| Map page | Open the Map page | The interactive Leaflet map loads and displays stored parking locations | Map and parking locations loaded correctly | Pass |
+| Map search | Search for a location using the map search | The map data is filtered to parking locations matching the search | Matching parking locations were shown | Pass |
+| Map marker information | Select a parking marker on the map | Information for the selected parking location is displayed | Correct parking information was displayed | Pass |
+| Registration | Register using a new username, valid email address and valid matching passwords | A new account is created, the user is logged in and redirected to My ParkMate | Account was successfully created and user was redirected | Pass |
+| Duplicate email | Attempt to register using an email address already associated with another account | Registration is rejected and an error explains that the email address is already in use | Duplicate email was rejected correctly | Pass |
+| Password validation | Attempt to register using passwords that do not meet Django's password requirements | Registration is rejected and validation feedback is displayed | Invalid password was rejected | Pass |
+| Password confirmation | Enter two different passwords during registration | Registration is rejected and the user is informed that the passwords do not match | Password mismatch was detected correctly | Pass |
+| Login | Log in using a valid username and password | User is successfully authenticated and account-only functionality becomes available | Login worked correctly | Pass |
+| Invalid login | Attempt to log in using incorrect credentials | Login is rejected and the user remains unauthenticated | Invalid credentials were rejected | Pass |
+| Logout | Select the logout option while signed in | The user is logged out and account-only functionality is no longer available | Logout worked correctly | Pass |
+| Protected dashboard | Attempt to access My ParkMate while logged out | The user is redirected to the login page | Unauthenticated access was prevented | Pass |
+| Save favourite | Log in and save a parking location | The parking location is added to the user's saved parking | Parking location was successfully saved | Pass |
+| Favourite button | Save a parking location | The favourite control changes from `Save` to `Saved` | Favourite state updated correctly | Pass |
+| My ParkMate favourites | Open My ParkMate after saving a parking location | The saved parking location appears in the user's favourites | Saved parking was displayed correctly | Pass |
+| Remove favourite | Select a previously saved parking location again to remove it | The location is removed from the user's saved parking | Favourite was successfully removed | Pass |
+| Add parking access | Attempt to open the Add Parking page while logged out | The user is required to log in before adding parking | Unauthenticated user was prevented from adding parking | Pass |
+| Add parking | Log in and submit the Add Parking form using valid information | A new parking record is created and the user is redirected to its detail page | Parking location was successfully created | Pass |
+| Community verification | Add a parking location as a normal registered user | The new record is stored as community-submitted parking and is not marked Council/NPP verified | Community parking remained unverified | Pass |
+| Required fields | Attempt to submit the parking form without completing required fields | The form is not submitted and validation messages identify the missing information | Required-field validation worked correctly | Pass |
+| UK latitude validation | Enter a latitude outside the permitted UK range | The parking location is not saved and a validation error is displayed | Invalid latitude was rejected | Pass |
+| UK longitude validation | Enter a longitude outside the permitted UK range | The parking location is not saved and a validation error is displayed | Invalid longitude was rejected | Pass |
+| Disabled spaces validation | Enter a disabled-space value greater than the total number of spaces | The parking location is not saved and a validation error is displayed | Invalid space values were rejected | Pass |
+| Postcode formatting | Enter a postcode using lowercase characters when adding parking | The postcode is stored using uppercase formatting | Postcode was formatted correctly | Pass |
+| Edit own parking | Edit a parking location created by the logged-in user | The changes are saved and displayed on the parking detail page | Parking location updated successfully | Pass |
+| Edit authorisation | Attempt to edit a parking location submitted by another normal user | The change is prevented and the user is informed that they can only edit their own parking locations | Unauthorised editing was prevented | Pass |
+| Delete page | Select Delete for a parking location owned by the logged-in user | A confirmation page is displayed before deletion | Delete confirmation page displayed correctly | Pass |
+| Delete own parking | Confirm deletion of a parking location owned by the logged-in user | The parking record is deleted and the user is redirected to My ParkMate | Parking location was successfully deleted | Pass |
+| Delete authorisation | Attempt to delete a parking location submitted by another normal user | Deletion is prevented and the original parking record remains unchanged | Unauthorised deletion was prevented | Pass |
+| My Parking | Add a parking location and open My ParkMate | The user's own parking submissions are displayed separately from saved favourites | User submissions displayed correctly | Pass |
+| Authentication state | Compare navigation while logged in and logged out | Account-related navigation changes appropriately depending on authentication state | Correct navigation options were displayed | Pass |
+| Form data retention | Submit a form containing invalid information | Validation messages are displayed without unnecessarily clearing the other entered information | Form remained usable after validation failure | Pass |
+| Invalid parking URL | Attempt to open a parking record that does not exist | ParkMate returns the custom 404 error page instead of exposing a server error | Invalid record handled correctly | Pass |
+| CRUD workflow | Create, view, edit and finally delete a parking location | The complete Create, Read, Update and Delete workflow works for the logged-in owner | Full CRUD workflow completed successfully | Pass |
+
+### Manual Functional Testing Result
+
+The manual functional testing confirmed that ParkMate's main user-facing functionality operates as intended. Users can search and view parking without an account, while registered users can save favourites and manage their own community parking submissions.
+
+Authentication and authorisation checks also prevent unauthenticated users from accessing protected functionality and prevent normal users from editing or deleting parking records belonging to another user.
+
+Form validation prevents invalid parking data from being stored, including coordinates outside the supported UK range and disabled-space values greater than the total number of spaces. Community-created parking records also remain separate from Council/NPP verified parking so that normal users cannot incorrectly mark their own submissions as officially verified.
+
+All core manual functional tests passed.
+
+
+
+
 # HTML Validation
 
 The HTML was tested using the [W3C Markup Validation Service](https://validator.w3.org/) to check for structural and HTML errors.
