@@ -4011,6 +4011,236 @@ All Python files passed PEP8 validation
 ParkMate's checked custom Python code therefore successfully passed PEP8 style validation.
 
 
+# Lighthouse Testing
+
+Google Chrome Lighthouse was used to test the performance, accessibility, best practices and SEO quality of the main ParkMate pages.
+
+Unlike some of the other testing sections where representative screenshots were sufficient, Lighthouse testing was carried out on each main page individually because different pages contain different content and functionality.
+
+For example:
+
+- the Home page contains hero content and general navigation;
+- the Parking page contains multiple parking cards and images;
+- the Map page contains JavaScript and Leaflet map functionality;
+- authentication pages contain forms;
+- My ParkMate contains user-specific dashboard content; and
+- CRUD pages contain more complex form controls.
+
+Testing each page separately therefore provides more accurate evidence than assuming that one Lighthouse result represents the entire application.
+
+## Lighthouse Categories Tested
+
+For each page, I checked the following Lighthouse categories:
+
+- **Performance** - checks page loading and rendering performance;
+- **Accessibility** - checks common accessibility issues;
+- **Best Practices** - checks modern browser and security-related practices; and
+- **SEO** - checks whether the page follows basic search engine optimisation practices.
+
+## How I Carried Out Lighthouse Testing
+
+I used Google Chrome DevTools to test the deployed version of ParkMate.
+
+I followed these steps:
+
+1. Opened the deployed ParkMate page in Google Chrome.
+2. Pressed `F12` to open Chrome DevTools.
+3. Selected the **Lighthouse** tab.
+4. Selected:
+   - Performance;
+   - Accessibility;
+   - Best Practices; and
+   - SEO.
+5. Used the desktop Lighthouse test where appropriate.
+6. Generated the Lighthouse report.
+7. Recorded the scores.
+8. Reviewed any warnings or recommendations.
+9. Took a screenshot of the final Lighthouse result.
+10. Repeated the same process for each main ParkMate page.
+
+Where a page required authentication, I logged into ParkMate before running the Lighthouse test.
+
+## Pages Tested
+
+Lighthouse testing was carried out on the following ParkMate pages:
+
+- Home page;
+- Parking page;
+- Map page;
+- Parking detail page;
+- Registration page;
+- Login page;
+- My ParkMate dashboard;
+- Add Parking page;
+- Edit Parking page; and
+- Delete confirmation page.
+
+---
+
+## Home Page Lighthouse Testing
+
+The Home page was tested using Google Chrome Lighthouse.
+
+The page was checked for performance, accessibility, best practices and SEO.
+
+![ParkMate Home page Lighthouse testing](static/images/testing/lighthouse/home-lighthouse.png)
+
+
+
+---
+
+## Parking Page Lighthouse Testing
+
+The Parking page was tested separately because it contains multiple parking cards, parking information and images.
+
+![ParkMate Parking page Lighthouse testing](static/images/testing/lighthouse/parking-lighthouse.png)
+
+
+---
+
+## Map Page Lighthouse Testing
+
+The Map page was tested separately because it contains interactive JavaScript and Leaflet map functionality.
+
+This made it important to check whether the additional JavaScript, map tiles and markers affected the Lighthouse results.
+
+![ParkMate Map page Lighthouse testing](static/images/testing/lighthouse/map-lighthouse.png)
+
+---
+
+## Parking Detail Page Lighthouse Testing
+
+A parking detail page was tested to check the layout and content used when displaying an individual parking location.
+
+![ParkMate Parking detail page Lighthouse testing](static/images/testing/lighthouse/parking-detail-lighthouse.png)
+
+
+---
+
+## Registration Page Lighthouse Testing
+
+The Registration page was tested because forms have additional accessibility and usability requirements.
+
+![ParkMate Registration page Lighthouse testing](static/images/testing/lighthouse/registration-lighthouse.png)
+
+
+---
+
+## Login Page Lighthouse Testing
+
+The Login page was tested separately to check the authentication form and supporting page structure.
+
+![ParkMate Login page Lighthouse testing](static/images/testing/lighthouse/login-lighthouse.png)
+
+
+---
+
+## My ParkMate Dashboard Lighthouse Testing
+
+The My ParkMate dashboard was tested while logged into a user account.
+
+This page was tested separately because it contains account-specific content, saved parking locations and user-submitted parking information.
+
+![ParkMate dashboard Lighthouse testing](static/images/testing/lighthouse/dashboard-lighthouse.png)
+
+
+
+---
+
+## Add Parking Page Lighthouse Testing
+
+The Add Parking page was tested while authenticated.
+
+This page contains the main parking creation form and therefore required its own Lighthouse check.
+
+![ParkMate Add Parking page Lighthouse testing](static/images/testing/lighthouse/add-parking-lighthouse.png)
+
+
+---
+
+## Edit Parking Page Lighthouse Testing
+
+The Edit Parking page was tested using a parking record owned by the logged-in user.
+
+The page contains a pre-populated form and was checked independently from the Add Parking page.
+
+![ParkMate Edit Parking page Lighthouse testing](static/images/testing/lighthouse/edit-parking-lighthouse.png)
+
+
+
+---
+
+## Delete Confirmation Page Lighthouse Testing
+
+The Delete confirmation page was also tested.
+
+Although this is a simpler page, it was included because it forms part of the complete CRUD workflow.
+
+![ParkMate Delete confirmation Lighthouse testing](static/images/testing/lighthouse/delete-parking-lighthouse.png)
+
+
+---
+
+
+## Why Every Main Page Was Tested
+
+Unlike general browser compatibility or responsiveness testing, Lighthouse results can vary significantly between individual pages.
+
+Different ParkMate pages contain different types and amounts of content.
+
+For example:
+
+- the Parking page contains multiple cards and images;
+- the Map page loads external map tiles and JavaScript;
+- authentication pages contain forms;
+- My ParkMate contains personalised database content; and
+- CRUD pages contain form controls and validation.
+
+For this reason, each main ParkMate page was tested separately rather than using the Home page as evidence for the whole application.
+
+This provides clearer evidence that performance, accessibility, best practices and SEO were considered throughout the project.
+
+## Interpreting the Lighthouse Results
+
+The Lighthouse scores were reviewed alongside the detailed recommendations provided by Chrome DevTools.
+
+A score below `100` does not automatically mean that the page has failed.
+
+Lighthouse scores can be affected by factors such as:
+
+- network conditions;
+- browser extensions;
+- local device performance;
+- external resources;
+- third-party services;
+- map tiles;
+- external images; and
+- JavaScript execution.
+
+The purpose of the tests was therefore to identify significant issues and check that ParkMate achieved acceptable results across all four categories.
+
+Where Lighthouse identified an issue that could reasonably be addressed within ParkMate, the recommendation was reviewed and corrected where appropriate.
+
+## Lighthouse Testing Result
+
+Lighthouse testing was completed on all of the main ParkMate pages.
+
+The tests covered:
+
+- Performance;
+- Accessibility;
+- Best Practices; and
+- SEO.
+
+Testing each page separately provided a more accurate overview of the application's quality than relying on a single Home page Lighthouse report.
+
+The Map, authentication, dashboard and CRUD pages were specifically included because they contain functionality that is not present on the Home page.
+
+The final Lighthouse results demonstrated that ParkMate remained functional and achieved acceptable results across the main application pages.
+
+Any differences between page scores were reviewed in the context of the content and functionality used by that page.
+
+
 
 
 
