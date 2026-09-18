@@ -4242,6 +4242,304 @@ Any differences between page scores were reviewed in the context of the content 
 
 
 
+# Final UX Evaluation
+
+The final ParkMate user experience was evaluated after development and testing to determine whether the application meets the needs of its intended users.
+
+The evaluation focused on:
+
+- Information Hierarchy;
+- User Control;
+- User Feedback;
+- Consistency;
+- Confirmation; and
+- Accessibility.
+
+The aim was to ensure that users can understand the interface, find parking efficiently, complete important actions and recover from mistakes without unnecessary complexity.
+
+The final UX was reviewed alongside the manual functional testing, responsiveness testing, browser compatibility testing, accessibility testing and Lighthouse testing carried out during development.
+
+## Information Hierarchy
+
+ParkMate uses a clear information hierarchy so that the most important information and actions are presented first.
+
+The Home page introduces the purpose of ParkMate and directs users towards the main task of finding parking.
+
+The navigation provides access to the main areas of the application, including:
+
+- Home;
+- Parking;
+- Map;
+- My ParkMate; and
+- account-related functionality.
+
+On the Parking page, users are presented with search functionality before the parking results. This supports the main user goal of finding a suitable parking location quickly.
+
+Parking cards present important information in a structured format so that users can scan and compare locations.
+
+Important parking information includes:
+
+- parking name;
+- location;
+- price;
+- restrictions;
+- verification information; and
+- links to further details.
+
+The individual parking detail page then provides more detailed information when the user chooses a specific location.
+
+Account-related functionality is separated within My ParkMate, where users can view their saved parking and their own community parking submissions.
+
+This prevents account-management functionality from interfering with the main parking search experience.
+
+### Information Hierarchy Evaluation
+
+| UX Area | Evaluation |
+| --- | --- |
+| Main purpose | Finding parking is presented as the primary purpose of the application |
+| Navigation | Main areas of ParkMate are clearly separated |
+| Parking search | Search functionality appears before detailed parking results |
+| Parking cards | Important information is grouped into structured cards |
+| Parking details | Additional information is available without overloading the main results page |
+| Dashboard | Personal account information is separated within My ParkMate |
+| CRUD functionality | Add, Edit and Delete controls are provided in the relevant user-owned parking areas |
+
+The final information hierarchy helps users understand where they are, what information is available and what action they can take next.
+
+## User Control
+
+ParkMate gives users control over how they interact with the application.
+
+Users do not need to register simply to search for parking.
+
+Guest users can:
+
+- view parking locations;
+- search for parking;
+- use the interactive map;
+- view parking information; and
+- open individual parking detail pages.
+
+Registration is only required when the user wants to use account-specific functionality.
+
+Authenticated users can:
+
+- save parking locations;
+- remove saved parking;
+- access My ParkMate;
+- add community parking locations;
+- edit parking locations they own;
+- delete parking locations they own; and
+- log out when they have finished.
+
+Users remain in control of their own community submissions because ownership checks ensure that another normal user cannot edit or delete their parking.
+
+Users can also change search terms, clear searches and return to the full parking list without being locked into a previous search.
+
+The application therefore avoids forcing users into unnecessary account creation while still providing additional functionality to users who choose to register.
+
+### User Control Evaluation
+
+| UX Area | Evaluation |
+| --- | --- |
+| Guest access | Users can search and view parking without creating an account |
+| Registration | Account creation is only required for personal functionality |
+| Search | Users can change or clear searches |
+| Favourites | Users can save and remove parking locations |
+| CRUD | Users control their own community parking submissions |
+| Ownership | Users cannot modify another user's submissions |
+| Logout | Users can end their authenticated session when required |
+
+This provides users with appropriate control while protecting account-specific data and user-created content.
+
+## User Feedback
+
+ParkMate provides feedback when users perform important actions.
+
+Feedback is particularly important when users:
+
+- register;
+- log in;
+- log out;
+- submit forms;
+- save parking;
+- remove parking from favourites;
+- create parking;
+- edit parking;
+- delete parking;
+- enter invalid information; or
+- perform a search with no matching results.
+
+Form validation provides feedback when information is missing or invalid.
+
+Examples include:
+
+- required fields;
+- invalid password information;
+- mismatching passwords;
+- duplicate account information;
+- invalid parking coordinates; and
+- invalid parking capacity information.
+
+Parking search also provides feedback when no matching parking locations can be found rather than leaving the user with an unexplained empty page.
+
+Favourite controls change state so that users can identify whether a parking location has already been saved.
+
+After Create, Update and Delete operations, users are redirected to an appropriate page so that it is clear that the requested action has been completed.
+
+Error handling also prevents unexpected failures from exposing technical information to the user.
+
+### User Feedback Evaluation
+
+| User Action | Feedback Provided |
+| --- | --- |
+| Registration | Validation messages explain problems with submitted details |
+| Login | Invalid credentials are rejected and feedback is provided |
+| Parking search | Matching results or a no-results message are displayed |
+| Save favourite | Favourite state changes to show that the location is saved |
+| Remove favourite | Saved state is removed |
+| Add parking | Successful submission redirects to the created parking information |
+| Edit parking | Updated information is displayed after saving |
+| Delete parking | User is redirected after confirming deletion |
+| Invalid form data | Validation messages identify the problem |
+| Invalid page | Custom error handling provides a controlled response |
+
+The final application therefore provides users with feedback instead of requiring them to guess whether an action has succeeded or failed.
+
+## Consistency
+
+Consistency was maintained throughout ParkMate to make the interface easier to learn and use.
+
+The application uses a shared base layout so that common interface elements remain consistent between pages.
+
+Consistent elements include:
+
+- navigation;
+- typography;
+- colour scheme;
+- buttons;
+- page spacing;
+- cards;
+- forms;
+- headings;
+- footer;
+- verification styling; and
+- account controls.
+
+Buttons performing similar actions use consistent styling and positioning where appropriate.
+
+Forms also follow a consistent structure so that users who understand one form can more easily understand another.
+
+Parking cards use a repeated design pattern so that users can quickly recognise the type of information being presented.
+
+The responsive design maintains the same visual identity across desktop, tablet and mobile devices rather than presenting users with completely different interfaces.
+
+Browser compatibility testing also confirmed that the main design remained consistent across Google Chrome, Safari and Mozilla Firefox.
+
+### Consistency Evaluation
+
+| UX Area | Evaluation |
+| --- | --- |
+| Navigation | Shared navigation structure is used throughout the application |
+| Colours | ParkMate branding remains consistent |
+| Typography | Text styling and heading patterns are reused |
+| Buttons | Similar actions use recognisable controls |
+| Forms | Form layouts follow a consistent structure |
+| Parking cards | Parking information uses the same presentation pattern |
+| Dashboard | Uses the same visual language as the rest of ParkMate |
+| Responsive layout | Branding and functionality remain consistent across screen sizes |
+| Browser rendering | Main design remains consistent across tested browsers |
+
+This consistency reduces the amount of new interface behaviour users need to learn when moving between ParkMate pages.
+
+## Confirmation
+
+Confirmation is particularly important for actions that make significant changes to user data.
+
+ParkMate provides a dedicated confirmation step before a user deletes one of their parking submissions.
+
+Instead of deleting a parking record immediately when the Delete option is selected, the user is shown a Delete confirmation page.
+
+This gives the user an opportunity to review the action before permanently removing the record.
+
+The confirmation step helps protect users from accidental deletion.
+
+Create and Edit actions also provide confirmation through the resulting page and updated information.
+
+For example:
+
+- creating parking redirects the user to the created parking information;
+- editing parking displays the updated information; and
+- deleting parking redirects the user away from the removed record.
+
+Authentication state also provides confirmation through changes to the available navigation and account controls after Login or Logout.
+
+### Confirmation Evaluation
+
+| Action | Confirmation Behaviour |
+| --- | --- |
+| Add Parking | User is redirected to the created parking information |
+| Edit Parking | Updated information is displayed after submission |
+| Delete Parking | Dedicated confirmation page appears before deletion |
+| Confirm Delete | Parking is removed and the user is redirected |
+| Save Favourite | Favourite control changes state |
+| Remove Favourite | Favourite control returns to its unsaved state |
+| Login | Authenticated account functionality becomes available |
+| Logout | Account-only functionality is removed |
+
+The Delete confirmation is particularly important because deletion is a destructive action that cannot be treated in the same way as ordinary navigation.
+
+## Accessibility
+
+Accessibility was considered throughout the design and testing of ParkMate.
+
+The application was checked using both automated and manual accessibility testing.
+
+Google Chrome Lighthouse was used to identify common accessibility issues, while manual testing was used to check areas that cannot be fully assessed through an automated tool.
+
+Accessibility considerations included:
+
+- semantic HTML;
+- logical heading structure;
+- keyboard navigation;
+- visible keyboard focus;
+- form labels;
+- readable validation messages;
+- image alternative text;
+- readable text;
+- colour contrast;
+- responsive layouts;
+- descriptive controls; and
+- ensuring essential information is not communicated only through images or colour.
+
+Important parking information remains available as text.
+
+Users therefore do not need to rely on parking images to understand information such as the parking name, address, price or verification status.
+
+Forms use labels and validation feedback to help users understand the information required.
+
+Keyboard testing was also carried out to check that important controls could be reached without relying entirely on a mouse.
+
+Responsiveness testing supported accessibility by confirming that content remains usable on smaller screens and that users are not forced to navigate unnecessary horizontal scrolling.
+
+## Final UX Evaluation Result
+
+The final UX evaluation found that ParkMate provides a clear and consistent user experience centred around the main task of finding parking.
+
+The information hierarchy prioritises parking search and parking information while keeping account-specific functionality separate within My ParkMate.
+
+Users retain control because searching and viewing parking does not require registration, while additional account functionality is available to users who choose to register.
+
+Feedback is provided through form validation, search results, favourite states, redirects and error handling so that users can understand the outcome of their actions.
+
+Consistent navigation, styling, cards, forms and buttons help users learn the interface and move between pages without encountering unexpected design changes.
+
+Destructive actions such as deleting parking require confirmation before the change is completed, reducing the risk of accidental data loss.
+
+Accessibility was supported through semantic structure, keyboard navigation, form labels, text alternatives, readable content and automated and manual accessibility testing.
+
+Overall, the final ParkMate UX meets the intended goal of providing a straightforward parking search and management experience while maintaining user control, clear feedback, consistency and accessibility.
+
 
 
 # Bugs and Fixes
