@@ -2046,6 +2046,49 @@ Logging out successfully ends the authenticated session and removes access to ac
 All login and logout tests passed.
 
 
+## Parking Search Testing
+
+Parking search testing was carried out to ensure that users can search for parking locations using different types of search terms and receive relevant results.
+
+Testing included searching by town or city, postcode, parking name and local authority, as well as checking how ParkMate handles case differences and searches with no matching results.
+
+| Test | Expected Result | Actual Result | Status |
+| --- | --- | --- | --- |
+| Open the Parking page without entering a search | All active parking locations should be displayed | Parking locations were displayed correctly | Pass |
+| Search using a valid town or city | Parking locations matching the entered town or city should be displayed | Relevant parking locations were returned | Pass |
+| Search for Birmingham | Parking locations associated with Birmingham should be displayed | Birmingham parking locations were displayed correctly | Pass |
+| Search using a valid postcode | Parking locations matching the entered postcode should be displayed | Relevant postcode results were returned | Pass |
+| Search using a postcode area such as `ME1` | ParkMate should return parking locations associated with the postcode area | Relevant parking locations were displayed | Pass |
+| Search using a parking location name | Parking locations matching the entered name should be displayed | Matching parking locations were returned | Pass |
+| Search using part of a parking location name | ParkMate should return locations containing the entered search text | Partial-name search returned relevant results | Pass |
+| Search using a local authority name | Parking locations associated with the local authority should be displayed | Relevant local authority parking was returned | Pass |
+| Search using lowercase text | Search should work regardless of letter case | Lowercase search returned the correct results | Pass |
+| Search using uppercase text | Search should work regardless of letter case | Uppercase search returned the correct results | Pass |
+| Search using mixed uppercase and lowercase text | Search should continue to return matching parking locations | Mixed-case search worked correctly | Pass |
+| Search using a term with leading or trailing spaces | Search should still process the useful search text correctly | Relevant results were returned | Pass |
+| Search for a location with several matching parking records | All relevant matching parking locations should be displayed | Multiple matching parking locations were displayed | Pass |
+| Search for an exact parking location | The matching parking location should appear in the results | Exact parking location was displayed | Pass |
+| Search for a term that does not exist | No parking locations should be returned and a clear no-results message should be displayed | No-results message was displayed correctly | Pass |
+| Submit an empty search | The Parking page should continue to display the available parking locations | Available parking locations remained visible | Pass |
+| Change the search term after a previous search | Results should update to match the new search term | Search results updated correctly | Pass |
+| Clear the search term | The full parking list should become available again | Parking list returned correctly | Pass |
+| Select a parking result | The user should be taken to the correct parking detail page | Correct parking detail page opened | Pass |
+| Search while logged out | Parking search should remain available to guest users | Search worked correctly without authentication | Pass |
+| Search while logged in | Parking search should continue to work for authenticated users | Search worked correctly while logged in | Pass |
+| Search and then save a parking location while logged in | The matching location should be available to save to favourites | Parking location was successfully available for saving | Pass |
+| Search after adding a community parking location | The newly added parking record should appear when searched using matching details | Community parking location appeared in search results | Pass |
+| Search results display parking information | Each result should display enough information for the user to identify the parking location | Parking information was displayed correctly | Pass |
+| Search results link to the correct record | Selecting a search result should not open a different parking location | Correct parking record was opened | Pass |
+
+### Parking Search Testing Result
+
+Parking search testing confirmed that ParkMate can successfully return relevant parking locations using different search terms, including town or city names, postcodes, parking names and local authority information.
+
+The search functionality works regardless of uppercase or lowercase input and supports partial search terms where appropriate. Searches with no matching parking locations are handled by displaying clear feedback instead of an empty or broken page.
+
+Parking search is available to both guest and registered users, allowing visitors to find and view parking without needing to create an account.
+
+All parking search tests passed.
 
 
 
