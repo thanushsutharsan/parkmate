@@ -1,33 +1,27 @@
+/*jslint browser*/
+
 // loads parking images from wikimedia commons
-document.addEventListener("DOMContentLoaded", () => {
-    const fallback =
-        document.body.dataset.parkingFallback || "";
-
-    const images = document.querySelectorAll(
-        "[data-parking-image]"
-    );
-
-    const commonsEndpoint =
-        "https://commons.wikimedia.org/w/api.php";
+document.addEventListener("DOMContentLoaded", function () {
+    const fallback = document.body.dataset.parkingFallback || "";
+    const images = document.querySelectorAll("[data-parking-image]");
+    const commonsEndpoint = "https://commons.wikimedia.org/w/api.php";
 
     async function searchCommons(searchText) {
         const params = new URLSearchParams({
             action: "query",
+            format: "json",
             generator: "search",
-            gsrsearch: searchText,
-            gsrnamespace: "6",
             gsrlimit: "10",
-            prop: "imageinfo",
+            gsrnamespace: "6",
+            gsrsearch: searchText,
             iiprop: "url",
             iiurlwidth: "900",
-            format: "json",
             origin: "*",
+            prop: "imageinfo"
         });
 
         try {
-            const response = await fetch(
-                `${commonsEndpoint}?${params}`
-            );
+            const response = await fetch(`${commonsEndpoint}?${params}`);
 
             if (!response.ok) {
                 return null;
@@ -39,61 +33,48 @@ document.addEventListener("DOMContentLoaded", () => {
                 return null;
             }
 
-            const pages = Object.values(
-                data.query.pages
-            );
+            const pages = Object.values(data.query.pages);
 
             for (const page of pages) {
-                const info =
-                    page.imageinfo &&
-                    page.imageinfo[0];
+                const info = page.imageinfo && page.imageinfo[0];
 
-                if (!info) {
-                    continue;
-                }
+                if (info) {
+                    const imageUrl = info.thumburl || info.url;
 
-                const imageUrl =
-                    info.thumburl ||
-                    info.url;
-
-                if (imageUrl) {
-                    return imageUrl;
+                    if (imageUrl) {
+                        return imageUrl;
+                    }
                 }
             }
-        } catch (error) {
+        } catch {
             return null;
         }
 
         return null;
     }
 
-    async function searchNearby(
-        latitude,
-        longitude
-    ) {
+    async function searchNearby(latitude, longitude) {
         if (!latitude || !longitude) {
             return null;
         }
 
         const params = new URLSearchParams({
             action: "query",
+            format: "json",
             generator: "geosearch",
-            ggsprimary: "all",
-            ggsnamespace: "6",
-            ggsradius: "1000",
-            ggslimit: "10",
             ggscoord: `${latitude}|${longitude}`,
-            prop: "imageinfo",
+            ggslimit: "10",
+            ggsnamespace: "6",
+            ggsprimary: "all",
+            ggsradius: "1000",
             iiprop: "url",
             iiurlwidth: "900",
-            format: "json",
             origin: "*",
+            prop: "imageinfo"
         });
 
         try {
-            const response = await fetch(
-                `${commonsEndpoint}?${params}`
-            );
+            const response = await fetch(`${commonsEndpoint}?${params}`);
 
             if (!response.ok) {
                 return null;
@@ -105,28 +86,20 @@ document.addEventListener("DOMContentLoaded", () => {
                 return null;
             }
 
-            const pages = Object.values(
-                data.query.pages
-            );
+            const pages = Object.values(data.query.pages);
 
             for (const page of pages) {
-                const info =
-                    page.imageinfo &&
-                    page.imageinfo[0];
+                const info = page.imageinfo && page.imageinfo[0];
 
-                if (!info) {
-                    continue;
-                }
+                if (info) {
+                    const imageUrl = info.thumburl || info.url;
 
-                const imageUrl =
-                    info.thumburl ||
-                    info.url;
-
-                if (imageUrl) {
-                    return imageUrl;
+                    if (imageUrl) {
+                        return imageUrl;
+                    }
                 }
             }
-        } catch (error) {
+        } catch {
             return null;
         }
 
@@ -134,36 +107,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     async function loadImage(image) {
-        const fullSearch =
-            image.dataset.parkingImage || "";
-
-        const latitude =
-            image.dataset.latitude || "";
-
-        const longitude =
-            image.dataset.longitude || "";
-
+        const fullSearch = image.dataset.parkingImage || "";
+        const latitude = image.dataset.latitude || "";
+        const longitude = image.dataset.longitude || "";
         let commonsImage = null;
 
         if (fullSearch) {
-            commonsImage =
-                await searchCommons(fullSearch);
+            commonsImage = await searchCommons(fullSearch);
         }
 
         if (!commonsImage && fullSearch) {
-            const locationName =
-                fullSearch.split(",")[0];
-
-            commonsImage =
-                await searchCommons(locationName);
+            const locationName = fullSearch.split(",")[0];
+            commonsImage = await searchCommons(locationName);
         }
 
         if (!commonsImage) {
-            commonsImage =
-                await searchNearby(
-                    latitude,
-                    longitude
-                );
+            commonsImage = await searchNearby(latitude, longitude);
         }
 
         if (commonsImage) {
@@ -176,7 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    images.forEach((image) => {
+    images.forEach(function (image) {
         loadImage(image);
     });
 });
