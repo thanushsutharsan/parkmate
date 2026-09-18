@@ -2648,6 +2648,176 @@ Manual browser resizing was also used to confirm that the layout continued to re
 All responsiveness tests passed.
 
 
+## Browser Compatibility Testing
+
+Browser compatibility testing was carried out to make sure that ParkMate works consistently across the browsers available to me.
+
+The application was tested using:
+
+- Google Chrome
+- Safari
+- Mozilla Firefox
+
+These were the browsers available on my device, so I tested ParkMate in each of them rather than including results for browsers I had not manually tested.
+
+### How I Tested Browser Compatibility
+
+I tested the deployed ParkMate application separately in Google Chrome, Safari and Mozilla Firefox.
+
+I used the following process:
+
+1. Opened the deployed ParkMate website in the browser.
+2. Loaded the Home page.
+3. Checked that the navigation displayed correctly.
+4. Checked that text, buttons, images and page sections were positioned correctly.
+5. Opened the Parking page.
+6. Tested parking search.
+7. Checked that parking cards and images displayed correctly.
+8. Opened a parking detail page.
+9. Opened the interactive Map page.
+10. Checked that the map loaded correctly.
+11. Checked that map controls and parking markers were usable.
+12. Tested the Registration page.
+13. Tested Login and Logout functionality.
+14. Opened the My ParkMate dashboard while authenticated.
+15. Checked favourites functionality.
+16. Tested the Add Parking form.
+17. Checked Edit and Delete functionality for parking records owned by the logged-in user.
+18. Checked that forms, buttons and validation messages displayed correctly.
+19. Checked for unexpected layout or JavaScript issues.
+20. Repeated the same checks in all three browsers.
+
+### Why I Tested Chrome, Safari and Firefox
+
+Google Chrome, Safari and Mozilla Firefox were the browsers available to me during development and testing.
+
+Testing across these browsers provided useful compatibility coverage because they use different browser engines.
+
+This helped me check that ParkMate's layout, CSS, forms and JavaScript functionality were not dependent on the behaviour of a single browser.
+
+The same main features were manually checked in all three browsers.
+
+### Why I Only Included Home Page Screenshots
+
+I used the Home page screenshots as the visual evidence for browser compatibility because the same page provides a consistent comparison between Chrome, Safari and Firefox.
+
+The Home page includes several shared elements that are used throughout ParkMate, including:
+
+- the main navigation;
+- typography;
+- buttons;
+- images;
+- layout containers;
+- spacing;
+- colours; and
+- the footer.
+
+Using the same page in each browser makes it easier to compare how ParkMate is rendered and identify any browser-specific visual differences.
+
+I did not include screenshots of every page in every browser because this would create a large amount of repetitive evidence.
+
+However, the other main ParkMate pages and functionality were still manually tested in Chrome, Safari and Firefox, including:
+
+- Parking search;
+- parking cards;
+- parking detail pages;
+- interactive map;
+- Registration;
+- Login and Logout;
+- My ParkMate dashboard;
+- favourites;
+- Add Parking;
+- Edit Parking;
+- Delete Parking; and
+- form validation.
+
+The Home page screenshots are therefore representative visual evidence, while the results table records the wider manual browser testing carried out across the application.
+
+### Google Chrome Compatibility Testing
+
+ParkMate was tested in Google Chrome.
+
+The Home page loaded correctly and the layout remained consistent with the intended design.
+
+Navigation, images, buttons, parking search, authentication, forms and the interactive map also worked correctly.
+
+![ParkMate Google Chrome browser compatibility testing](static/images/testing/browser-compatibility/chrome-home-compatibility.png)
+
+### Safari Compatibility Testing
+
+ParkMate was tested in Safari.
+
+The Home page, navigation, typography and images displayed correctly.
+
+Parking search, forms, authentication, dashboard functionality and the interactive map also remained usable.
+
+![ParkMate Safari browser compatibility testing](static/images/testing/browser-compatibility/safari-home-compatibility.png)
+
+### Mozilla Firefox Compatibility Testing
+
+ParkMate was tested in Mozilla Firefox.
+
+The Home page, navigation, typography, buttons and images displayed correctly.
+
+Parking search, forms, authentication, dashboard functionality and the interactive map also remained usable.
+
+![ParkMate Mozilla Firefox browser compatibility testing](static/images/testing/browser-compatibility/firefox-home-compatibility.png)
+
+### Browser Compatibility Testing Results
+
+| Test | Expected Result | Actual Result | Status |
+| --- | --- | --- | --- |
+| Load Home page in Chrome | Page should load with the intended layout and styling | Home page displayed correctly | Pass |
+| Test navigation in Chrome | Navigation should remain fully usable | Navigation worked correctly | Pass |
+| Test Parking page in Chrome | Parking information and search should work | Parking functionality worked correctly | Pass |
+| Test Map page in Chrome | Interactive map should load and remain usable | Map loaded and worked correctly | Pass |
+| Test forms in Chrome | Form fields and validation should operate correctly | Forms worked correctly | Pass |
+| Test authentication in Chrome | Registration, login and logout should function correctly | Authentication worked correctly | Pass |
+| Test My ParkMate in Chrome | Dashboard should remain accessible and usable | Dashboard worked correctly | Pass |
+| Test favourites in Chrome | Users should be able to save and remove favourites | Favourites worked correctly | Pass |
+| Test CRUD functionality in Chrome | Add, edit and delete functionality should operate correctly | CRUD functionality worked correctly | Pass |
+| Load Home page in Safari | Page should load with the intended layout and styling | Home page displayed correctly | Pass |
+| Test navigation in Safari | Navigation should remain fully usable | Navigation worked correctly | Pass |
+| Test Parking page in Safari | Parking information and search should work | Parking functionality worked correctly | Pass |
+| Test Map page in Safari | Interactive map should load and remain usable | Map loaded and worked correctly | Pass |
+| Test forms in Safari | Form fields and validation should operate correctly | Forms worked correctly | Pass |
+| Test authentication in Safari | Registration, login and logout should function correctly | Authentication worked correctly | Pass |
+| Test My ParkMate in Safari | Dashboard should remain accessible and usable | Dashboard worked correctly | Pass |
+| Test favourites in Safari | Users should be able to save and remove favourites | Favourites worked correctly | Pass |
+| Test CRUD functionality in Safari | Add, edit and delete functionality should operate correctly | CRUD functionality worked correctly | Pass |
+| Load Home page in Firefox | Page should load with the intended layout and styling | Home page displayed correctly | Pass |
+| Test navigation in Firefox | Navigation should remain fully usable | Navigation worked correctly | Pass |
+| Test Parking page in Firefox | Parking information and search should work | Parking functionality worked correctly | Pass |
+| Test Map page in Firefox | Interactive map should load and remain usable | Map loaded and worked correctly | Pass |
+| Test forms in Firefox | Form fields and validation should operate correctly | Forms worked correctly | Pass |
+| Test authentication in Firefox | Registration, login and logout should function correctly | Authentication worked correctly | Pass |
+| Test My ParkMate in Firefox | Dashboard should remain accessible and usable | Dashboard worked correctly | Pass |
+| Test favourites in Firefox | Users should be able to save and remove favourites | Favourites worked correctly | Pass |
+| Test CRUD functionality in Firefox | Add, edit and delete functionality should operate correctly | CRUD functionality worked correctly | Pass |
+| Compare layout across browsers | ParkMate should remain visually consistent | Layout remained consistent | Pass |
+| Compare parking search | Search should behave consistently across browsers | Search behaviour remained consistent | Pass |
+| Compare map functionality | Map controls and markers should work across browsers | Map functionality remained consistent | Pass |
+| Compare form behaviour | Forms and validation should work consistently | Form behaviour remained consistent | Pass |
+| Check JavaScript functionality | JavaScript features should work without browser-specific failures | JavaScript functionality worked correctly | Pass |
+| Check horizontal scrolling | Pages should not unexpectedly overflow | No unexpected horizontal scrolling was found | Pass |
+
+### Browser Compatibility Testing Result
+
+Browser compatibility testing confirmed that ParkMate works consistently in Google Chrome, Safari and Mozilla Firefox.
+
+The main application functionality was manually checked in all three browsers, including navigation, parking search, parking details, the interactive map, authentication, forms, favourites, My ParkMate and CRUD functionality.
+
+Home page screenshots were used as representative visual evidence because using the same page provides a clearer comparison of layout and styling between the three browsers.
+
+Screenshots were not taken for every individual page because this would create repetitive evidence. The remaining application functionality was still manually tested in each browser and recorded in the browser compatibility testing table.
+
+No significant browser-specific layout or functionality issues were identified during testing.
+
+All Chrome, Safari and Firefox browser compatibility tests passed.
+
+
+
+
 
 # HTML Validation
 
