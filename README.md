@@ -2425,6 +2425,228 @@ After the test was completed, request blocking was disabled and the page was rel
 All external API failure tests passed.
 
 
+## Responsiveness Testing
+
+Responsiveness testing was carried out to make sure that ParkMate remains usable and visually consistent across different screen sizes.
+
+The application was tested at desktop, tablet and mobile widths to check that navigation, text, forms, parking cards, buttons, images and the interactive map adapt correctly without content overlapping or extending outside the screen.
+
+### How I Tested Responsiveness
+
+I tested ParkMate using Chrome DevTools device testing.
+
+I used the following steps:
+
+1. Opened ParkMate in Google Chrome.
+2. Pressed `F12` to open Chrome DevTools.
+3. Selected the **Toggle Device Toolbar** option.
+4. Tested the application at different screen widths.
+5. Reloaded the relevant pages at each selected screen size.
+6. Checked that navigation remained accessible.
+7. Checked that text remained readable.
+8. Checked that buttons and links remained usable.
+9. Checked that parking cards resized correctly.
+10. Checked that forms remained inside the viewport.
+11. Checked that images resized without overflowing their containers.
+12. Checked that the map remained usable on smaller screens.
+13. Checked that the My ParkMate dashboard remained usable on mobile.
+14. Checked that no unnecessary horizontal scrolling appeared.
+15. Manually resized the browser between the main test sizes to check the layout between breakpoints.
+
+The main screen sizes tested were:
+
+- Desktop
+- Tablet
+- Mobile
+
+Responsiveness testing was carried out across the main page types rather than taking screenshots of every individual page at every screen size.
+
+The pages checked included:
+
+- Home page;
+- Parking page;
+- Map page;
+- Parking detail page;
+- Registration page;
+- Login page;
+- My ParkMate dashboard;
+- Add Parking page;
+- Edit Parking page; and
+- Delete confirmation page.
+
+### Why Some Pages Were Only Documented at Mobile Width
+
+The Home page was documented at desktop, tablet and mobile widths because it contains the main site layout and navigation and provides a clear overview of how ParkMate changes across the three main screen sizes.
+
+The remaining feature-specific pages were manually checked at multiple widths, but additional screenshots focused mainly on the mobile layout.
+
+This was done because mobile screens provide the least available horizontal space and are therefore more likely to reveal responsiveness problems such as:
+
+- content overflowing the viewport;
+- buttons becoming difficult to use;
+- forms extending outside the screen;
+- parking cards becoming too wide;
+- navigation overlapping;
+- map controls becoming inaccessible; and
+- text becoming difficult to read.
+
+If a complex page such as the Parking page, Map page, form or My ParkMate dashboard remains usable at mobile width, this provides strong evidence that the layout can adapt to the most restrictive screen size.
+
+Using representative screenshots also avoids repeating very similar evidence for every page at desktop, tablet and mobile widths while still showing that the application's key layouts were tested.
+
+Desktop and tablet layouts were still manually checked as part of the overall responsiveness testing, even where a separate screenshot was not included in the README.
+
+### Desktop Responsiveness Testing
+
+The Home page was tested on a desktop screen.
+
+At this size, ParkMate displayed the full navigation and page content with sufficient spacing. Text, buttons, images and page sections remained correctly positioned.
+
+![ParkMate desktop Home page responsiveness testing](static/images/testing/reponsiveness/desktop-home-responsiveness.png)
+
+### Tablet Responsiveness Testing
+
+The Home page was tested at tablet width.
+
+I checked that the layout adjusted correctly to the reduced width and that the content remained readable and usable.
+
+Navigation, text, buttons and page sections remained within the viewport without overlapping.
+
+![ParkMate tablet Home page responsiveness testing](static/images/testing/reponsiveness/tablet-home-responsiveness.png)
+
+### Mobile Responsiveness Testing
+
+The Home page was tested at mobile width.
+
+The navigation adapted to the smaller screen and the page content remained readable.
+
+Buttons, images and text resized correctly to fit the available screen width.
+
+![ParkMate mobile Home page responsiveness testing](static/images/testing/reponsiveness/mobile-home-responsiveness.png)
+
+### Parking Page Responsiveness Testing
+
+The Parking page was tested at mobile width to make sure that search controls, parking cards, parking information and images remained usable on a smaller screen.
+
+I checked that:
+
+- search controls remained accessible;
+- parking cards fitted within the viewport;
+- parking images resized correctly;
+- parking text remained readable;
+- buttons remained usable; and
+- no unnecessary horizontal scrolling appeared.
+
+![ParkMate mobile Parking page responsiveness testing](static/images/testing/reponsiveness/mobile-parking-responsiveness.png)
+
+### Map Responsiveness Testing
+
+The interactive parking map was tested at mobile width.
+
+I checked that:
+
+- the map remained visible;
+- map controls remained accessible;
+- parking markers could still be selected;
+- marker information could still be viewed;
+- the map remained inside its container; and
+- the map did not cause unnecessary horizontal scrolling.
+
+![ParkMate mobile Map page responsiveness testing](static/images/testing/reponsiveness/mobile-map-responsiveness.png)
+
+### Form Responsiveness Testing
+
+A form page was tested at mobile width to confirm that users could still enter and submit information without layout problems.
+
+Registration, Login, Add Parking and Edit Parking forms were also manually checked.
+
+I confirmed that:
+
+- input fields remained inside the screen;
+- labels remained readable;
+- validation messages remained visible;
+- buttons remained accessible;
+- form fields did not overlap;
+- text remained readable; and
+- forms could be completed without horizontal scrolling.
+
+![ParkMate mobile form responsiveness testing](static/images/testing/reponsiveness/mobile-form-responsiveness.png)
+
+### Mobile Dashboard Responsiveness Testing
+
+The My ParkMate dashboard was tested at mobile width to make sure that account-specific information remained accessible on a smaller screen.
+
+I checked that:
+
+- the dashboard fitted within the mobile viewport;
+- saved parking locations remained visible;
+- user-submitted parking locations remained accessible;
+- parking cards resized correctly;
+- buttons and links remained usable;
+- text remained readable;
+- dashboard sections did not overlap; and
+- no unnecessary horizontal scrolling appeared.
+
+![ParkMate mobile dashboard responsiveness testing](static/images/testing/reponsiveness/mobile-dashboard-responsiveness.png)
+
+### Responsiveness Testing Results
+
+| Test | Expected Result | Actual Result | Status |
+| --- | --- | --- | --- |
+| View ParkMate at desktop width | Full desktop layout should display correctly | Desktop layout displayed correctly | Pass |
+| View ParkMate at tablet width | Tablet layout should remain readable and usable | Tablet layout displayed correctly | Pass |
+| View ParkMate at mobile width | Mobile layout should fit within the viewport | Mobile layout displayed correctly | Pass |
+| Resize browser manually | Layout should respond correctly between the main test sizes | Content adjusted correctly | Pass |
+| Test navigation on desktop | Full navigation should remain accessible | Navigation displayed correctly | Pass |
+| Test navigation on tablet | Navigation should adapt to the reduced screen width | Navigation remained accessible | Pass |
+| Test navigation on mobile | Navigation should remain usable without overflowing | Mobile navigation worked correctly | Pass |
+| Test Home page on mobile | Hero content and page sections should fit within the viewport | Home page displayed correctly | Pass |
+| Test Parking page on mobile | Parking search and results should remain accessible | Parking page remained usable | Pass |
+| Test parking cards on mobile | Cards should resize without extending outside the viewport | Parking cards resized correctly | Pass |
+| Test parking images on mobile | Images should resize within their containers | Images remained correctly sized | Pass |
+| Test parking text on mobile | Parking information should remain readable | Text remained readable | Pass |
+| Test parking buttons on mobile | Buttons should remain visible and usable | Buttons displayed correctly | Pass |
+| Test parking search on mobile | Search controls should remain usable | Search remained fully functional | Pass |
+| Test Map page on mobile | Map should remain usable without overflowing | Mobile map remained usable | Pass |
+| Select map markers on mobile | Marker information should remain accessible | Marker information displayed correctly | Pass |
+| Test Login page on mobile | Login form should fit within the screen | Login form displayed correctly | Pass |
+| Test Registration page on mobile | Registration form should remain usable | Registration form displayed correctly | Pass |
+| Test Add Parking form on mobile | All form controls should remain accessible | Add Parking form displayed correctly | Pass |
+| Test Edit Parking form on mobile | Existing form values and controls should remain usable | Edit form displayed correctly | Pass |
+| Test validation messages on mobile | Validation messages should remain visible and readable | Validation messages displayed correctly | Pass |
+| Test My ParkMate dashboard on mobile | Saved and submitted parking information should remain accessible | Dashboard remained usable | Pass |
+| Test dashboard cards on mobile | Dashboard cards should fit within the viewport | Dashboard cards resized correctly | Pass |
+| Test dashboard buttons on mobile | Dashboard controls should remain accessible | Dashboard controls remained usable | Pass |
+| Test Delete confirmation on mobile | Confirmation message and controls should fit the screen | Delete page displayed correctly | Pass |
+| Test Parking detail page on mobile | Parking information and controls should fit within the viewport | Parking detail page displayed correctly | Pass |
+| Check text wrapping | Long text should wrap instead of overflowing | Text wrapped correctly | Pass |
+| Check horizontal scrolling | Pages should not require unnecessary horizontal scrolling | No unnecessary horizontal scrolling was found | Pass |
+| Check buttons at smaller widths | Buttons should remain usable and inside the viewport | Buttons remained accessible | Pass |
+| Check images at different widths | Images should resize without breaking their containers | Images resized correctly | Pass |
+| Check footer on mobile | Footer content should remain readable and correctly positioned | Footer displayed correctly | Pass |
+
+### Responsiveness Testing Result
+
+Responsiveness testing confirmed that ParkMate adapts correctly across desktop, tablet and mobile screen sizes.
+
+The Home page was documented at all three main screen sizes to demonstrate the overall responsive layout and navigation changes.
+
+Feature-specific pages were also manually checked across different widths, while screenshots focused mainly on mobile because this is the most restrictive screen size and therefore provides stronger evidence of how well complex layouts adapt.
+
+The main ParkMate page types were tested, including the Home page, Parking page, Map page, parking details, authentication pages, My ParkMate dashboard and CRUD forms.
+
+Navigation, parking cards, images, search functionality, forms, buttons and text adapted correctly when the available screen width was reduced.
+
+The interactive map also remained usable at mobile width, with parking markers and controls remaining accessible.
+
+The My ParkMate dashboard remained usable on mobile, with saved parking and user-submitted parking information fitting correctly within the smaller viewport.
+
+Forms remained inside the viewport and users could continue to register, log in and manage parking information without unnecessary horizontal scrolling.
+
+Manual browser resizing was also used to confirm that the layout continued to respond correctly between the tested screen sizes.
+
+All responsiveness tests passed.
+
 
 
 # HTML Validation
