@@ -2136,6 +2136,66 @@ Favourite functionality is protected so that guest users cannot save parking loc
 All favourites tests passed.
 
 
+## CRUD Testing
+
+CRUD testing was carried out to ensure that authenticated users can create, read, update and delete their own parking submissions correctly.
+
+Testing also confirmed that users cannot edit or delete parking records created by other users and that the correct validation and permissions are applied throughout the CRUD process.
+
+| Test | Expected Result | Actual Result | Status |
+| --- | --- | --- | --- |
+| Open Add Parking while logged out | The user should be redirected to the login page | Unauthenticated user was redirected to login | Pass |
+| Open Add Parking while logged in | The Add Parking form should be displayed | Add Parking form loaded correctly | Pass |
+| Create a parking location with valid details | A new parking record should be created successfully | Parking location was created successfully | Pass |
+| Submit Add Parking with required fields missing | The form should not submit and validation messages should be displayed | Required-field validation was displayed | Pass |
+| Enter a valid parking name | The parking name should be accepted | Parking name was accepted correctly | Pass |
+| Enter a valid address | The address should be accepted | Address was accepted correctly | Pass |
+| Enter a valid postcode | The postcode should be accepted and stored correctly | Postcode was accepted successfully | Pass |
+| Enter a lowercase postcode | The postcode should be normalised to uppercase | Postcode was stored using uppercase formatting | Pass |
+| Enter valid UK latitude and longitude values | The coordinates should be accepted | Valid UK coordinates were accepted | Pass |
+| Enter a latitude outside the supported UK range | The form should reject the invalid coordinate | Invalid latitude was rejected | Pass |
+| Enter a longitude outside the supported UK range | The form should reject the invalid coordinate | Invalid longitude was rejected | Pass |
+| Enter a disabled-space value greater than total spaces | The form should reject the invalid values | Invalid disabled-space value was rejected | Pass |
+| Create a community parking location | The parking record should be created as a community submission | Community parking location was created correctly | Pass |
+| Create parking as a normal user | The user should not be able to mark the parking as Council/NPP verified | Community submission remained unverified | Pass |
+| Successful Create redirect | After creating parking, the user should be redirected to the parking detail page | User was redirected correctly | Pass |
+| View newly created parking | The new parking record should display the submitted information | Created parking details were displayed correctly | Pass |
+| View parking from the Parking page | The created parking should appear in the available parking records where appropriate | Created parking record was visible | Pass |
+| View parking from My ParkMate | The user's own parking submission should appear in My ParkMate | Parking submission appeared correctly | Pass |
+| View a parking record owned by another user | The record should remain viewable where public viewing is allowed | Parking details displayed correctly | Pass |
+| Open Edit for own parking | The edit form should load with the existing parking information | Edit form loaded with existing values | Pass |
+| Update the parking name | The new parking name should be saved | Parking name was updated successfully | Pass |
+| Update parking details | The changed details should be stored and displayed | Parking information was updated correctly | Pass |
+| Submit invalid information while editing | The update should be prevented and validation messages should be displayed | Invalid update was rejected | Pass |
+| Correct an invalid edit and resubmit | The updated details should be saved successfully | Corrected information was saved | Pass |
+| Successful Update redirect | After editing, the user should be redirected to the updated parking detail page | User was redirected correctly | Pass |
+| Attempt to edit another user's parking | The update should be prevented | Unauthorised editing was prevented | Pass |
+| Directly access another user's edit URL | The user should not be allowed to modify the record | Access to unauthorised editing was blocked | Pass |
+| Open Delete for own parking | A confirmation page should be displayed before deletion | Delete confirmation page displayed correctly | Pass |
+| Cancel deletion | The parking record should remain unchanged | Parking record remained available | Pass |
+| Confirm deletion | The parking record should be permanently removed | Parking location was deleted successfully | Pass |
+| Successful Delete redirect | After deletion, the user should be redirected away from the removed record | User was redirected correctly | Pass |
+| Check My ParkMate after deletion | The deleted parking record should no longer appear | Deleted parking was removed from My ParkMate | Pass |
+| Check Parking page after deletion | The deleted parking record should no longer appear in available records | Deleted parking was no longer displayed | Pass |
+| Attempt to delete another user's parking | Deletion should be prevented | Unauthorised deletion was prevented | Pass |
+| Directly access another user's delete URL | The parking record should remain protected from unauthorised deletion | Delete access was blocked | Pass |
+| Refresh after creating parking | The created parking record should still exist | Parking record remained stored correctly | Pass |
+| Log out after creating parking | The parking record should remain stored in the database | Parking record remained available | Pass |
+| Log back into the same account | The user's parking submission should still appear in My ParkMate | Parking submission remained linked to the account | Pass |
+| Complete CRUD workflow | The user should be able to create, view, edit and delete their own parking record successfully | Full CRUD workflow completed correctly | Pass |
+
+### CRUD Testing Result
+
+CRUD testing confirmed that ParkMate allows authenticated users to successfully create, read, update and delete their own parking submissions.
+
+Form validation prevents invalid parking information from being stored, including invalid UK coordinates and disabled-space values that exceed the total number of spaces.
+
+Ownership checks also protect user-created parking records by preventing normal users from editing or deleting submissions that belong to another account.
+
+Community parking submissions remain separate from officially verified Council/NPP parking, ensuring that normal users cannot incorrectly mark their own records as verified.
+
+All CRUD tests passed.
+
 
 # HTML Validation
 
