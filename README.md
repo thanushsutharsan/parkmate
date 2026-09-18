@@ -2196,6 +2196,64 @@ Community parking submissions remain separate from officially verified Council/N
 
 All CRUD tests passed.
 
+## Authentication and Authorisation Testing
+
+Authentication and authorisation testing was carried out to ensure that ParkMate correctly controls access to protected features and prevents users from modifying data that does not belong to them.
+
+Testing covered logged-in and logged-out behaviour, protected pages, ownership checks and user-specific functionality.
+
+| Test | Expected Result | Actual Result | Status |
+| --- | --- | --- | --- |
+| Access the home page while logged out | The home page should remain publicly accessible | Home page loaded correctly | Pass |
+| Access the Parking page while logged out | Parking search and viewing should remain publicly accessible | Parking page loaded correctly | Pass |
+| Access the Map page while logged out | The map should remain publicly accessible | Map page loaded correctly | Pass |
+| Access a parking detail page while logged out | Public parking information should remain viewable | Parking detail page loaded correctly | Pass |
+| Access My ParkMate while logged out | The user should be redirected to the login page | Unauthenticated user was redirected to login | Pass |
+| Access Add Parking while logged out | The user should be required to log in | Unauthenticated user was redirected to login | Pass |
+| Attempt to save a favourite while logged out | The user should be required to authenticate before saving parking | Unauthenticated user was redirected to login | Pass |
+| Attempt to access Edit Parking while logged out | The user should be required to log in before editing parking | Unauthenticated edit access was prevented | Pass |
+| Attempt to access Delete Parking while logged out | The user should be required to log in before deleting parking | Unauthenticated delete access was prevented | Pass |
+| Log in with a valid account | The user should become authenticated | User was successfully authenticated | Pass |
+| Access My ParkMate after login | The dashboard should become available | My ParkMate loaded correctly | Pass |
+| Access Add Parking after login | The Add Parking form should become available | Add Parking page loaded correctly | Pass |
+| Save a favourite after login | The selected parking location should be stored for the authenticated user | Favourite was saved successfully | Pass |
+| Create parking after login | The authenticated user should be able to create a parking submission | Parking record was created successfully | Pass |
+| View own parking submission | The user should be able to view their created parking record | Own parking record displayed correctly | Pass |
+| Edit own parking submission | The user should be allowed to modify their own parking record | Own parking record was updated successfully | Pass |
+| Delete own parking submission | The user should be allowed to delete their own parking record | Own parking record was deleted successfully | Pass |
+| Attempt to edit another user's parking | The user should not be allowed to modify a parking record owned by another user | Unauthorised edit was prevented | Pass |
+| Attempt to delete another user's parking | The user should not be allowed to delete a parking record owned by another user | Unauthorised deletion was prevented | Pass |
+| Directly enter another user's edit URL | Ownership checks should prevent modification even when the URL is entered manually | Direct edit access was blocked | Pass |
+| Directly enter another user's delete URL | Ownership checks should prevent deletion even when the URL is entered manually | Direct delete access was blocked | Pass |
+| View another user's parking record | Public parking information should remain viewable even when the record belongs to another user | Parking information remained viewable | Pass |
+| User account separation | Data belonging to one user should not automatically appear in another user's account area | User-specific data remained separated | Pass |
+| Favourite account separation | Favourites saved by one user should not appear in another user's favourites | Favourites remained linked to the correct user | Pass |
+| Parking ownership association | A community parking submission should remain linked to the account that created it | Parking ownership was stored correctly | Pass |
+| My ParkMate account data | The dashboard should only display data relevant to the authenticated user | Correct user-specific information was displayed | Pass |
+| Log out of the account | The authenticated session should end | User was successfully logged out | Pass |
+| Access My ParkMate immediately after logout | Protected access should no longer be available | User was redirected to login | Pass |
+| Access Add Parking immediately after logout | Protected creation functionality should no longer be available | User was redirected to login | Pass |
+| Attempt to edit parking after logout | Edit functionality should no longer be available until the user logs in again | Edit access was prevented | Pass |
+| Attempt to delete parking after logout | Delete functionality should no longer be available until the user logs in again | Delete access was prevented | Pass |
+| Attempt to save a favourite after logout | Favourite functionality should require authentication again | Favourite access was prevented | Pass |
+| Log back into the same account | Previously associated account data should become available again | User-specific data was displayed correctly after login | Pass |
+| Log into a different account | The second user should only see their own account-specific data | Separate account data was displayed correctly | Pass |
+| Normal user verification permissions | A standard registered user should not be able to mark their own parking submission as Council/NPP verified | Community parking remained unverified | Pass |
+| Unauthorised modification protection | Changing URLs or navigating directly should not bypass ownership checks | Protected records remained secure | Pass |
+
+### Authentication and Authorisation Testing Result
+
+Authentication and authorisation testing confirmed that ParkMate correctly separates public and protected functionality.
+
+Guest users can search for and view parking information, while account-specific features such as My ParkMate, favourites and parking management require authentication.
+
+Authorisation checks prevent users from editing or deleting parking submissions that belong to another account, including attempts to access protected URLs directly.
+
+User-specific data, including favourites and community parking submissions, remains associated with the correct account. Logging out removes access to protected functionality until the user successfully authenticates again.
+
+All authentication and authorisation tests passed.
+
+
 
 # HTML Validation
 
