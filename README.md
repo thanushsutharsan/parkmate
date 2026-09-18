@@ -2254,6 +2254,57 @@ User-specific data, including favourites and community parking submissions, rema
 All authentication and authorisation tests passed.
 
 
+## Error Handling Testing
+
+Error handling testing was carried out to ensure that ParkMate responds clearly and safely when users enter invalid data, request pages that do not exist or attempt actions they are not authorised to perform.
+
+Testing covered form validation, invalid URLs, permission errors and custom error pages.
+
+| Test | Expected Result | Actual Result | Status |
+| --- | --- | --- | --- |
+| Open a URL that does not exist | ParkMate should display a custom 404 page instead of a default server error | Custom 404 page displayed correctly | Pass |
+| Open a parking record that does not exist | The missing record should be handled safely and a 404 response should be returned | Missing parking record was handled correctly | Pass |
+| Submit the registration form with missing required fields | The form should not submit and validation messages should be displayed | Required-field errors were displayed | Pass |
+| Submit the login form with missing required fields | Login should not continue and validation feedback should be displayed | Required-field validation was displayed | Pass |
+| Enter incorrect login credentials | The user should remain unauthenticated and receive clear feedback | Invalid login attempt was handled correctly | Pass |
+| Submit mismatching registration passwords | Registration should be prevented and a password mismatch message should be displayed | Password mismatch error was displayed | Pass |
+| Submit a password that does not meet Django requirements | Registration should be prevented and the relevant validation message should be shown | Password validation worked correctly | Pass |
+| Register using a duplicate username | Account creation should be prevented | Duplicate username was rejected | Pass |
+| Register using a duplicate email address | Account creation should be prevented and clear feedback should be displayed | Duplicate email was rejected | Pass |
+| Submit Add Parking with required fields missing | The parking record should not be created and form errors should be displayed | Required-field errors were displayed | Pass |
+| Enter an invalid latitude | The form should reject the value and explain that the coordinate is outside the supported range | Invalid latitude was rejected | Pass |
+| Enter an invalid longitude | The form should reject the value and explain that the coordinate is outside the supported range | Invalid longitude was rejected | Pass |
+| Enter disabled spaces greater than total spaces | The form should reject the invalid values | Validation prevented the invalid parking record | Pass |
+| Submit invalid data while editing parking | Changes should not be saved and validation messages should be displayed | Invalid update was rejected | Pass |
+| Correct invalid form data and resubmit | The form should submit successfully once the errors are corrected | Corrected data was accepted | Pass |
+| Search for a parking location that does not exist | A clear no-results message should be shown instead of a broken page | No-results message displayed correctly | Pass |
+| Submit an empty parking search | The page should remain usable and display the available parking data | Parking page continued to work correctly | Pass |
+| Access My ParkMate while logged out | The user should be redirected to login instead of seeing a permission-related server error | User was redirected correctly | Pass |
+| Access Add Parking while logged out | The user should be redirected to login | Unauthenticated access was handled correctly | Pass |
+| Attempt to edit another user's parking | The action should be blocked and handled safely | Unauthorised edit was prevented | Pass |
+| Attempt to delete another user's parking | The action should be blocked and the record should remain unchanged | Unauthorised deletion was prevented | Pass |
+| Enter another user's edit URL directly | Permission checks should prevent unauthorised modification | Direct unauthorised access was blocked | Pass |
+| Enter another user's delete URL directly | Permission checks should prevent unauthorised deletion | Direct unauthorised delete access was blocked | Pass |
+| Submit malformed or invalid parking data | Invalid data should not be stored in the database | Invalid parking data was rejected | Pass |
+| Refresh a page after a validation error | The application should remain stable and usable | Page remained functional | Pass |
+| Return to the form after a validation error | The user should be able to correct the submitted information | Form remained available for correction | Pass |
+| Trigger a bad request scenario | ParkMate should return the custom 400 error page where applicable | Custom 400 error handling worked correctly | Pass |
+| Trigger a permission-denied scenario | ParkMate should return the custom 403 error page where applicable | Custom 403 error handling worked correctly | Pass |
+| Trigger an unexpected server error | ParkMate should use the custom 500 error page instead of exposing technical details | Custom 500 error handling was configured correctly | Pass |
+| Error page navigation | Custom error pages should provide a clear way for the user to return to ParkMate | Error page navigation worked correctly | Pass |
+
+### Error Handling Testing Result
+
+Error handling testing confirmed that ParkMate handles invalid user input, missing resources and unauthorised actions without exposing unnecessary technical information or breaking the user experience.
+
+Form validation prevents incorrect information from being submitted and gives users clear feedback so that errors can be corrected.
+
+Missing pages and records are handled through the custom 404 page, while additional custom 400, 403 and 500 error handling provides a consistent ParkMate experience when other errors occur.
+
+Authentication and ownership checks also prevent unauthorised actions from resulting in unsafe changes to user data.
+
+All core error handling tests passed.
+
 
 # HTML Validation
 
