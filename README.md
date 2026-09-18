@@ -2305,6 +2305,127 @@ Authentication and ownership checks also prevent unauthorised actions from resul
 
 All core error handling tests passed.
 
+## External API Failure Testing
+
+ParkMate uses the Wikimedia Commons API to attempt to retrieve relevant images for parking locations.
+
+The parking image system is designed so that the external API is not required for ParkMate's main functionality. If Wikimedia Commons cannot provide an image or the external request fails, ParkMate can continue displaying the parking information and use its local fallback image where required.
+
+External API failure testing was carried out to confirm that ParkMate remains usable if the Wikimedia Commons API becomes temporarily unavailable or a request cannot be completed.
+
+### How I Tested an External API Failure
+
+I simulated a failed Wikimedia Commons API request using Chrome DevTools.
+
+This allowed me to test the failure handling without changing the ParkMate source code or deliberately breaking the deployed application.
+
+I used the following steps:
+
+1. Opened the ParkMate Parking page in Google Chrome.
+2. Pressed `F12` to open Chrome DevTools.
+3. Selected the **Network** tab.
+4. Reloaded the Parking page so that the network requests appeared.
+5. Located the Wikimedia Commons API request.
+6. Right-clicked the Wikimedia API request.
+7. Selected **Block request URL**.
+8. Reloaded the page again while DevTools remained open.
+9. Checked whether the fallback image appeared.
+10. Checked that the Parking page remained usable.
+11. Checked that parking information could still be viewed.
+12. Checked that parking search and navigation continued to work.
+13. Disabled request blocking after completing the test.
+14. Reloaded the page and confirmed that Wikimedia image requests worked normally again.
+
+This simulated a realistic situation where ParkMate could not communicate with the external Wikimedia Commons API.
+
+### Wikimedia API Working Normally
+
+Before blocking the request, I loaded the Parking page normally and confirmed that Wikimedia Commons could be contacted when ParkMate attempted to retrieve an external parking image.
+
+The screenshot below shows the application before the Wikimedia API request was blocked.
+
+![Wikimedia Commons API working normally](static/images/testing/api-test/wikimedia-api-working.png)
+
+### Simulated Wikimedia API Failure
+
+I then used Chrome DevTools to block the Wikimedia Commons API request.
+
+To do this, I opened the **Network** tab, located the Wikimedia request, right-clicked it and selected **Block request URL**.
+
+I then reloaded the Parking page while DevTools remained open.
+
+
+### Fallback Behaviour During API Failure
+
+After blocking the Wikimedia Commons request, I checked how ParkMate behaved when the external image service could no longer be reached.
+
+The Parking page continued to load and the local ParkMate fallback image was displayed where an external image could not be retrieved.
+
+The screenshot below shows the fallback behaviour while the Wikimedia Commons request was blocked.
+
+![ParkMate fallback image during Wikimedia API failure](static/images/testing/api-test/wikimedia-api-fallback.png)
+
+### Application Functionality During the Failure
+
+While the Wikimedia Commons API request was blocked, I also tested the rest of the Parking page to make sure the API failure did not affect the main functionality of ParkMate.
+
+I confirmed that the following continued to work:
+
+- parking names were still displayed;
+- parking addresses were still displayed;
+- parking prices remained available;
+- verification information remained visible;
+- parking search continued to work;
+- parking detail pages could still be opened;
+- navigation remained usable; and
+- the Parking page did not crash or display a server error.
+
+After completing the test, I disabled request blocking in Chrome DevTools and reloaded the page.
+
+The Wikimedia Commons requests were then able to operate normally again.
+
+### External API Failure Test Results
+
+| Test | Expected Result | Actual Result | Status |
+| --- | --- | --- | --- |
+| Load Parking page before blocking Wikimedia | Wikimedia image requests should operate normally | Wikimedia request operated normally | Pass |
+| Open Chrome DevTools Network tab | Network requests should be visible | Network requests were displayed correctly | Pass |
+| Locate the Wikimedia Commons API request | The external Wikimedia request should appear in the Network panel | Wikimedia request was identified | Pass |
+| Block the Wikimedia request URL | Chrome should prevent the request from reaching Wikimedia | Wikimedia request was successfully blocked | Pass |
+| Reload the page with the request blocked | The external image request should fail | Wikimedia request failed as expected | Pass |
+| Load Parking page while Wikimedia is blocked | The page should continue loading instead of crashing | Parking page remained fully usable | Pass |
+| External image request fails | ParkMate should handle the failed request without breaking the page | Failed request was handled correctly | Pass |
+| Check fallback image | A local fallback image should be available when an external image cannot be retrieved | Local fallback image was displayed | Pass |
+| Check for broken image | The user should not be left with an unusable broken image | Broken external image was avoided | Pass |
+| Check parking names | Parking names should remain visible | Parking names displayed correctly | Pass |
+| Check parking addresses | Parking addresses should remain visible | Parking addresses displayed correctly | Pass |
+| Check parking prices | Parking price information should remain visible | Parking prices displayed correctly | Pass |
+| Check verification information | Verification information should remain visible | Verification information displayed correctly | Pass |
+| Search for parking while Wikimedia is blocked | Parking search should continue working because it does not depend on Wikimedia | Parking search continued to work | Pass |
+| Open parking detail page while Wikimedia is blocked | Parking information should still be accessible | Parking detail page loaded correctly | Pass |
+| Use navigation while Wikimedia is blocked | Site navigation should continue working | Navigation remained functional | Pass |
+| Check for application error | The API failure should not cause a Django or JavaScript page failure | Application remained stable | Pass |
+| Disable request blocking | Wikimedia requests should be allowed again | Request blocking was successfully disabled | Pass |
+| Reload after disabling request blocking | Wikimedia functionality should return to normal | Wikimedia requests operated normally again | Pass |
+
+### External API Failure Testing Result
+
+External API failure testing confirmed that ParkMate remains usable when the Wikimedia Commons API cannot be reached.
+
+The failure was simulated using Chrome DevTools by blocking the Wikimedia Commons request URL and then reloading the Parking page.
+
+When the external request was blocked, ParkMate continued displaying its main parking information and the page remained functional. The failed Wikimedia request did not prevent users from searching for parking, viewing parking details or navigating around the application.
+
+The local fallback image also remained available when an external image could not be retrieved, preventing the external API failure from significantly affecting the user experience.
+
+This test demonstrates that Wikimedia Commons is an enhancement to ParkMate rather than a dependency for the application's core functionality.
+
+After the test was completed, request blocking was disabled and the page was reloaded. Wikimedia Commons image requests then returned to normal.
+
+All external API failure tests passed.
+
+
+
 
 # HTML Validation
 
