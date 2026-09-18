@@ -2095,6 +2095,371 @@ The stylesheet passed validation with no CSS errors found, so no changes were re
 
 ![CSS validation](static/images/testing/validation/css-validation.png)
 
+# JavaScript JSLint Validation
+
+The JavaScript file responsible for loading parking images from Wikimedia Commons was tested using JSLint. The initial validation returned 22 warnings relating to browser globals, arrow functions, object property order, trailing commas, `continue` statements, unused variables, and strict indentation and line formatting.
+
+## Before corrections
+
+The original JavaScript returned 22 JSLint warnings.
+
+![JSLint validation before corrections](static/images/testing/validation/js-lint-before.png)
+
+The main warnings included:
+
+- `document`, `URLSearchParams`, and `fetch` being reported as undeclared browser globals.
+- Complex arrow functions being flagged by JSLint.
+- Properties inside `URLSearchParams` objects not being ordered according to JSLint requirements.
+- Trailing commas being reported as unexpected.
+- `continue` statements being flagged.
+- The `error` variable inside `catch (error)` being declared but never used.
+- Multi-line assignments and expressions not matching JSLint's strict indentation rules.
+- Multi-line function arguments being flagged because of their column alignment.
+
+## Corrections made
+
+The following changes were made to resolve the JSLint warnings while keeping the existing Wikimedia Commons image functionality unchanged.
+
+### Browser environment
+
+The following JSLint browser directive was added to the top of the JavaScript file:
+
+```javascript
+/*jslint browser*/
+```
+
+This informs JSLint that the JavaScript is intended to run inside a web browser and allows browser-provided globals such as `document`, `fetch`, and `URLSearchParams`.
+
+### Complex arrow functions
+
+The main `DOMContentLoaded` arrow function:
+
+```javascript
+document.addEventListener("DOMContentLoaded", () => {
+```
+
+was changed to:
+
+```javascript
+document.addEventListener("DOMContentLoaded", function () {
+```
+
+The `forEach` arrow function:
+
+```javascript
+images.forEach((image) => {
+    loadImage(image);
+});
+```
+
+was also changed to:
+
+```javascript
+images.forEach(function (image) {
+    loadImage(image);
+});
+```
+
+This resolved JSLint warnings relating to complex arrow functions.
+
+### Multi-line assignments
+
+Several assignments were originally split across multiple lines.
+
+For example:
+
+```javascript
+const fallback =
+    document.body.dataset.parkingFallback || "";
+```
+
+was changed to:
+
+```javascript
+const fallback = document.body.dataset.parkingFallback || "";
+```
+
+The Wikimedia Commons API endpoint:
+
+```javascript
+const commonsEndpoint =
+    "https://commons.wikimedia.org/w/api.php";
+```
+
+was changed to:
+
+```javascript
+const commonsEndpoint = "https://commons.wikimedia.org/w/api.php";
+```
+
+Similar changes were made to other assignments throughout the file to follow JSLint's indentation requirements.
+
+### Wikimedia search parameters
+
+The properties inside the Wikimedia Commons `URLSearchParams` object were reordered to meet JSLint's expected property ordering.
+
+The corrected text search parameters are:
+
+```javascript
+const params = new URLSearchParams({
+    action: "query",
+    format: "json",
+    generator: "search",
+    gsrlimit: "10",
+    gsrnamespace: "6",
+    gsrsearch: searchText,
+    iiprop: "url",
+    iiurlwidth: "900",
+    origin: "*",
+    prop: "imageinfo"
+});
+```
+
+The trailing comma after the final object property was also removed.
+
+### Nearby image search parameters
+
+The properties used for the Wikimedia Commons geographic search were also reordered.
+
+The corrected parameters are:
+
+```javascript
+const params = new URLSearchParams({
+    action: "query",
+    format: "json",
+    generator: "geosearch",
+    ggscoord: `${latitude}|${longitude}`,
+    ggslimit: "10",
+    ggsnamespace: "6",
+    ggsprimary: "all",
+    ggsradius: "1000",
+    iiprop: "url",
+    iiurlwidth: "900",
+    origin: "*",
+    prop: "imageinfo"
+});
+```
+
+This resolved the property-order and trailing-comma warnings reported by JSLint.
+
+### Fetch requests
+
+Multi-line `fetch()` requests were simplified.
+
+The original:
+
+```javascript
+const response = await fetch(
+    `${commonsEndpoint}?${params}`
+);
+```
+
+was changed to:
+
+```javascript
+const response = await fetch(`${commonsEndpoint}?${params}`);
+```
+
+This change was applied to both Wikimedia Commons requests.
+
+### Object values
+
+The original multi-line `Object.values()` statement:
+
+```javascript
+const pages = Object.values(
+    data.query.pages
+);
+```
+
+was changed to:
+
+```javascript
+const pages = Object.values(data.query.pages);
+```
+
+This correction was applied to both Wikimedia search functions.
+
+### Continue statements
+
+JSLint reported warnings for the use of `continue`.
+
+The original code:
+
+```javascript
+for (const page of pages) {
+    const info =
+        page.imageinfo &&
+        page.imageinfo[0];
+
+    if (!info) {
+        continue;
+    }
+
+    const imageUrl =
+        info.thumburl ||
+        info.url;
+
+    if (imageUrl) {
+        return imageUrl;
+    }
+}
+```
+
+was changed to:
+
+```javascript
+for (const page of pages) {
+    const info = page.imageinfo && page.imageinfo[0];
+
+    if (info) {
+        const imageUrl = info.thumburl || info.url;
+
+        if (imageUrl) {
+            return imageUrl;
+        }
+    }
+}
+```
+
+This keeps the same behaviour while avoiding the use of `continue`.
+
+The correction was applied to both the standard Wikimedia search and nearby geographic search.
+
+### Unused error variables
+
+The original `catch` blocks contained an `error` variable that was not used:
+
+```javascript
+} catch (error) {
+    return null;
+}
+```
+
+These were changed to:
+
+```javascript
+} catch {
+    return null;
+}
+```
+
+This resolved the unused variable warnings.
+
+### Search function formatting
+
+The nearby search function was originally written across multiple lines:
+
+```javascript
+async function searchNearby(
+    latitude,
+    longitude
+) {
+```
+
+It was changed to:
+
+```javascript
+async function searchNearby(latitude, longitude) {
+```
+
+This follows JSLint's expected formatting.
+
+### Parking image dataset values
+
+The original parking image values were split across multiple lines:
+
+```javascript
+const fullSearch =
+    image.dataset.parkingImage || "";
+
+const latitude =
+    image.dataset.latitude || "";
+
+const longitude =
+    image.dataset.longitude || "";
+```
+
+They were changed to:
+
+```javascript
+const fullSearch = image.dataset.parkingImage || "";
+const latitude = image.dataset.latitude || "";
+const longitude = image.dataset.longitude || "";
+```
+
+This resolved the related indentation warnings.
+
+## Wikimedia search assignments
+
+The original search assignment:
+
+```javascript
+commonsImage =
+    await searchCommons(fullSearch);
+```
+
+was changed to:
+
+```javascript
+commonsImage = await searchCommons(fullSearch);
+```
+
+The shortened location-name search was changed in the same way.
+
+The original:
+
+```javascript
+const locationName =
+    fullSearch.split(",")[0];
+
+commonsImage =
+    await searchCommons(locationName);
+```
+
+was changed to:
+
+```javascript
+const locationName = fullSearch.split(",")[0];
+commonsImage = await searchCommons(locationName);
+```
+
+#### Nearby search assignment
+
+The original nearby image search:
+
+```javascript
+commonsImage =
+    await searchNearby(
+        latitude,
+        longitude
+    );
+```
+
+was changed to:
+
+```javascript
+commonsImage = await searchNearby(latitude, longitude);
+```
+
+This resolved the remaining JSLint indentation and column-position warnings.
+
+## After corrections
+
+After all corrections were made, the JavaScript was tested again using JSLint.
+
+![JSLint validation after corrections](static/images/testing/validation/js-lint-after.png)
+
+The corrections improved the formatting and quality of the JavaScript while keeping the original Wikimedia Commons functionality unchanged.
+
+The JavaScript continues to:
+
+- search Wikimedia Commons using the full parking location name;
+- retry the search using the shortened location name;
+- search for nearby Wikimedia images using latitude and longitude;
+- display a Wikimedia Commons image when one is available; and
+- display the ParkMate fallback image when no suitable Wikimedia Commons image can be found.
+
 
 # Bugs and Fixes
 
