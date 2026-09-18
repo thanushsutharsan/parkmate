@@ -3623,6 +3623,187 @@ The combination of automated and manual accessibility testing provided broader c
 All accessibility tests passed.
 
 
+# Automated Django Test Results
+
+Automated Django testing was carried out to check important backend functionality in ParkMate and confirm that core features continue to work correctly.
+
+The automated tests are stored in:
+
+```text
+parking/tests.py
+```
+
+The Django test suite currently contains 14 automated tests covering:
+
+- Home page loading;
+- parking search by postcode;
+- parking search by city;
+- parking detail pages;
+- parking data displayed on the map;
+- saving favourites;
+- removing favourites;
+- adding parking;
+- user registration;
+- Login and Logout;
+- editing parking;
+- deleting parking;
+- preventing users from editing another user's parking; and
+- preventing users from deleting another user's parking.
+
+## How I Ran the Automated Django Tests
+
+I ran the automated Django test suite from the VS Code terminal while my virtual environment was active.
+
+I used the following command:
+
+```bash
+python manage.py test parking --verbosity=2
+```
+
+The `parking` argument runs the tests for the ParkMate parking application.
+
+I used `--verbosity=2` so that Django displayed the individual tests being executed rather than only showing the final result.
+
+When the tests run, Django creates a separate temporary test database. This allows the automated tests to create, update and delete test data without changing the normal ParkMate development or production database.
+
+After the tests finish, Django removes the temporary test database.
+
+## Automated Test Evidence
+
+The screenshot below shows the Django automated test suite being run from the terminal.
+
+The test output confirmed that all 14 automated tests completed successfully and returned `OK`.
+
+![ParkMate automated Django test results](static/images/testing/django-tests/django-automated-test-results.png)
+
+## Why One Screenshot Was Used
+
+One terminal screenshot was used as the main automated testing evidence because the Django test runner executes the full test suite together.
+
+Using `--verbosity=2` displays the individual test names and their results in the terminal, while the final output confirms whether the complete test suite passed or failed.
+
+Separate screenshots were therefore not required for every individual automated test because they are all executed as part of the same Django test command.
+
+The individual tests and their purpose are documented in the table below.
+
+## Automated Django Tests
+
+| Automated Test | What It Tests | Expected Result | Status |
+| --- | --- | --- | --- |
+| `test_home_page_loads` | Checks that the ParkMate Home page can be requested successfully | Home page returns HTTP status `200` | Pass |
+| `test_search_finds_parking_by_postcode` | Checks parking search using a postcode | Matching parking location is returned | Pass |
+| `test_city_search_returns_all_matching_parking` | Checks that a city search returns multiple matching parking locations | All matching city parking records are returned | Pass |
+| `test_detail_page_loads` | Checks that an individual parking detail page loads | Parking detail page returns status `200` and displays parking information | Pass |
+| `test_map_page_loads_database_location` | Checks that stored parking data is available to the Map page | Map page loads and contains the test parking location | Pass |
+| `test_logged_in_user_can_save_parking` | Checks that an authenticated user can save a parking location | Favourite record is created successfully | Pass |
+| `test_logged_in_user_can_add_parking` | Checks Create functionality for an authenticated user | New parking location is created and a redirect is returned | Pass |
+| `test_user_can_register` | Checks that a new ParkMate user account can be registered | User account is created successfully | Pass |
+| `test_user_can_log_in_and_log_out` | Checks Login and Logout functionality | Login and Logout both complete successfully | Pass |
+| `test_user_can_remove_saved_parking` | Checks that a user can remove an existing favourite | Favourite record is removed successfully | Pass |
+| `test_owner_can_edit_own_parking` | Checks Update functionality for parking owned by the logged-in user | Parking information is updated successfully | Pass |
+| `test_owner_can_delete_own_parking` | Checks Delete functionality for parking owned by the logged-in user | Parking record is deleted successfully | Pass |
+| `test_other_user_cannot_edit_someone_elses_parking` | Checks authorisation protection when another user attempts to edit a parking record | Original parking information remains unchanged | Pass |
+| `test_other_user_cannot_delete_someone_elses_parking` | Checks authorisation protection when another user attempts to delete a parking record | Parking record remains in the database | Pass |
+
+## Areas Covered by Automated Testing
+
+### Page and Content Testing
+
+The automated tests check that important ParkMate pages load correctly.
+
+This includes the Home page, parking detail pages and the Map page.
+
+The tests confirm that these views return successful responses and that expected parking information is included in the rendered response.
+
+### Parking Search Testing
+
+Automated tests check that ParkMate can find stored parking using a postcode.
+
+A separate city search test creates multiple Birmingham parking records and confirms that all relevant results are returned when Birmingham is searched.
+
+This helps verify that the search functionality correctly queries parking records rather than returning only one result.
+
+### Authentication Testing
+
+Automated tests check that a new user can register successfully.
+
+Login and Logout are also tested to confirm that authentication requests return the expected redirects.
+
+### Favourites Testing
+
+The Django tests check both parts of the favourites functionality.
+
+An authenticated user can save a parking location and the expected `Favourite` database record is created.
+
+The same user can then remove the saved parking and the favourite record is removed.
+
+### CRUD Testing
+
+Automated testing covers Create, Update and Delete operations.
+
+A logged-in user can:
+
+- create a new parking location;
+- edit a parking location they own; and
+- delete a parking location they own.
+
+The parking detail and search tests also help verify the Read part of the CRUD functionality.
+
+### Authorisation Testing
+
+Automated tests specifically check ownership protection.
+
+A second user is created and attempts to edit and delete a parking location owned by another account.
+
+The tests confirm that:
+
+- another user cannot change the parking information; and
+- another user cannot delete the parking record.
+
+This provides automated evidence that ParkMate's ownership restrictions are being enforced by the backend.
+
+## Automated Django Test Results
+
+| Test Area | Tests Covered | Result |
+| --- | ---: | --- |
+| Page loading | Home, detail and map | Pass |
+| Parking search | Postcode and city search | Pass |
+| Registration | User account creation | Pass |
+| Authentication | Login and Logout | Pass |
+| Favourites | Save and remove favourite | Pass |
+| Create | Add a new parking location | Pass |
+| Read | Display stored parking information | Pass |
+| Update | Owner edits own parking | Pass |
+| Delete | Owner deletes own parking | Pass |
+| Authorisation | Prevent another user editing parking | Pass |
+| Authorisation | Prevent another user deleting parking | Pass |
+| **Overall** | **14 automated Django tests** | **Pass** |
+
+## Automated Django Testing Result
+
+The automated Django test suite confirmed that ParkMate's main backend functionality operates correctly.
+
+A total of 14 automated tests were run using Django's built-in testing framework.
+
+The tests covered important areas of the application including page loading, parking search, map data, user registration, Login and Logout, favourites, CRUD functionality and ownership-based authorisation.
+
+The ownership tests are particularly important because they confirm that authenticated users can manage their own community parking submissions while being prevented from editing or deleting parking records belonging to another user.
+
+All 14 automated Django tests completed successfully.
+
+The final Django test runner result returned:
+
+```text
+Ran 14 tests
+
+OK
+```
+
+This confirms that the automated test suite passed without failures or errors.
+
+
+
+
 # Bugs and Fixes
 
 During the development of ParkMate, I identified several issues within the
