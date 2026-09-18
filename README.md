@@ -2002,6 +2002,50 @@ When registration is successful, the new user is authenticated and redirected to
 All registration tests passed.
 
 
+## Login and Logout Testing
+
+Login and logout testing was carried out to ensure that registered users can securely access and leave their ParkMate accounts.
+
+Testing included valid and invalid login attempts, protected pages, authentication state changes and successful logout behaviour.
+
+| Test | Expected Result | Actual Result | Status |
+| --- | --- | --- | --- |
+| Log in with valid username and password | The user should be authenticated successfully | User was successfully logged in | Pass |
+| Log in with an incorrect username | Login should be rejected and the user should remain unauthenticated | Login was rejected and the user remained logged out | Pass |
+| Log in with an incorrect password | Login should be rejected and the user should remain unauthenticated | Incorrect password was rejected | Pass |
+| Log in with both username and password incorrect | Login should be rejected and authentication should not take place | Invalid credentials were rejected | Pass |
+| Leave the username field empty | Login should not continue and required-field validation should be displayed | Required-field validation was displayed | Pass |
+| Leave the password field empty | Login should not continue and required-field validation should be displayed | Required-field validation was displayed | Pass |
+| Leave both login fields empty | Login should not continue and validation feedback should be displayed | Login was prevented and validation feedback was displayed | Pass |
+| Submit invalid login credentials | The user should remain on the login page and receive appropriate feedback | User remained unauthenticated and login feedback was displayed | Pass |
+| Correct invalid login details and resubmit | Login should succeed once the correct credentials are entered | User successfully logged in after correcting the credentials | Pass |
+| Successful login redirect | After successful login, the user should be redirected to the appropriate ParkMate page | User was successfully redirected after login | Pass |
+| Logged-in navigation | Account-related navigation options should become available after login | Logged-in navigation options were displayed correctly | Pass |
+| Access My ParkMate while logged in | The user should be able to access their My ParkMate dashboard | My ParkMate loaded successfully | Pass |
+| Access Add Parking while logged in | The logged-in user should be able to access the Add Parking page | Add Parking page was accessible | Pass |
+| Access My ParkMate while logged out | The user should be redirected to the login page | Unauthenticated user was redirected to login | Pass |
+| Access Add Parking while logged out | The user should be required to log in before accessing the page | Unauthenticated user was redirected to login | Pass |
+| Access protected edit functionality while logged out | The user should be required to log in before editing parking | Protected edit functionality was inaccessible while logged out | Pass |
+| Access protected delete functionality while logged out | The user should be required to log in before deleting parking | Protected delete functionality was inaccessible while logged out | Pass |
+| Log out while authenticated | The user should be logged out successfully | User was successfully logged out | Pass |
+| Navigation after logout | Logged-in account options should no longer be displayed | Navigation changed correctly after logout | Pass |
+| Access My ParkMate after logout | The user should no longer be able to access the protected dashboard without logging in again | User was redirected to the login page | Pass |
+| Access protected functionality after logout | Protected features should no longer be available until the user logs in again | Protected functionality was no longer accessible | Pass |
+| Log back in after logout | The user should be able to authenticate again using valid credentials | User successfully logged back in | Pass |
+| Session authentication | The user's authenticated state should remain active while navigating between ParkMate pages until logout | Authentication remained active while navigating the site | Pass |
+| Logout authentication state | After logout, the user's authenticated session should end | User session ended successfully | Pass |
+
+### Login and Logout Testing Result
+
+Login and logout testing confirmed that registered users can successfully authenticate using valid credentials and that invalid login attempts are rejected.
+
+Protected ParkMate functionality, including My ParkMate and parking management features, is only available to authenticated users. Users who attempt to access protected pages while logged out are redirected to the login page.
+
+Logging out successfully ends the authenticated session and removes access to account-only functionality until the user logs in again.
+
+All login and logout tests passed.
+
+
 
 
 
