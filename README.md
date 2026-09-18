@@ -1962,6 +1962,48 @@ Form validation prevents invalid parking data from being stored, including coord
 All core manual functional tests passed.
 
 
+## Registration Testing
+
+Registration testing was carried out to ensure that users can create a ParkMate account successfully and that invalid registration details are handled correctly.
+
+The registration form was tested with valid and invalid inputs to confirm that Django's authentication and validation rules work as expected.
+
+| Test | Expected Result | Actual Result | Status |
+| --- | --- | --- | --- |
+| Register with valid details | A new account should be created successfully and the user should be logged in | Account was created successfully and the user was logged in | Pass |
+| Enter a unique username | The username should be accepted when it is not already registered | Unique username was accepted | Pass |
+| Enter a username that already exists | Registration should be prevented and an error message should be displayed | Duplicate username was rejected and validation feedback was displayed | Pass |
+| Enter a valid email address | The email address should be accepted | Valid email address was accepted | Pass |
+| Enter an email address already registered | Registration should be prevented and the user should be informed that the email address is already in use | Duplicate email address was rejected | Pass |
+| Leave the username field empty | Registration should not continue and a required-field message should be displayed | Required-field validation was displayed | Pass |
+| Leave the email field empty | Registration should not continue and a required-field message should be displayed | Required-field validation was displayed | Pass |
+| Leave the password field empty | Registration should not continue and a required-field message should be displayed | Required-field validation was displayed | Pass |
+| Leave the password confirmation field empty | Registration should not continue and a required-field message should be displayed | Required-field validation was displayed | Pass |
+| Enter two matching valid passwords | The passwords should be accepted and registration should continue | Matching passwords were accepted | Pass |
+| Enter two different passwords | Registration should be prevented and the user should be informed that the passwords do not match | Password mismatch validation was displayed | Pass |
+| Enter a password that is too short | Registration should be prevented according to Django's password validation requirements | Short password was rejected | Pass |
+| Enter a commonly used password | Registration should be prevented according to Django's password validation requirements | Common password was rejected | Pass |
+| Enter an entirely numeric password | Registration should be prevented according to Django's password validation requirements | Numeric-only password was rejected | Pass |
+| Enter a password too similar to the user's personal information | Registration should be prevented according to Django's password validation requirements | Similar password was rejected | Pass |
+| Submit invalid registration details | The form should remain on the registration page and display validation messages | Validation messages were displayed and the account was not created | Pass |
+| Correct invalid details and resubmit | Registration should succeed once all details meet the validation requirements | Account was successfully created after correcting the details | Pass |
+| Successful registration redirect | After successful registration, the user should be authenticated and redirected to My ParkMate | User was logged in and redirected to My ParkMate | Pass |
+| Registration authentication state | After registration, account-only navigation and features should become available | Logged-in navigation and account features were displayed correctly | Pass |
+| Registered user login | Log out and sign back in using the newly created account | The user should be able to log in using the registered credentials | New account successfully logged in | Pass |
+
+### Registration Testing Result
+
+Registration testing confirmed that new users can successfully create a ParkMate account when valid information is provided.
+
+The registration form correctly prevents duplicate usernames and email addresses and applies Django's built-in password validation requirements. Required fields and password confirmation are also validated before an account can be created.
+
+When registration is successful, the new user is authenticated and redirected to My ParkMate, where registered-user functionality becomes available.
+
+All registration tests passed.
+
+
+
+
 
 
 # HTML Validation
