@@ -2091,6 +2091,50 @@ Parking search is available to both guest and registered users, allowing visitor
 All parking search tests passed.
 
 
+## Favourites Testing
+
+Favourites testing was carried out to ensure that registered users can save parking locations, view their saved parking and remove locations from their favourites.
+
+Testing also confirmed that favourite functionality is only available to authenticated users and that saved parking is correctly linked to the individual user account.
+
+| Test | Expected Result | Actual Result | Status |
+| --- | --- | --- | --- |
+| View parking while logged out | Parking locations should be viewable without needing an account | Parking locations were displayed correctly | Pass |
+| Attempt to save a favourite while logged out | The user should be required to log in before saving a parking location | Unauthenticated user was redirected to login | Pass |
+| Log in and open a parking location | Favourite functionality should become available to the authenticated user | Favourite option was displayed correctly | Pass |
+| Save a parking location | The selected parking location should be added to the user's favourites | Parking location was successfully saved | Pass |
+| Favourite button after saving | The favourite control should update to show that the parking location is saved | Favourite button changed to `Saved` | Pass |
+| Open My ParkMate after saving a favourite | The saved parking location should appear in the user's favourites section | Saved parking location appeared correctly | Pass |
+| Save multiple parking locations | All selected parking locations should appear in the user's favourites | Multiple favourites were saved successfully | Pass |
+| Save different parking locations | Each selected parking location should be stored separately | Different parking locations were saved correctly | Pass |
+| Attempt to save the same parking location again | The existing favourite should not be duplicated | Duplicate favourite was not created | Pass |
+| View a saved favourite from My ParkMate | Selecting the favourite should open the correct parking detail page | Correct parking detail page opened | Pass |
+| Remove a saved favourite | The parking location should be removed from the user's favourites | Favourite was successfully removed | Pass |
+| Favourite button after removal | The favourite control should return to its unsaved state | Favourite button updated correctly | Pass |
+| Open My ParkMate after removing a favourite | The removed parking location should no longer appear in the favourites section | Removed favourite was no longer displayed | Pass |
+| Remove one favourite when several are saved | Only the selected favourite should be removed | Selected favourite was removed while other favourites remained | Pass |
+| Save a favourite, log out and log back in | The saved favourite should remain associated with the user's account | Favourite remained saved after logging back in | Pass |
+| Refresh the page after saving a favourite | The saved state should remain correctly displayed | Favourite remained marked as saved | Pass |
+| Navigate away and return to a saved parking location | The favourite state should still show that the parking location is saved | Saved state remained correct | Pass |
+| Favourite while using parking search | A parking location found through search should still be available to save | Search result was successfully saved as a favourite | Pass |
+| Favourite a community parking location | The parking location should be saved in the same way as other available parking records | Community parking location was successfully saved | Pass |
+| Favourite an official parking location | The parking location should be added to the user's saved parking | Official parking location was successfully saved | Pass |
+| User account separation | A favourite saved by one user should not automatically appear in another user's favourites | Favourites remained associated with the correct user | Pass |
+| Log out after saving favourites | Account-specific favourite information should no longer be accessible through My ParkMate | Protected favourites were inaccessible while logged out | Pass |
+| Log back into the same account | Previously saved favourites should be available again | Saved favourites were displayed correctly | Pass |
+| Remove all saved favourites | The favourites section should show no saved parking once all favourites are removed | All favourites were removed successfully | Pass |
+| Save a favourite again after removing it | The parking location should be added back to the user's favourites | Parking location was successfully saved again | Pass |
+
+### Favourites Testing Result
+
+Favourites testing confirmed that authenticated ParkMate users can successfully save and remove parking locations from their favourites.
+
+Saved parking locations are displayed within My ParkMate and remain associated with the correct user account between sessions. Duplicate favourites are prevented and removing one saved location does not affect other favourites.
+
+Favourite functionality is protected so that guest users cannot save parking locations until they have logged in.
+
+All favourites tests passed.
+
 
 
 # HTML Validation
