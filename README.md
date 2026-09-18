@@ -3383,6 +3383,246 @@ The JavaScript continues to:
 - display the ParkMate fallback image when no suitable Wikimedia Commons image can be found.
 
 
+## Accessibility Testing
+
+Accessibility testing was carried out to make sure that ParkMate can be used by a wide range of users, including people who navigate using a keyboard or rely on clear semantic page structure and accessible form controls.
+
+Testing included automated accessibility checks using Google Chrome Lighthouse as well as manual checks for keyboard navigation, focus visibility, image alternative text, form labels, heading structure, colour contrast and readable content.
+
+### How I Tested Accessibility
+
+I used a combination of automated and manual accessibility testing.
+
+For automated testing, I used Google Chrome Lighthouse.
+
+I used the following steps:
+
+1. Opened the deployed ParkMate application in Google Chrome.
+2. Pressed `F12` to open Chrome DevTools.
+3. Selected the **Lighthouse** tab.
+4. Selected the **Accessibility** category.
+5. Generated an accessibility report.
+6. Reviewed the accessibility score and any issues reported by Lighthouse.
+7. Checked the affected page elements where necessary.
+8. Repeated accessibility checks on important ParkMate page types.
+
+I also manually tested accessibility by checking:
+
+- keyboard navigation;
+- visible keyboard focus;
+- navigation links;
+- buttons;
+- form fields;
+- form labels;
+- validation messages;
+- headings;
+- image alternative text;
+- link text;
+- colour contrast;
+- readable font sizes;
+- page zoom;
+- semantic HTML; and
+- content readability.
+
+### Pages Checked
+
+Accessibility testing was carried out across the main ParkMate page types, including:
+
+- Home page;
+- Parking page;
+- Map page;
+- parking detail page;
+- Registration page;
+- Login page;
+- My ParkMate dashboard;
+- Add Parking page;
+- Edit Parking page; and
+- Delete confirmation page.
+
+### Why Representative Screenshots Were Used
+
+Accessibility was manually checked across the main ParkMate pages, but screenshots were only included for representative tests.
+
+This avoids adding several screenshots that show the same type of evidence repeatedly.
+
+The Home page was used for the main Lighthouse accessibility evidence because it contains many of the shared elements used throughout ParkMate, including:
+
+- navigation;
+- headings;
+- text;
+- images;
+- links;
+- buttons;
+- layout structure; and
+- the footer.
+
+A form page was also checked because forms introduce additional accessibility requirements such as labels, validation messages and keyboard interaction.
+
+Keyboard navigation was checked separately because it cannot be fully demonstrated by an automated accessibility score alone.
+
+The remaining ParkMate pages were still manually checked even where a separate screenshot was not included.
+
+### Lighthouse Accessibility Testing
+
+Google Chrome Lighthouse was used to perform automated accessibility testing.
+
+The Lighthouse accessibility audit checks common accessibility issues such as:
+
+- colour contrast;
+- accessible names;
+- form labels;
+- image alternative text;
+- heading structure;
+- link descriptions;
+- document language; and
+- semantic HTML.
+
+The screenshot below shows the Lighthouse accessibility result for the ParkMate Home page.
+
+![ParkMate Lighthouse accessibility testing](static/images/testing/accessibility/home-lighthouse-accessibility.png)
+
+### Keyboard Navigation Testing
+
+I manually tested ParkMate using the keyboard to make sure that important interactive elements could be reached without relying only on a mouse.
+
+I used the `Tab` key to move through interactive elements and `Shift + Tab` to move backwards.
+
+I checked that:
+
+- navigation links could be reached;
+- buttons could be reached;
+- search controls could be reached;
+- form fields could be reached;
+- links could be selected;
+- interactive controls followed a logical order;
+- keyboard focus remained visible; and
+- users were not trapped on an element.
+
+The screenshot below shows keyboard focus on an interactive ParkMate element.
+
+![ParkMate keyboard navigation accessibility testing](static/images/testing/accessibility/keyboard-navigation-accessibility.png)
+
+### Form Accessibility Testing
+
+ParkMate forms were manually checked to make sure they remained understandable and usable.
+
+Registration, Login, Add Parking and Edit Parking forms were reviewed.
+
+I checked that:
+
+- fields had clear labels;
+- required fields could be identified;
+- input controls were accessible using the keyboard;
+- validation messages were readable;
+- validation feedback appeared close to the relevant fields;
+- buttons clearly described their purpose; and
+- form content remained understandable without relying only on colour.
+
+### Image Accessibility
+
+Images were checked to make sure that appropriate alternative text was provided where an image communicated useful information.
+
+Decorative imagery was not relied upon to communicate essential information.
+
+Parking information such as:
+
+- parking name;
+- address;
+- price;
+- restrictions; and
+- verification information
+
+remained available as text rather than being communicated only through an image.
+
+This means users are still able to understand the important parking information if an image cannot be viewed.
+
+### Heading Structure
+
+Page headings were checked to make sure that content followed a logical structure.
+
+The main page heading uses an appropriate heading level, with lower-level headings used for sections underneath it.
+
+This helps users understand the organisation of the page and provides clearer document structure for assistive technologies.
+
+### Colour Contrast and Readability
+
+The ParkMate colour scheme was checked through Lighthouse and manual visual testing.
+
+I checked that:
+
+- text remained readable against its background;
+- important buttons remained visible;
+- links could be identified;
+- text was not excessively small;
+- content remained readable on different screen sizes; and
+- information was not communicated using colour alone.
+
+### Page Zoom Testing
+
+ParkMate was manually checked while increasing the browser zoom.
+
+I checked that:
+
+- text remained readable;
+- content continued to wrap correctly;
+- buttons remained accessible;
+- important information was not hidden;
+- forms remained usable; and
+- unnecessary horizontal scrolling did not prevent access to important functionality.
+
+### Accessibility Testing Results
+
+| Test | Expected Result | Actual Result | Status |
+| --- | --- | --- | --- |
+| Run Lighthouse accessibility audit | Lighthouse should complete without identifying critical accessibility failures | Accessibility audit completed successfully | Pass |
+| Check document language | Page should identify the document language | Document language was correctly defined | Pass |
+| Check page headings | Headings should follow a logical page structure | Heading structure was clear and logical | Pass |
+| Check navigation using keyboard | Navigation links should be reachable without a mouse | Navigation links were keyboard accessible | Pass |
+| Navigate forward using `Tab` | Focus should move through interactive elements logically | Focus order worked correctly | Pass |
+| Navigate backwards using `Shift + Tab` | Focus should move backwards through interactive elements | Reverse keyboard navigation worked correctly | Pass |
+| Check visible focus | Keyboard users should be able to identify the focused element | Focus remained visible | Pass |
+| Test Home page links | Links should be keyboard accessible and understandable | Links worked correctly | Pass |
+| Test buttons using keyboard | Buttons should be reachable and usable | Buttons remained accessible | Pass |
+| Test parking search using keyboard | Search controls should be accessible without a mouse | Parking search was keyboard accessible | Pass |
+| Test Login form using keyboard | All login fields and controls should be reachable | Login form was keyboard accessible | Pass |
+| Test Registration form using keyboard | Registration controls should be reachable in a logical order | Registration form worked correctly | Pass |
+| Test Add Parking form using keyboard | Form fields and buttons should remain accessible | Add Parking form was keyboard accessible | Pass |
+| Test Edit Parking form using keyboard | Existing parking data should remain editable using keyboard controls | Edit form remained accessible | Pass |
+| Check form labels | Form fields should have clear labels | Form fields were clearly labelled | Pass |
+| Check required fields | Required input should be communicated clearly | Required fields were identifiable | Pass |
+| Check validation messages | Errors should be understandable and visible | Validation feedback was displayed clearly | Pass |
+| Check image alternative text | Informative images should provide suitable text alternatives | Relevant images included alternative text | Pass |
+| Check parking information without images | Essential parking information should remain available as text | Parking information remained available | Pass |
+| Check colour contrast | Text should remain readable against backgrounds | Text remained readable | Pass |
+| Check buttons for contrast | Buttons should remain visually identifiable | Buttons remained clearly visible | Pass |
+| Check links | Link purpose should be understandable | Links were understandable | Pass |
+| Check content at increased browser zoom | Content should remain usable when zoomed | Content remained usable | Pass |
+| Check text wrapping when zoomed | Text should wrap instead of becoming inaccessible | Text wrapped correctly | Pass |
+| Check mobile accessibility | Content should remain readable and controls usable on small screens | Mobile layout remained accessible | Pass |
+| Check Map page controls | Map controls should remain visible and usable | Map controls remained usable | Pass |
+| Check My ParkMate dashboard | Dashboard content should remain clearly structured | Dashboard remained understandable and usable | Pass |
+| Check Delete confirmation | Delete action and confirmation controls should be clear | Confirmation controls were understandable | Pass |
+| Check information communicated by colour | Important information should not rely only on colour | Essential information remained available through text | Pass |
+
+### Accessibility Testing Result
+
+Accessibility testing confirmed that ParkMate provides accessible navigation, readable content and understandable user controls across the main application pages.
+
+Google Chrome Lighthouse was used for automated accessibility testing, while manual testing was used to check areas that automated tools cannot fully assess.
+
+Keyboard testing confirmed that users can navigate through important links, controls and forms without relying entirely on a mouse.
+
+Form labels and validation feedback were checked to make sure that users can understand what information is required and identify errors when submitting data.
+
+Essential parking information remains available as text rather than relying solely on images or colour.
+
+Representative screenshots were used for Lighthouse, keyboard navigation and form accessibility testing, while the remaining ParkMate pages were also manually reviewed.
+
+The combination of automated and manual accessibility testing provided broader coverage than relying on an automated accessibility score alone.
+
+All accessibility tests passed.
+
+
 # Bugs and Fixes
 
 During the development of ParkMate, I identified several issues within the
