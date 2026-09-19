@@ -10053,3 +10053,538 @@ The parking image system now recognises when the default fallback image is being
 This gives parking locations a better chance of displaying a relevant image while still keeping the fallback image available if another suitable image cannot be found.
 
 **Commit:** `202fd86` - `fix: restore parking image fallback search`
+
+
+
+# Credits and Attribution
+
+External libraries, frameworks, services, data sources and learning resources used during the development of ParkMate are credited below.
+
+## Libraries and Frameworks
+
+### Django
+
+Django is the main Python web framework used to build ParkMate.
+
+It provides:
+
+- URL routing;
+- views;
+- templates;
+- forms;
+- models;
+- authentication;
+- sessions;
+- security middleware; and
+- automated testing tools.
+
+The project currently uses Django `5.2.17`.
+
+### Leaflet
+
+Leaflet is used to create the interactive parking map.
+
+It provides:
+
+- the map;
+- map markers;
+- popups;
+- zoom controls; and
+- map bounds functionality.
+
+Leaflet `1.9.4` is loaded through the application's shared base template.
+
+### Gunicorn
+
+Gunicorn is used as the production WSGI server for the Heroku deployment.
+
+The `Procfile` starts:
+
+```text
+gunicorn parkmate.wsgi:application
+```
+
+### WhiteNoise
+
+WhiteNoise is used to support serving static files in the deployed Django application.
+
+### dj-database-url
+
+`dj-database-url` is used to configure the production database through the `DATABASE_URL` environment variable.
+
+### psycopg2-binary
+
+`psycopg2-binary` provides PostgreSQL database connectivity for the deployed Django application.
+
+### Libraries and Frameworks Summary
+
+| Technology | Use in ParkMate |
+| --- | --- |
+| Python | Backend programming language |
+| Django | Full-stack web framework |
+| HTML | Page structure |
+| CSS | Custom styling and responsive design |
+| JavaScript | Navigation, maps and parking image functionality |
+| Leaflet | Interactive map |
+| Gunicorn | Production WSGI server |
+| WhiteNoise | Static-file handling |
+| `dj-database-url` | Production database configuration |
+| `psycopg2-binary` | PostgreSQL connectivity |
+
+---
+
+## APIs and Data Sources
+
+### OpenStreetMap
+
+OpenStreetMap contributor data is used as the geographic base for the interactive map.
+
+Map attribution is displayed within the application.
+
+### Humanitarian OpenStreetMap Team Tile Style
+
+The Leaflet map uses OpenStreetMap tiles using the Humanitarian OpenStreetMap Team tile style.
+
+The map includes attribution for the OpenStreetMap contributors and tile style.
+
+### Wikimedia Commons API
+
+The Wikimedia Commons API is used to attempt to retrieve suitable parking or location images.
+
+ParkMate searches Wikimedia using parking information and can also perform a nearby geographic image search.
+
+The image integration is treated as an enhancement rather than a dependency.
+
+If Wikimedia does not provide a suitable image or the request fails, ParkMate uses a local fallback image.
+
+### Council / GOV.UK Sources
+
+Officially verified parking records can store source URLs from recognised UK government or council sources.
+
+The model restricts official source URLs to accepted domains.
+
+### National Parking Platform
+
+National Parking Platform information can also be used as an official parking source where applicable.
+
+ParkMate distinguishes Council/NPP verified records from community-submitted records.
+
+### API and Data Source Summary
+
+| Source | Purpose |
+| --- | --- |
+| OpenStreetMap | Geographic map data |
+| Humanitarian OpenStreetMap Team | Map tile style |
+| Wikimedia Commons API | Optional parking/location images |
+| GOV.UK / council sources | Official parking information |
+| National Parking Platform | Official parking information where available |
+| ParkMate database | Main stored parking records used by search and map |
+
+---
+
+## Images and Media
+
+ParkMate uses a mixture of locally stored project assets and externally retrieved images.
+
+Locally stored media includes:
+
+- ParkMate branding;
+- favicon files;
+- the ParkMate hero illustration;
+- the parking fallback illustration; and
+- testing/documentation screenshots.
+
+The application includes favicon formats for different devices and browser requirements.
+
+Wikimedia Commons is used for optional external parking imagery.
+
+If an external image is unavailable, ParkMate uses:
+
+```text
+parking-fallback.svg
+```
+
+rather than leaving a broken image.
+
+Testing screenshots included in the README were produced during the development and testing of ParkMate.
+
+Map imagery is attributed to OpenStreetMap contributors and the relevant tile provider within the map itself.
+
+---
+
+## Code and Learning Resources
+
+The following types of resources were used during development and testing:
+
+- Django documentation for models, forms, views, authentication and deployment configuration;
+- Python documentation for language behaviour;
+- MDN Web Docs for HTML, CSS and JavaScript reference;
+- Leaflet documentation for map creation, markers and bounds;
+- OpenStreetMap documentation and attribution guidance;
+- Wikimedia Commons API documentation for image requests;
+- Heroku documentation for Django deployment;
+- Git and GitHub documentation for version control;
+- W3C HTML validation tools;
+- W3C CSS validation tools;
+- JSLint for JavaScript validation;
+- Lighthouse for performance, accessibility, best practices and SEO checks; and
+- PEP8 / `pycodestyle` guidance for Python code quality.
+
+External resources were used as learning and reference material rather than copying an unrelated project into ParkMate.
+
+The final implementation was adapted around ParkMate's own functionality, database structure and user requirements.
+
+---
+
+## AI / Copilot Assistance
+
+AI tools and GitHub Copilot were used as development support during parts of the ParkMate project.
+
+They were used for tasks including:
+
+- explaining programming concepts;
+- helping interpret error messages;
+- suggesting possible debugging approaches;
+- suggesting improvements to small sections of code;
+- helping identify validation issues;
+- helping with HTML, CSS, JavaScript and Python troubleshooting;
+- reviewing potential accessibility or testing issues;
+
+
+AI-generated or Copilot suggestions were not accepted automatically.
+
+Where assistance was used, I reviewed the suggested solution, adapted it to the ParkMate project and tested the resulting behaviour before keeping it in the final application.
+
+The project-specific decisions, including the ParkMate concept, feature selection, database structure, interface direction, parking verification approach and final implementation choices, were made as part of my own development process.
+
+I also used testing and validation tools to check the final code rather than relying on an AI response as evidence that the application worked.
+
+This includes:
+
+- manual functional testing;
+- automated Django testing;
+- HTML validation;
+- CSS validation;
+- JavaScript validation;
+- Python PEP8 validation;
+- Lighthouse testing;
+- responsiveness testing;
+- browser compatibility testing; and
+- deployed application testing.
+
+The use of AI and Copilot is therefore acknowledged transparently as development assistance rather than being presented as an external source of finished project functionality.
+
+---
+
+## Final Project Evaluation
+
+The completed ParkMate application was evaluated against the original purpose, user stories, technical requirements and testing results.
+
+The project demonstrates a complete full-stack Django application with persistent relational data, authentication, CRUD functionality and an interactive front end.
+
+The final application allows users to:
+
+- search for UK parking;
+- search using town, postcode or parking name;
+- filter stored parking information;
+- view parking details;
+- use an interactive parking map;
+- identify Council/NPP verified records;
+- register;
+- log in and log out;
+- save favourites;
+- use a personal My ParkMate dashboard;
+- add community parking;
+- edit their own parking;
+- delete their own parking; and
+- use the application across different screen sizes.
+
+The project also includes testing and documentation covering functional behaviour, validation, security, accessibility, responsiveness, compatibility and deployment.
+
+---
+
+# Project Strengths
+
+## Full-Stack Django Implementation
+
+ParkMate demonstrates both front-end and backend development.
+
+The project combines:
+
+- Python;
+- Django;
+- relational database models;
+- Django forms;
+- server-side validation;
+- HTML templates;
+- CSS;
+- JavaScript; and
+- third-party map/image integrations.
+
+## Complete CRUD Functionality
+
+Parking records demonstrate all four CRUD operations:
+
+- **Create** - registered users can add community parking;
+- **Read** - users can search and view parking;
+- **Update** - owners can edit their parking submissions;
+- **Delete** - owners can delete their parking submissions.
+
+## Authentication and Authorisation
+
+ParkMate uses Django authentication while also applying ownership checks.
+
+This means authentication does not automatically give users permission to modify every parking record.
+
+Normal users can manage their own community submissions while other users' records remain protected.
+
+## Official and Community Parking Separation
+
+A key design strength is the distinction between:
+
+```text
+Council/NPP price verified
+```
+
+and:
+
+```text
+community / mapped parking
+```
+
+Normal users cannot mark their own submission as officially verified.
+
+Official records also require additional source information.
+
+## Search Functionality
+
+Users can search using information they are likely to already know, including:
+
+- parking name;
+- address;
+- postcode; and
+- local authority.
+
+Postcode-area matching also helps connect supported postcode prefixes with wider areas.
+
+## Interactive Map
+
+Parking records stored in the database can be displayed geographically using Leaflet.
+
+The map does not depend on a live parking availability API for the parking marker data.
+
+This means stored parking locations remain available even if an unrelated external parking service is unavailable.
+
+## External API Resilience
+
+Wikimedia Commons image requests are optional.
+
+If the request fails, the main parking functionality continues and a local fallback image is available.
+
+This reduces the impact of an external service failure.
+
+## Responsive Design
+
+ParkMate was tested across:
+
+- desktop;
+- tablet; and
+- mobile.
+
+Complex pages such as parking results, the map, forms and My ParkMate were specifically checked on smaller screens.
+
+## Accessibility Consideration
+
+Accessibility testing included both automated and manual checks.
+
+Areas reviewed included:
+
+- keyboard access;
+- visible focus;
+- form labels;
+- heading structure;
+- alternative text;
+- colour contrast; and
+- responsive readability.
+
+## Extensive Testing
+
+The final project documentation includes:
+
+- manual functional testing;
+- Registration testing;
+- Login and Logout testing;
+- parking search testing;
+- favourites testing;
+- CRUD testing;
+- authentication and authorisation testing;
+- error handling testing;
+- external API failure testing;
+- responsiveness testing;
+- browser compatibility testing;
+- accessibility testing;
+- automated Django testing;
+- Python PEP8 validation;
+- HTML validation;
+- CSS validation;
+- JavaScript validation;
+- Lighthouse testing;
+- user story acceptance testing; and
+- deployment verification.
+
+## Defensive Programming
+
+Important application rules are protected through backend validation rather than relying only on what the user sees in the browser.
+
+Examples include:
+
+- ownership checks;
+- verification protection;
+- coordinate validation;
+- capacity validation;
+- duplicate email protection;
+- official source validation;
+- safe database retrieval; and
+- external API failure handling.
+
+---
+
+# Project Limitations
+
+Although ParkMate meets its core project objectives, there are areas that could be expanded in future development.
+
+## Stored Parking Coverage
+
+ParkMate searches parking records stored in its own database.
+
+It does not currently contain every parking location in the United Kingdom.
+
+The usefulness of search results therefore depends on the parking data that has already been added.
+
+A future version could expand the verified dataset through additional authorised data sources.
+
+## No Live Parking Occupancy
+
+The current public application does not provide a complete real-time parking occupancy service.
+
+An `AvailabilityReport` model and form structure exist in the project, but the current URL and view configuration does not expose a complete availability-reporting workflow to users.
+
+A future development could connect this structure to dedicated views, templates and moderation rules.
+
+## Search Is Not Full Geocoding
+
+ParkMate supports text and postcode-area search but does not currently perform full address geocoding or calculate the physically nearest parking location to an arbitrary address.
+
+Future development could include a geocoding service and distance-based search.
+
+## External Parking Images
+
+Wikimedia Commons cannot guarantee that every parking location has a suitable image.
+
+ParkMate handles this using a fallback image, but some parking records may therefore not show a photograph of the exact location.
+
+## Official Data Requires Maintenance
+
+Verified parking information includes a `last_checked` field because tariffs and restrictions can change.
+
+The current application does not automatically re-check every council source.
+
+Official records therefore require ongoing review to maintain accuracy.
+
+## Community Data Requires Trust and Moderation
+
+Community users can contribute parking information.
+
+Although community submissions remain clearly separate from verified records, inaccurate information could still be submitted.
+
+A larger production system would benefit from:
+
+- moderation;
+- reporting;
+- approval workflows;
+- edit history; and
+- stronger community reputation controls.
+
+## Limited Automated Test Coverage
+
+The Django test suite covers the core functionality, including:
+
+- page loading;
+- search;
+- map data;
+- authentication;
+- favourites;
+- CRUD; and
+- ownership.
+
+However, the project does not currently have full browser automation or end-to-end UI tests.
+
+Future development could add tools such as Selenium or Playwright to automatically test complete browser workflows.
+
+## Parking Result Scalability
+
+The current project is appropriate for the present dataset, but a much larger national dataset could require:
+
+- pagination;
+- more advanced indexing;
+- caching;
+- geographic database queries; and
+- more efficient search infrastructure.
+
+## External Map Dependency
+
+The interactive map depends on Leaflet resources and OpenStreetMap tile infrastructure.
+
+The stored parking data still exists if map tiles are unavailable, but the visual map experience depends on those external resources.
+
+## No In-App Parking Payment
+
+ParkMate provides parking information but does not process parking payments.
+
+This was kept outside the project scope.
+
+Users should follow the payment information or official provider instructions associated with the parking location.
+
+## Limitations Summary
+
+| Limitation | Current Position | Possible Future Improvement |
+| --- | --- | --- |
+| UK parking coverage | Stored database locations | Expand authorised datasets |
+| Live occupancy | Not fully exposed to users | Complete availability workflow |
+| Geocoding | Text/postcode-area search | Address and distance search |
+| Images | Wikimedia + fallback | Curated location imagery |
+| Official data freshness | Manually checked records | Scheduled verification |
+| Community accuracy | Clearly marked unverified | Moderation workflow |
+| Automated testing | Django backend tests | Browser end-to-end tests |
+| Large datasets | Current dataset appropriate | Pagination, caching, geographic queries |
+| Map dependency | External tiles required | Additional fallback strategy |
+| Payments | Information only | Optional provider integrations |
+
+# Final Project Evaluation Result
+
+ParkMate successfully meets the central aim of the project: providing UK drivers with a clear way to search stored parking information, compare available details and understand where parking locations are positioned.
+
+The completed project demonstrates the key full-stack skills expected from the application, including:
+
+- Django;
+- Python;
+- relational data;
+- forms;
+- validation;
+- authentication;
+- authorisation;
+- CRUD;
+- JavaScript;
+- external-service integration;
+- responsive design;
+- accessibility consideration;
+- automated testing;
+- deployment; and
+- technical documentation.
+
+The strongest areas of the project are the combination of parking search, mapping, verified/community data separation, account functionality and ownership-protected CRUD.
+
+The project limitations mainly relate to the size and real-time nature of parking data rather than preventing the application's core functionality from operating.
+
+These limitations also provide clear directions for future development without preventing the current version from meeting its defined project scope and user requirements.
+
