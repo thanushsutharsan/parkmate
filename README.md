@@ -4967,6 +4967,948 @@ The application also stores and displays parking price information where it is a
 
 Testing and validation provide additional evidence that the final application is functional, responsive, accessible and appropriately protected.
 
+# Data Model Rationale
+
+ParkMate uses a relational data model built with Django models.
+
+The database structure was designed around the main actions users need to perform within the application:
+
+- search for parking locations;
+- view parking information;
+- register and authenticate;
+- save parking locations as favourites;
+- add community parking locations;
+- edit their own parking submissions;
+- delete their own parking submissions; and
+- associate parking information with the user who created it.
+
+The central model is `ParkingLocation`.
+
+This model stores the information required to display and manage a parking location, while related models handle user favourites and parking availability reports.
+
+Django's built-in `User` model is used for authentication rather than creating a separate custom user model.
+
+## Main Models
+
+The main data models used by ParkMate are:
+
+- Django `User`
+- `ParkingLocation`
+- `Favourite`
+- `AvailabilityReport`
+
+## ParkingLocation Model
+
+`ParkingLocation` is the main model in ParkMate because most application functionality is based around parking records.
+
+It stores information including:
+
+- parking name;
+- address;
+- postcode;
+- nation;
+- local authority;
+- latitude;
+- longitude;
+- parking type;
+- operator;
+- total spaces;
+- disabled spaces;
+- tariff information;
+- charging times;
+- restrictions;
+- payment information;
+- payment location code;
+- official source information;
+- verification status;
+- image information;
+- submitting user;
+- active status;
+- creation date; and
+- update date.
+
+The model was designed to support both officially sourced parking and community-submitted parking within the same database table.
+
+The `council_verified` field is used to distinguish officially verified Council/NPP records from community parking submissions.
+
+Community users cannot directly control this field through the community parking form.
+
+## Why Parking Information Uses One Main Model
+
+I chose to keep the main parking information within one `ParkingLocation` model rather than separating official and community parking into different models.
+
+This provides several advantages:
+
+- all parking can use the same search system;
+- all parking can appear on the same map;
+- parking details can use the same template;
+- favourites can reference either type of parking;
+- less duplicated model and view logic is required; and
+- verification status can be used to clearly distinguish the source of the information.
+
+This keeps the database structure simpler while still allowing ParkMate to differentiate between verified and community data.
+
+## ParkingLocation Validation
+
+Validation is also included within the model.
+
+ParkMate checks that:
+
+- latitude remains within the supported UK range;
+- longitude remains within the supported UK range;
+- disabled spaces cannot exceed total parking spaces;
+- verified parking must have an official source URL;
+- verified parking must include a last checked date; and
+- verified parking must contain tariff information.
+
+This helps prevent invalid parking information from being stored in the database.
+
+## User Model
+
+ParkMate uses Django's built-in authentication `User` model.
+
+This avoids recreating authentication functionality that Django already provides securely.
+
+The User model is used for:
+
+- Registration;
+- Login;
+- Logout;
+- identifying the owner of community parking;
+- associating favourites with an account; and
+- associating availability reports with an account.
+
+This also allows ParkMate to use Django functionality such as:
+
+- password validation;
+- session authentication;
+- `login_required`;
+- user permissions; and
+- staff accounts.
+
+### Favourite Model
+
+The `Favourite` model connects a user to a parking location they want to save.
+
+A favourite contains:
+
+- a reference to the user;
+- a reference to the parking location; and
+- the date the favourite was created.
+
+The model acts as a junction between `User` and `ParkingLocation`.
+
+This is preferable to storing favourites directly inside either model because:
+
+- one user can save many parking locations;
+- one parking location can be saved by many users; and
+- favourite records can be added and removed independently.
+
+A database constraint also prevents the same user from creating duplicate favourites for the same parking location.
+
+## AvailabilityReport Model
+
+The `AvailabilityReport` model was designed to associate a user-submitted parking availability report with a specific parking location.
+
+It stores:
+
+- the parking location;
+- the reporting user;
+- availability status;
+- available spaces;
+- an optional note; and
+- creation time.
+
+Possible availability states include:
+
+- spaces available;
+- busy / nearly full; and
+- full.
+
+Validation prevents logically invalid data, such as reporting available spaces for a location marked as full or reporting more available spaces than the known total capacity.
+
+The model provides a structured foundation for parking availability reports.
+
+## Data Model Overview
+
+| Model | Main Purpose | Important Relationships |
+| --- | --- | --- |
+| `User` | Authentication and ownership | Parking submissions, favourites and availability reports |
+| `ParkingLocation` | Stores parking information | Submitted by User, referenced by Favourite and AvailabilityReport |
+| `Favourite` | Stores saved parking | Links one User to one ParkingLocation |
+| `AvailabilityReport` | Stores availability information | Links one User to one ParkingLocation |
+
+## Data Model Diagram
+
+The following diagram shows the main ParkMate database relationships.
+
+```mermaid
+erDiagram
+    USER ||--o{ PARKING_LOCATION : submits
+    USER ||--o{ FAVOURITE : creates
+    PARKING_LOCATION ||--o{ FAVOURITE : receives
+    USER ||--o{ AVAILABILITY_REPORT : creates
+    PARKING_LOCATION ||--o{ AVAILABILITY_REPORT : receives
+
+    USER {
+        int id PK
+        string username
+        string email
+        string password
+    }
+
+    PARKING_LOCATION {
+        int id PK
+        string name
+        string address
+        string postcode
+        string nation
+        string local_authority
+        decimal latitude
+        decimal longitude
+        string parking_type
+        string tariff_info
+        boolean council_verified
+        int submitted_by FK
+        boolean is_active
+        datetime created_at
+        datetime updated_at
+    }
+
+    FAVOURITE {
+        int id PK
+        int user_id FK
+        int parking_id FK
+        datetime created_at
+    }
+
+    AVAILABILITY_REPORT {
+        int id PK
+        int location_id FK
+        int user_id FK
+        string status
+        int spaces_available
+        string note
+        datetime created_at
+    }
+```
+
+
+
+---
+
+## Model Relationships
+
+The ParkMate database uses Django `ForeignKey` relationships to connect users with parking information.
+
+The relationships were designed so that ownership, favourites and related parking information can be managed without duplicating data.
+
+## User to ParkingLocation
+
+A `ParkingLocation` can optionally reference the user who submitted it using:
+
+```python
+submitted_by = models.ForeignKey(
+    settings.AUTH_USER_MODEL,
+    on_delete=models.SET_NULL,
+    null=True,
+    blank=True,
+    related_name="parking_submissions",
+)
+```
+
+This creates a **one-to-many relationship**:
+
+```text
+One User -> Many ParkingLocation records
+```
+
+A user can submit multiple parking locations, while each community parking record can have one submitting user.
+
+`SET_NULL` is used when a user account is removed.
+
+This means deleting a user does not automatically delete useful parking information from ParkMate.
+
+Instead, the `submitted_by` value can become empty while the parking record remains available.
+
+## User to Favourite
+
+Each `Favourite` belongs to one user.
+
+```text
+One User -> Many Favourite records
+```
+
+If the user is deleted, their favourites are deleted using `CASCADE` because favourites have no purpose without the user who created them.
+
+## ParkingLocation to Favourite
+
+Each favourite also belongs to one parking location.
+
+```text
+One ParkingLocation -> Many Favourite records
+```
+
+A parking location can therefore be saved by multiple users.
+
+Together, these relationships create a many-to-many relationship between users and parking locations through the `Favourite` model.
+
+```text
+User
+  |
+  | 1
+  |
+  | many
+Favourite
+  | many
+  |
+  | 1
+  |
+ParkingLocation
+```
+
+The database includes a unique constraint on:
+
+```text
+user + parking
+```
+
+This prevents the same user from saving the same parking location more than once.
+
+## User to AvailabilityReport
+
+Each availability report is linked to the user who submitted it.
+
+```text
+One User -> Many AvailabilityReport records
+```
+
+If the user is deleted, their associated availability reports are also deleted through `CASCADE`.
+
+## ParkingLocation to AvailabilityReport
+
+Each availability report is also linked to one parking location.
+
+```text
+One ParkingLocation -> Many AvailabilityReport records
+```
+
+This allows a parking location to have multiple reports over time.
+
+The `ParkingLocation.latest_report` property can identify the newest related report.
+
+### Relationship Summary
+
+| Parent Model | Related Model | Relationship | Delete Behaviour | Reason |
+| --- | --- | --- | --- | --- |
+| `User` | `ParkingLocation` | One-to-Many | `SET_NULL` | Parking can remain even if the submitting account is removed |
+| `User` | `Favourite` | One-to-Many | `CASCADE` | A favourite has no purpose without its user |
+| `ParkingLocation` | `Favourite` | One-to-Many | `CASCADE` | Favourites should disappear if the parking record is deleted |
+| `User` | `AvailabilityReport` | One-to-Many | `CASCADE` | Reports remain associated with their reporting account |
+| `ParkingLocation` | `AvailabilityReport` | One-to-Many | `CASCADE` | Reports relate directly to a specific parking location |
+
+## Relationship Rationale
+
+This relational structure avoids unnecessarily repeating parking information.
+
+For example, when a user saves a parking location, ParkMate does not copy the complete parking record into the user's account.
+
+Instead, the `Favourite` table stores references to:
+
+```text
+User ID
++
+ParkingLocation ID
+```
+
+The dashboard can then retrieve the related `ParkingLocation` data using Django's ORM.
+
+This provides a cleaner relational structure and ensures that if parking information changes, users see the updated information rather than an outdated copied version.
+
+---
+
+## Front End and Back End Data Flow
+
+ParkMate uses Django's Model-View-Template structure to move information between the user interface, Python backend and database.
+
+The general flow is:
+
+```text
+User
+  ↓
+HTML Template / Browser
+  ↓
+URL Request
+  ↓
+Django URL Routing
+  ↓
+Django View
+  ↓
+Django Form / Business Logic
+  ↓
+Django ORM
+  ↓
+Database
+  ↓
+Django View
+  ↓
+Template Context
+  ↓
+HTML Template
+  ↓
+User
+```
+
+## Front End to Back End
+
+When a user performs an action in the front end, the browser sends a request to Django.
+
+Examples include:
+
+- entering a parking search;
+- opening a parking detail page;
+- registering;
+- logging in;
+- saving a favourite;
+- adding parking;
+- editing parking; and
+- deleting parking.
+
+Django's URL configuration maps the requested URL to the appropriate view.
+
+The view then determines what application logic needs to run.
+
+## Back End to Database
+
+Django views communicate with the database through Django's Object Relational Mapper.
+
+For example, the parking list begins with active parking records.
+
+The search view can then filter records using information such as:
+
+- name;
+- address;
+- postcode;
+- local authority; and
+- nation.
+
+Django ORM queries retrieve the matching `ParkingLocation` objects from the database.
+
+## Database to Front End
+
+After the required data has been retrieved, the view passes it into a Django template through the template context.
+
+For example:
+
+```text
+Database
+   ↓
+ParkingLocation QuerySet
+   ↓
+parking_list view
+   ↓
+locations context variable
+   ↓
+parking/list.html
+   ↓
+Parking cards shown to user
+```
+
+This separates the database logic from the HTML presentation.
+
+## Parking Search Data Flow
+
+When the user performs a parking search:
+
+```text
+User enters search
+        ↓
+GET request with q parameter
+        ↓
+parking_list view
+        ↓
+Search text is cleaned
+        ↓
+Django Q objects build the search query
+        ↓
+ParkingLocation database query
+        ↓
+Matching active records returned
+        ↓
+Results passed to list.html
+        ↓
+Parking cards displayed
+```
+
+Searches can match:
+
+- parking name;
+- address;
+- postcode; and
+- local authority.
+
+Postcode-area logic can also map supported postcode prefixes to an area name before extending the database query.
+
+## Map Data Flow
+
+The Map page uses parking records stored in the same `ParkingLocation` model.
+
+The backend retrieves active parking records and prepares the information required by the front end.
+
+This includes:
+
+- ID;
+- parking name;
+- address;
+- postcode;
+- price;
+- latitude;
+- longitude; and
+- verification status.
+
+The data is then passed to the Map template, where JavaScript and Leaflet use the latitude and longitude values to create map markers.
+
+```text
+ParkingLocation database
+        ↓
+map_view
+        ↓
+Python creates map_locations data
+        ↓
+parking/map.html
+        ↓
+JavaScript / Leaflet
+        ↓
+Map markers displayed
+```
+
+## Registration Data Flow
+
+Registration follows a form-based data flow:
+
+```text
+User completes Registration form
+        ↓
+POST request
+        ↓
+RegisterForm
+        ↓
+Form validation
+        ↓
+Django User created
+        ↓
+User automatically logged in
+        ↓
+Redirect to My ParkMate
+```
+
+The form also checks whether the email address has already been used.
+
+## Favourite Data Flow
+
+When a logged-in user saves parking:
+
+```text
+User selects Save
+        ↓
+POST request
+        ↓
+toggle_favourite view
+        ↓
+User authentication checked
+        ↓
+ParkingLocation retrieved
+        ↓
+Favourite get_or_create()
+        ↓
+Favourite saved
+        ↓
+Success message
+        ↓
+User returned to page
+```
+
+If the favourite already exists, ParkMate removes it instead.
+
+This allows the same control to act as both Save and Remove.
+
+## Dashboard Data Flow
+
+The My ParkMate dashboard retrieves information specifically associated with the logged-in user.
+
+```text
+Authenticated User
+        ↓
+dashboard view
+        ↓
+Favourite records filtered by user
+        +
+Parking submissions filtered by user
+        ↓
+Related ParkingLocation data retrieved
+        ↓
+dashboard.html
+        ↓
+Saved Parking + My Parking displayed
+```
+
+## Front End and Back End Data Flow Summary
+
+| User Action | Front End | Back End | Database Action | Final Output |
+| --- | --- | --- | --- | --- |
+| Search parking | Search form | `parking_list` | Filter `ParkingLocation` | Matching parking cards |
+| View map | Map page | `map_view` | Retrieve active parking | Leaflet markers |
+| View parking | Detail link | `parking_detail` | Retrieve one parking record | Parking detail page |
+| Register | Registration form | `register` | Create `User` | Logged-in dashboard |
+| Save favourite | Save control | `toggle_favourite` | Create `Favourite` | Saved state/message |
+| Remove favourite | Saved control | `toggle_favourite` | Delete `Favourite` | Unsaved state/message |
+| View dashboard | My ParkMate | `dashboard` | Query favourites and submissions | Personal dashboard |
+| Add parking | Add form | `parking_create` | Create `ParkingLocation` | Parking detail |
+| Edit parking | Edit form | `parking_edit` | Update `ParkingLocation` | Updated detail |
+| Delete parking | Confirmation form | `parking_delete` | Delete `ParkingLocation` | Dashboard |
+
+## Front End and Back End Data Flow Diagram
+
+```mermaid
+flowchart TD
+    A[User / Browser] --> B[Django URL]
+    B --> C[Django View]
+    C --> D{Form required?}
+
+    D -->|Yes| E[Django Form Validation]
+    D -->|No| F[Django ORM]
+
+    E -->|Valid| F
+    E -->|Invalid| G[Return Form Errors]
+
+    F --> H[(Database)]
+    H --> C
+
+    C --> I[Template Context]
+    I --> J[Django Template]
+    J --> A
+
+    G --> J
+```
+
+
+
+---
+
+## CRUD Data Flow
+
+ParkMate implements Create, Read, Update and Delete functionality for parking records.
+
+CRUD functionality is mainly based around the `ParkingLocation` model.
+
+The system also applies authentication and ownership checks so that normal registered users can manage their own community parking without being able to modify another user's records.
+
+## CRUD Overview
+
+| CRUD Operation | ParkMate Action | Authentication | Ownership Required |
+| --- | --- | --- | --- |
+| Create | Add Parking | Yes | Current user becomes owner |
+| Read | Search/View Parking | No | No |
+| Update | Edit Parking | Yes | Yes, unless staff |
+| Delete | Delete Parking | Yes | Yes, unless staff |
+
+---
+
+## Create Data Flow
+
+Parking creation is protected using `login_required`.
+
+Only authenticated users can access the Add Parking functionality.
+
+The user completes the `CommunityParkingLocationForm`.
+
+```text
+Authenticated user
+        ↓
+Add Parking
+        ↓
+CommunityParkingLocationForm
+        ↓
+POST request
+        ↓
+Form validation
+        ↓
+form.save(commit=False)
+        ↓
+submitted_by = request.user
+        ↓
+council_verified = False
+        ↓
+ParkingLocation saved
+        ↓
+Success message
+        ↓
+Redirect to parking detail
+```
+
+Using `commit=False` allows ParkMate to add backend-controlled information before the record is saved.
+
+The logged-in user is automatically assigned as `submitted_by`.
+
+The backend also forces:
+
+```python
+council_verified = False
+```
+
+This prevents a normal community user from marking their own parking record as Council/NPP verified.
+
+### Create Result
+
+The new parking record becomes available through the same `ParkingLocation` model used by:
+
+- parking search;
+- parking details;
+- the map; and
+- My ParkMate.
+
+---
+
+## Read Data Flow
+
+Read functionality is publicly available for parking information.
+
+Users do not need an account to:
+
+- view the parking list;
+- search parking;
+- filter parking;
+- view the map; or
+- open parking details.
+
+The basic Read flow is:
+
+```text
+User requests parking
+        ↓
+Django view
+        ↓
+ParkingLocation.objects query
+        ↓
+Only active parking selected
+        ↓
+Optional search/filter applied
+        ↓
+QuerySet returned
+        ↓
+Data passed to template
+        ↓
+Parking displayed
+```
+
+The parking detail view uses the parking record's primary key to retrieve one specific active parking location.
+
+If the requested active parking record does not exist, Django returns the appropriate not-found response rather than exposing invalid database information.
+
+---
+
+## Update Data Flow
+
+Edit functionality requires authentication.
+
+Before allowing an update, ParkMate checks whether:
+
+```text
+request.user is staff
+OR
+request.user owns the parking record
+```
+
+If neither condition is true, the user cannot edit the record.
+
+For a normal registered user:
+
+```text
+Authenticated user
+        ↓
+Select Edit
+        ↓
+Parking record retrieved
+        ↓
+Ownership check
+        ↓
+CommunityParkingLocationForm loaded
+        ↓
+User changes information
+        ↓
+POST request
+        ↓
+Form validation
+        ↓
+council_verified forced to False
+        ↓
+ParkingLocation updated
+        ↓
+Success message
+        ↓
+Redirect to parking detail
+```
+
+A staff user can use the more detailed `ParkingLocationForm`, which contains official-source fields that are intentionally not exposed to ordinary community users.
+
+This separation prevents community users from changing official verification information.
+
+---
+
+## Delete Data Flow
+
+Delete functionality also requires authentication and ownership.
+
+When the user initially selects Delete, ParkMate does not immediately remove the database record.
+
+Instead, a confirmation page is displayed.
+
+```text
+Authenticated user
+        ↓
+Select Delete
+        ↓
+Parking record retrieved
+        ↓
+Ownership check
+        ↓
+Delete confirmation page
+        ↓
+User confirms using POST
+        ↓
+ParkingLocation deleted
+        ↓
+Success message
+        ↓
+Redirect to My ParkMate
+```
+
+This confirmation step reduces the risk of accidental deletion.
+
+If a user tries to delete parking belonging to another user, ParkMate blocks the operation and redirects them away from the protected action.
+
+---
+
+## CRUD Ownership Protection
+
+Ownership checks are an important part of the CRUD data flow.
+
+Create automatically assigns the current user as the owner.
+
+Update and Delete compare the current authenticated user with:
+
+```text
+ParkingLocation.submitted_by
+```
+
+This means a normal user can manage:
+
+```text
+their own parking
+```
+
+but cannot manage:
+
+```text
+another user's parking
+```
+
+Staff users are handled separately and can manage parking where required.
+
+## CRUD Data Flow Diagram
+
+```mermaid
+flowchart TD
+    A[User] --> B{CRUD Action}
+
+    B -->|Create| C[Login Required]
+    C --> D[Community Parking Form]
+    D --> E[Validate Form]
+    E --> F[Set submitted_by]
+    F --> G[Set council_verified False]
+    G --> H[(Save ParkingLocation)]
+
+    B -->|Read| I[Parking Search / Detail / Map]
+    I --> J[Query Active ParkingLocation]
+    J --> K[(Read Database)]
+    K --> L[Display Parking]
+
+    B -->|Update| M[Login Required]
+    M --> N[Retrieve ParkingLocation]
+    N --> O{Owner or Staff?}
+    O -->|No| P[Block Update]
+    O -->|Yes| Q[Load Edit Form]
+    Q --> R[Validate Changes]
+    R --> S[(Update ParkingLocation)]
+
+    B -->|Delete| T[Login Required]
+    T --> U[Retrieve ParkingLocation]
+    U --> V{Owner or Staff?}
+    V -->|No| W[Block Delete]
+    V -->|Yes| X[Show Confirmation]
+    X --> Y{POST Confirmed?}
+    Y -->|Yes| Z[(Delete ParkingLocation)]
+    Y -->|No| X
+```
+
+## CRUD Data Flow Summary
+
+| Operation | Input | Validation / Security | Database Result | User Feedback |
+| --- | --- | --- | --- | --- |
+| Create | Community parking form | Login, form validation, UK coordinates | New `ParkingLocation` | Success message and redirect |
+| Read | Search, URL or map request | Active record filtering | Data retrieved | Parking displayed |
+| Update | Edit form | Login, ownership, form validation | Existing record updated | Success message and redirect |
+| Delete | Confirmation POST | Login and ownership | Record deleted | Success message and dashboard redirect |
+
+## CRUD Data Flow Evaluation
+
+The final CRUD implementation provides a clear separation between public parking information and protected data-management actions.
+
+Read functionality remains publicly accessible because searching and viewing parking is the main purpose of ParkMate.
+
+Create, Update and Delete functionality requires authentication because these actions change stored application data.
+
+Update and Delete also require ownership checks, preventing normal users from changing parking submitted by another account.
+
+Community forms deliberately exclude official verification controls, and the backend forces community records to remain unverified.
+
+This means security does not rely only on hiding fields in the front end.
+
+The backend also enforces the intended rules before database changes are made.
+
+This provides a safer and more reliable CRUD structure for the ParkMate application.
+
+---
+
+## Data Model and Data Flow Evaluation
+
+The final ParkMate database structure supports the main application requirements without unnecessarily duplicating information.
+
+`ParkingLocation` acts as the central parking entity, while Django's `User` model provides authentication and ownership.
+
+`Favourite` creates a structured relationship between users and saved parking rather than copying parking data into individual accounts.
+
+`AvailabilityReport` provides a related structure for storing user-generated parking availability information.
+
+The front end communicates with Django views through HTTP requests, while Django forms provide validation before data is passed through the ORM to the relational database.
+
+Data retrieved from the database is returned to templates through the view context, keeping database logic separate from presentation.
+
+CRUD functionality applies additional authentication and ownership checks before changes are made.
+
+This structure allows ParkMate to provide:
+
+- searchable parking information;
+- interactive map data;
+- user authentication;
+- favourites;
+- personal dashboards;
+- community parking submissions;
+- ownership protection; and
+- complete parking CRUD functionality.
+
+The final data model and data flow therefore support both the functional requirements and security requirements of the completed ParkMate application.
+
 
 
 # Bugs and Fixes
