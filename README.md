@@ -6642,7 +6642,28 @@ Destructive Delete actions require a confirmation POST before the database recor
 
 Overall, ParkMate applies security to configuration, authentication, forms, sessions, production deployment and database-changing actions rather than relying only on front-end controls.
 
+# Defensive Programming
 
+Defensive programming was used throughout ParkMate to reduce the risk of invalid data, unexpected user behaviour, unauthorised changes and failures from external services.
+
+Rather than assuming that all user input or external data will always be valid, ParkMate performs checks at multiple levels before allowing important operations to continue.
+
+The main defensive programming techniques used include:
+
+- Django form validation;
+- model-level validation;
+- authentication checks;
+- ownership checks;
+- safe database object retrieval;
+- POST requests for data-changing actions;
+- Delete confirmation;
+- controlled verification permissions;
+- duplicate prevention;
+- external API failure handling;
+- fallback images;
+- safe redirects;
+- active-record filtering; and
+- custom error handling.
 
 # Bugs and Fixes
 
