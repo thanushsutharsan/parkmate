@@ -179,10 +179,3 @@ if not DEBUG:
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
-
-    # Adds WhiteNoise when the site is deployed
-if not DEBUG:
-    MIDDLEWARE.insert(
-        1,
-        "whitenoise.middleware.WhiteNoiseMiddleware",
-    )
