@@ -4541,6 +4541,433 @@ Accessibility was supported through semantic structure, keyboard navigation, for
 Overall, the final ParkMate UX meets the intended goal of providing a straightforward parking search and management experience while maintaining user control, clear feedback, consistency and accessibility.
 
 
+# User Story Testing (EVIDENCE)
+
+User story acceptance testing was carried out to confirm that the final ParkMate application meets the needs identified for the three main target user groups:
+
+- Commuters
+- Drivers attending appointments or events
+- Delivery drivers
+
+The original user stories were divided into first-time, returning and frequent users.
+
+Several user stories require the same ParkMate functionality. To avoid adding repetitive explanations, related user stories have been grouped together where the same feature provides suitable acceptance evidence.
+
+During testing, it was identified that ParkMate displays price information for parking locations, but it does not currently provide an automatic side-by-side price comparison feature. Users can compare prices manually by opening or reviewing each parking location one at a time. Therefore, the user story requiring users to compare parking prices before choosing a location is considered a pass because the required comparison can be completed through the existing parking information.
+
+Each screenshot section below identifies exactly which user stories it provides evidence for.
+
+---
+
+## Parking Search Acceptance Testing
+
+ParkMate allows users to search for parking using location information they are likely to already know, including town or city names, postcodes, postcode areas and parking names.
+
+### User Stories Covered
+
+This evidence relates to the following user stories:
+
+- **First-Time Commuter** - search by town or city to find parking near the destination.
+- **First-Time Commuter** - search using a postcode without knowing the parking location name.
+- **First-Time Appointment/Event Driver** - search using the postcode of an unfamiliar destination.
+- **First-Time Delivery Driver** - quickly search near a delivery postcode.
+- **First-Time Delivery Driver** - find parking in an unfamiliar town.
+- **Returning Delivery Driver** - search directly for a previously used parking location.
+
+### Acceptance Test
+
+I tested searches using:
+
+- town or city names;
+- postcodes;
+- postcode areas; and
+- parking location names.
+
+A separate screenshot was captured for each type of search. The relevant parking locations were returned successfully for all four search methods.
+
+**Status:** Pass
+
+![ParkMate parking search using a town or city name](static/images/testing/user-stories/parking-search-town.png)
+
+![ParkMate parking search using a postcode](static/images/testing/user-stories/parking-search-postcode.png)
+
+![ParkMate parking search using a postcode area](static/images/testing/user-stories/parking-search-postcode-area.png)
+
+![ParkMate parking search using a parking location name](static/images/testing/user-stories/parking-search-location-name.png)
+
+---
+
+## Parking Results Acceptance Testing
+
+ParkMate displays multiple parking locations where matching records are available.
+
+The parking cards allow users to review general parking information, including price information where it has been provided, and select a suitable location. Users can compare parking prices by reviewing the parking locations one at a time.
+
+### User Stories Covered
+
+This evidence relates to:
+
+- **First-Time Commuter** - compare parking prices before choosing a location.
+- **First-Time Delivery Driver** - view several parking options before choosing one.
+- **Frequent Appointment/Event Driver** - view several parking choices before deciding which one to use.
+
+### Acceptance Test
+
+I searched an area containing several parking locations and checked that multiple results were displayed.
+
+I then reviewed the parking options one by one and checked the price information shown for each location. This allowed me to compare the available prices before choosing a parking location.
+
+Although ParkMate does not provide an automatic side-by-side comparison table, users can compare prices manually by clicking on or reviewing each parking location individually.
+
+**Status:** Pass
+
+![ParkMate parking results user story evidence](static/images/testing/user-stories/parking-price-user-stories.png)
+
+---
+
+## Interactive Map Acceptance Testing
+
+ParkMate provides an interactive Leaflet map showing parking locations with stored coordinates.
+
+Users can view the geographical position of parking locations and interact with map markers.
+
+### User Stories Covered
+
+This evidence relates to:
+
+- **First-Time Commuter** - see where parking locations are geographically positioned.
+- **First-Time Appointment/Event Driver** - use a map to understand where parking is located near an unfamiliar destination.
+- **Returning Delivery Driver** - view stored parking locations on the interactive map.
+
+### Acceptance Test
+
+I opened the Map page and confirmed that:
+
+- parking markers were displayed;
+- the map could be moved and zoomed;
+- markers could be selected; and
+- parking information could be viewed.
+
+**Status:** Pass
+
+![ParkMate map user story evidence](static/images/testing/user-stories/map-user-stories.png)
+
+---
+
+## Parking Detail Information Acceptance Testing
+
+Individual parking detail pages provide more information than the main parking results.
+
+The available information can include:
+
+- parking name;
+- address;
+- price;
+- restrictions;
+- charging information;
+- payment information; and
+- verification information.
+
+### User Stories Covered
+
+This evidence relates to:
+
+- **First-Time Appointment/Event Driver** - check parking restrictions before travelling.
+- **Returning Appointment/Event Driver** - review parking information again before travelling.
+- **Returning Appointment/Event Driver** - check when parking charges apply.
+- **Returning Appointment/Event Driver** - understand available payment information.
+- **First-Time Delivery Driver** - check the parking address and restrictions before stopping.
+
+### Acceptance Test
+
+I opened a parking detail page and confirmed that the available parking information was clearly presented.
+
+Price information was displayed where it was available for the selected parking location. I reviewed the detail pages for individual parking locations one at a time so that the prices could be compared before selecting a suitable location.
+
+**Status:** Pass
+
+![ParkMate parking detail user story evidence](static/images/testing/user-stories/parking-detail-user-stories.png)
+
+---
+
+## Parking Verification Acceptance Testing
+
+ParkMate distinguishes officially sourced parking information from other mapped or community parking records.
+
+Council/NPP price-verified parking clearly displays its verification status.
+
+### User Stories Covered
+
+This evidence relates to:
+
+- **First-Time Appointment/Event Driver** - identify whether parking information has an official source.
+- **Frequent Appointment/Event Driver** - access the official source where one is available.
+- **Frequent Delivery Driver** - distinguish verified parking from mapped parking.
+
+### Acceptance Test
+
+I compared parking records with different verification states and confirmed that Council/NPP verified parking was clearly identified.
+
+Where an official source was stored, the user could access the source information.
+
+Verification identifies the source or status of a parking record and helps users assess the reliability of the parking information before comparing and selecting a location.
+
+**Status:** Pass
+
+![ParkMate parking verification user story evidence](static/images/testing/user-stories/parking-verification-user-stories.png)
+
+---
+
+## Registration and Login Acceptance Testing
+
+ParkMate allows returning users to create an account and access personal functionality.
+
+### User Stories Covered
+
+This evidence relates to:
+
+- **Returning Commuter** - register for an account to access personal ParkMate features.
+- **Returning Commuter** - log in and access My ParkMate.
+
+Registration and authentication also support all other user stories involving favourites, My ParkMate and community parking management.
+
+### Acceptance Test
+
+I registered a new account using valid details and then logged into ParkMate.
+
+After authentication, account-specific navigation and My ParkMate became available.
+
+**Status:** Pass
+
+![Parkmate regristration user story evidence](static/images/testing/user-stories/registration-user-stories.png)
+
+![Parkmate login user story evidence](static/images/testing/user-stories/login-user-stories.png)
+---
+
+## Favourites and My ParkMate Acceptance Testing
+
+Registered users can save useful parking locations and access them later through My ParkMate.
+
+### User Stories Covered
+
+This evidence relates to:
+
+- **Returning Commuter** - save useful parking for later.
+- **Returning Commuter** - view saved favourites.
+- **Frequent Commuter** - quickly return to previously saved parking.
+- **Returning Appointment/Event Driver** - save suitable parking for later.
+- **Frequent Appointment/Event Driver** - access saved parking from My ParkMate.
+- **Returning Delivery Driver** - save useful parking for future journeys.
+- **Returning Delivery Driver** - quickly access saved parking.
+
+### Acceptance Test
+
+I saved a parking location while logged in and then opened My ParkMate.
+
+The saved location appeared within the favourites section and could be opened again.
+
+**Status:** Pass
+
+![ParkMate favourites and dashboard user story evidence](static/images/testing/user-stories/favourites-user-stories.png)
+
+---
+
+## Add Parking Acceptance Testing
+
+Authenticated users can contribute community parking locations using the Add Parking form.
+
+Community-created parking is not automatically marked as Council/NPP verified.
+
+### User Stories Covered
+
+This evidence relates to:
+
+- **Frequent Commuter** - add a missing parking location.
+- **Frequent Appointment/Event Driver** - contribute missing parking.
+- **Frequent Delivery Driver** - add useful parking that could help other drivers.
+
+### Acceptance Test
+
+I logged into ParkMate, completed the Add Parking form using valid information and submitted the record.
+
+The parking location was created successfully and remained a community submission rather than being automatically marked as officially verified.
+
+**Status:** Pass
+
+![ParkMate add parking user story evidence](static/images/testing/user-stories/add-parking-user-stories.png)
+
+---
+
+## Edit Parking Acceptance Testing
+
+Users can update community parking records that they own.
+
+### User Stories Covered
+
+This evidence relates to:
+
+- **Frequent Commuter** - correct information in a parking record they submitted.
+- **Frequent Delivery Driver** - update parking information they previously submitted.
+
+### Acceptance Test
+
+I opened a parking record owned by the logged-in account, selected Edit and changed the parking information.
+
+The updated information was saved successfully.
+
+**Status:** Pass
+
+![ParkMate edit parking user story evidence](static/images/testing/user-stories/edit-parking-user-stories.png)
+
+---
+
+## Delete Parking Acceptance Testing
+
+Users can remove parking records that they own.
+
+ParkMate requires confirmation before the record is deleted.
+
+### User Stories Covered
+
+This evidence relates to:
+
+- **Frequent Commuter** - remove an outdated parking submission.
+- **Frequent Delivery Driver** - remove one of their own outdated submissions.
+
+#### Acceptance Test
+
+I selected Delete on a user-owned parking record.
+
+ParkMate displayed a confirmation page before completing the deletion.
+
+After confirmation, the record was successfully removed.
+
+**Status:** Pass
+
+![ParkMate delete parking user story evidence](static/images/testing/user-stories/delete-parking-user-stories.png)
+
+---
+
+## User Story Acceptance Testing Summary
+
+| Feature | Main User Stories Supported | Result |
+| --- | --- | --- |
+| Parking search | Town, city, postcode, postcode-area and parking-name searches | Pass |
+| Parking results | View multiple parking options | Pass |
+| Parking price information | View and compare prices by reviewing parking locations individually | Pass |
+| Interactive map | View geographical parking locations | Pass |
+| Parking details | View address, restrictions, charges and payment information | Pass |
+| Verification | Identify verified, mapped and community parking | Pass |
+| Registration and Login | Access account functionality | Pass |
+| Favourites and My ParkMate | Save and retrieve useful parking | Pass |
+| Add Parking | Contribute community parking | Pass |
+| Edit Parking | Correct user-owned parking information | Pass |
+| Delete Parking | Remove user-owned parking information | Pass |
+
+## User Story Acceptance Testing Result
+
+The user story acceptance testing confirmed that the main functionality implemented in ParkMate supports the needs identified for commuters, drivers attending appointments or events and delivery drivers.
+
+Related user stories were grouped where they relied on the same ParkMate feature. Separate screenshots were included for each parking search method because town or city names, postcodes, postcode areas and parking location names were tested individually.
+
+The evidence demonstrates the main user journeys from finding and comparing parking through to account registration, saving locations and managing community parking submissions.
+
+ParkMate includes price information for parking locations where it has been provided. Users can compare prices by reviewing the parking locations one at a time and selecting the most suitable option. Although the application does not provide an automatic side-by-side comparison view, the user story requirement is met because the prices can be compared manually within the existing parking results and detail pages.
+
+---
+
+## Final Success Criteria Evaluation
+
+The completed ParkMate application was evaluated against the user-facing and technical success criteria established during the planning stage.
+
+## User-Facing Success Criteria
+
+| Success Criterion | Evidence | Status |
+| --- | --- | --- |
+| Search using a town or city | Parking Search acceptance testing | Met |
+| Search using a postcode | Parking Search acceptance testing | Met |
+| Search using a postcode area | Parking Search acceptance testing | Met |
+| Search using a parking name | Parking Search acceptance testing | Met |
+| View matching parking results | Parking Results acceptance testing | Met |
+| View available parking price information | Parking Results and Parking Detail testing | Met |
+| Compare parking prices before choosing a location | Parking Results and Parking Detail testing | Met |
+| Open individual parking details | Parking Detail testing | Met |
+| View parking on an interactive map | Interactive Map testing | Met |
+| Identify Council/NPP verified parking | Parking Verification testing | Met |
+| Distinguish mapped/community parking | Parking Verification testing | Met |
+| Register for an account | Registration and Login testing | Met |
+| Log in | Registration and Login testing | Met |
+| Log out | Login and Logout testing | Met |
+| Save favourites | Favourites and My ParkMate testing | Met |
+| Remove favourites | Favourites testing | Met |
+| Access My ParkMate | Favourites and My ParkMate testing | Met |
+| Add community parking | Add Parking testing | Met |
+| Edit own parking | Edit Parking testing | Met |
+| Delete own parking | Delete Parking testing | Met |
+| Prevent users editing another user’s parking | Authentication and Authorisation testing | Met |
+| Prevent users deleting another user’s parking | Authentication and Authorisation testing | Met |
+| Use ParkMate on desktop | Responsiveness testing | Met |
+| Use ParkMate on tablet | Responsiveness testing | Met |
+| Use ParkMate on mobile | Responsiveness testing | Met |
+
+## User-Facing Success Criteria Result
+
+The defined user-facing success criteria were met by the final ParkMate application.
+
+Users can complete the main parking journey without creating an account, including searching, viewing results, opening parking details and using the map.
+
+Users can view price information where it has been provided for an individual parking location. They can then review the available parking locations one at a time and compare the prices before choosing a suitable location.
+
+ParkMate does not provide an automatic side-by-side price comparison feature, but this is not required for the user story to pass because the comparison can be completed manually by clicking through the available parking options.
+
+---
+
+## Technical Success Criteria
+
+| Technical Success Criterion | Evidence | Status |
+| --- | --- | --- |
+| Python backend | ParkMate Python source code and PEP8 validation | Met |
+| Django framework | Django project and application structure | Met |
+| Relational database | Parking, favourites and user relationships | Met |
+| Django ORM | Database Create, Read, Update and Delete operations | Met |
+| Authentication | Registration, Login and Logout | Met |
+| Authorisation | Ownership-protected Edit and Delete functionality | Met |
+| CRUD functionality | Add, view, edit and delete parking | Met |
+| Django forms | Registration and parking forms | Met |
+| Form validation | Registration and parking validation testing | Met |
+| Security controls | CSRF, authentication and ownership restrictions | Met |
+| Interactive map | Leaflet and OpenStreetMap integration | Met |
+| Responsive design | Desktop, tablet and mobile testing | Met |
+| Browser compatibility | Chrome, Safari and Firefox testing | Met |
+| Accessibility | Lighthouse and manual accessibility testing | Met |
+| Automated backend testing | Django automated test suite | Met |
+| Python code quality | PEP8 validation | Met |
+| HTML quality | HTML validation | Met |
+| CSS quality | CSS validation | Met |
+| JavaScript quality | JavaScript validation | Met |
+| External API resilience | Wikimedia API failure testing | Met |
+| Deployment | Heroku deployment and verification | Met |
+
+## Technical Success Criteria Result
+
+The final ParkMate application demonstrates the technical requirements established during development.
+
+The project uses Python and Django for backend functionality, relational database models for storing application data and Django’s ORM for database interaction.
+
+Authentication and ownership-based authorisation protect user-specific functionality.
+
+CRUD functionality is demonstrated through:
+
+- **Create** - users can add community parking;
+- **Read** - users can search for and view parking;
+- **Update** - users can edit parking they own; and
+- **Delete** - users can delete parking they own.
+
+The application also stores and displays parking price information where it is available. Users can review the prices for individual parking locations one at a time and compare them before selecting a suitable location. This supports the parking price comparison user story, even though the application does not include a dedicated automatic comparison table or side-by-side comparison interface.
+
+Testing and validation provide additional evidence that the final application is functional, responsive, accessible and appropriately protected.
+
+
 
 # Bugs and Fixes
 
