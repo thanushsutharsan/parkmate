@@ -4686,7 +4686,7 @@ Price information was displayed where it was available for the selected parking 
 
 **Status:** Pass
 
-![ParkMate parking detail user story evidence](static/images/testing/user-stories/parking-detail-user-stories.png)
+![ParkMate parking detail user story evidence](static/images/testing/user-stories/parking-details-user-stories.png)
 
 ---
 
@@ -4844,7 +4844,7 @@ After confirmation, the record was successfully removed.
 
 **Status:** Pass
 
-![ParkMate delete parking user story evidence](static/images/testing/user-stories/delete-parking-user-stories.png)
+![ParkMate delete parking user story evidence](static/images/testing/user-stories/delete-parking%20user-stories.png)
 
 ---
 
