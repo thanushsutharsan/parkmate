@@ -5910,6 +5910,739 @@ This structure allows ParkMate to provide:
 The final data model and data flow therefore support both the functional requirements and security requirements of the completed ParkMate application.
 
 
+# Security Features Implemented
+
+Security was considered throughout the development of ParkMate to protect user accounts, application data and production configuration.
+
+ParkMate uses Django's built-in security features alongside additional application-level controls.
+
+The main security areas implemented include:
+
+- environment variables for sensitive configuration;
+- production-only security settings;
+- HTTPS enforcement;
+- secure cookies;
+- CSRF protection;
+- Django password validation;
+- authentication requirements;
+- ownership and permission checks;
+- protected CRUD functionality;
+- restricted verification controls;
+- secure form handling; and
+- protection against accidental destructive actions.
+
+The security implementation was reviewed alongside authentication testing, authorisation testing, CRUD testing and automated Django testing.
+
+---
+
+## Environment Variables and Secret Keys
+
+Sensitive configuration should not be stored directly in the public GitHub repository.
+
+ParkMate therefore uses environment variables for important production settings.
+
+The Django settings file retrieves the secret key using:
+
+```python
+SECRET_KEY = (
+    os.environ.get("DJANGO_SECRET_KEY")
+    or os.environ.get("SECRET_KEY")
+    or "django-insecure-local-development-only"
+)
+```
+
+The production secret key can therefore be supplied through either:
+
+```text
+DJANGO_SECRET_KEY
+```
+
+or:
+
+```text
+SECRET_KEY
+```
+
+The fallback value is clearly identified as being for local development only.
+
+The actual production secret key is not written directly into the repository.
+
+## Database Environment Variable
+
+ParkMate uses `dj_database_url` to configure its database connection.
+
+The production database connection can be supplied using:
+
+```text
+DATABASE_URL
+```
+
+When running locally without a production database URL, ParkMate falls back to the local SQLite database.
+
+This means production database connection information does not need to be written directly into `settings.py`.
+
+## Additional Environment-Based Configuration
+
+ParkMate also supports environment variables for:
+
+```text
+DJANGO_DEBUG
+DJANGO_ALLOWED_HOSTS
+DJANGO_CSRF_TRUSTED_ORIGINS
+DATABASE_URL
+DJANGO_SECRET_KEY
+```
+
+This allows different configuration to be used between local development and production without modifying the source code.
+
+## Heroku Environment Detection
+
+ParkMate checks whether it is running on Heroku using:
+
+```python
+IS_HEROKU = bool(os.environ.get("DYNO"))
+```
+
+The `DYNO` environment variable is automatically available when the application runs on Heroku.
+
+This allows ParkMate to apply production behaviour automatically.
+
+For example, `DEBUG` defaults to off when the application is running on Heroku.
+
+```python
+DEBUG = os.environ.get(
+    "DJANGO_DEBUG",
+    "0" if IS_HEROKU else "1"
+) == "1"
+```
+
+This helps prevent Django debug information from being exposed on the deployed application.
+
+## .gitignore Protection
+
+The `.gitignore` file prevents important local files from being committed to GitHub.
+
+ParkMate excludes:
+
+```text
+.venv/
+__pycache__/
+*.pyc
+.env
+.DS_Store
+db.sqlite3
+staticfiles/
+```
+
+The important security entry is:
+
+```text
+.env
+```
+
+This prevents a local environment file containing secret configuration from being accidentally committed to the repository.
+
+The local SQLite database is also ignored.
+
+```text
+db.sqlite3
+```
+
+This prevents development database contents from being uploaded to GitHub.
+
+
+## Environment Variable Security Summary
+
+| Security Measure | Implementation | Purpose |
+| --- | --- | --- |
+| Secret key | Environment variable | Prevents production secret from being hard-coded |
+| Database URL | Environment variable | Protects database connection information |
+| Debug configuration | Environment variable / Heroku detection | Prevents production debug information being exposed |
+| Allowed hosts | Environment variable | Controls which hosts Django accepts |
+| CSRF trusted origins | Environment variable | Controls trusted HTTPS origins |
+| `.env` | Added to `.gitignore` | Prevents local secrets being committed |
+| `db.sqlite3` | Added to `.gitignore` | Prevents local database contents being committed |
+
+---
+
+### Production Security
+
+ParkMate applies additional security settings when:
+
+```python
+DEBUG = False
+```
+
+This separates local development behaviour from production behaviour.
+
+### Debug Mode
+
+Debug mode is useful during development because Django displays detailed error information.
+
+However, this information should not be exposed publicly.
+
+When ParkMate runs on Heroku, the default behaviour is:
+
+```text
+DEBUG = False
+```
+
+This prevents Django's detailed debug pages from being displayed to production users.
+
+Instead, ParkMate uses its normal error handling.
+
+## HTTPS Enforcement
+
+When ParkMate is running with debug mode disabled, HTTPS is enforced using:
+
+```python
+SECURE_SSL_REDIRECT = True
+```
+
+This redirects insecure HTTP requests to HTTPS.
+
+The application also includes:
+
+```python
+SECURE_PROXY_SSL_HEADER = (
+    "HTTP_X_FORWARDED_PROTO",
+    "https",
+)
+```
+
+This allows Django to correctly recognise HTTPS when ParkMate is running behind Heroku's proxy.
+
+### Secure Session Cookies
+
+Production session cookies are configured using:
+
+```python
+SESSION_COOKIE_SECURE = True
+```
+
+This tells the browser to send the Django session cookie only over HTTPS.
+
+The session cookie is important because Django uses it to identify authenticated sessions.
+
+## Secure CSRF Cookies
+
+ParkMate also uses:
+
+```python
+CSRF_COOKIE_SECURE = True
+```
+
+This ensures that the CSRF cookie is only transmitted over HTTPS in production.
+
+## CSRF Protection
+
+Django's CSRF middleware is enabled:
+
+```python
+"django.middleware.csrf.CsrfViewMiddleware"
+```
+
+Forms that change application data include:
+
+```django
+{% csrf_token %}
+```
+
+This includes important actions such as:
+
+- Registration;
+- Login;
+- saving favourites;
+- Add Parking;
+- Edit Parking; and
+- Delete Parking.
+
+CSRF protection helps prevent another website from submitting an unwanted request using a user's authenticated ParkMate session.
+
+## HSTS
+
+ParkMate enables HTTP Strict Transport Security when running in production.
+
+The settings include:
+
+```python
+SECURE_HSTS_SECONDS = 3600
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+```
+
+HSTS instructs supporting browsers to use HTTPS when communicating with the application after receiving the security header.
+
+The preload directive is also included in the configured HSTS header.
+
+## Content Type Protection
+
+ParkMate uses:
+
+```python
+SECURE_CONTENT_TYPE_NOSNIFF = True
+```
+
+This helps prevent browsers from attempting to interpret a response as a different content type from the one declared by the server.
+
+## Security Middleware
+
+Django's security middleware is enabled:
+
+```python
+"django.middleware.security.SecurityMiddleware"
+```
+
+This allows Django's production security settings to be applied to requests and responses.
+
+## Clickjacking Protection
+
+The project also includes:
+
+```python
+"django.middleware.clickjacking.XFrameOptionsMiddleware"
+```
+
+This provides Django's clickjacking protection through the `X-Frame-Options` response header.
+
+It helps prevent ParkMate pages from being embedded inside an unauthorised page in a way that could mislead users into clicking hidden controls.
+
+## Allowed Hosts
+
+Django uses `ALLOWED_HOSTS` to control which host headers the application will accept.
+
+ParkMate builds this list from:
+
+```text
+DJANGO_ALLOWED_HOSTS
+```
+
+The default development/deployment configuration includes:
+
+```text
+localhost
+127.0.0.1
+192.168.0.61
+.herokuapp.com
+```
+
+This provides an additional layer of protection against invalid Host headers.
+
+## CSRF Trusted Origins
+
+Trusted CSRF origins can be supplied through:
+
+```text
+DJANGO_CSRF_TRUSTED_ORIGINS
+```
+
+When running on Heroku, the default trusted origin pattern uses HTTPS for Heroku applications.
+
+This allows legitimate production forms to work while maintaining Django's CSRF origin validation.
+
+## Password Security
+
+ParkMate uses Django's built-in password validators.
+
+The configured validators include:
+
+```text
+UserAttributeSimilarityValidator
+MinimumLengthValidator
+CommonPasswordValidator
+NumericPasswordValidator
+```
+
+These checks help prevent users from creating weak passwords.
+
+The Registration form is based on Django's:
+
+```python
+UserCreationForm
+```
+
+This also handles password confirmation and Django authentication requirements.
+
+ParkMate additionally checks for duplicate email addresses before creating an account.
+
+## Production Security Evidence
+
+The deployed application was checked to confirm that it runs using HTTPS.
+
+![ParkMate production HTTPS security](static/images/testing/security/production-https-security.png)
+
+## Production Security Summary
+
+| Security Feature | Implementation | Status |
+| --- | --- | --- |
+| Debug disabled in production | Heroku environment detection | Implemented |
+| HTTPS redirect | `SECURE_SSL_REDIRECT` | Implemented |
+| Proxy HTTPS recognition | `SECURE_PROXY_SSL_HEADER` | Implemented |
+| Secure session cookie | `SESSION_COOKIE_SECURE` | Implemented |
+| Secure CSRF cookie | `CSRF_COOKIE_SECURE` | Implemented |
+| HSTS | `SECURE_HSTS_SECONDS` | Implemented |
+| HSTS subdomains | `SECURE_HSTS_INCLUDE_SUBDOMAINS` | Implemented |
+| HSTS preload directive | `SECURE_HSTS_PRELOAD` | Implemented |
+| MIME sniffing protection | `SECURE_CONTENT_TYPE_NOSNIFF` | Implemented |
+| Security middleware | `SecurityMiddleware` | Implemented |
+| CSRF middleware | `CsrfViewMiddleware` | Implemented |
+| Clickjacking middleware | `XFrameOptionsMiddleware` | Implemented |
+| Password validation | Django password validators | Implemented |
+| Allowed hosts | `ALLOWED_HOSTS` | Implemented |
+| Trusted CSRF origins | `CSRF_TRUSTED_ORIGINS` | Implemented |
+
+---
+
+## Ownership and Permissions
+
+ParkMate uses authentication and ownership checks to control who can perform actions that change database information.
+
+Public users can search and view parking, while actions that modify personal or parking data require authentication.
+
+## Login Required Protection
+
+Django's:
+
+```python
+@login_required
+```
+
+decorator is used to protect account-specific functionality.
+
+Authentication is required for:
+
+- My ParkMate;
+- saving and removing favourites;
+- adding parking;
+- editing parking; and
+- deleting parking.
+
+For example:
+
+```python
+@login_required
+def dashboard(request):
+```
+
+An unauthenticated user attempting to access protected functionality is redirected to the Login page.
+
+## Dashboard Permissions
+
+The My ParkMate dashboard only retrieves information associated with the logged-in user.
+
+Favourite records are filtered using:
+
+```python
+Favourite.objects.filter(
+    user=request.user,
+    parking__is_active=True,
+)
+```
+
+User parking submissions are retrieved through:
+
+```python
+request.user.parking_submissions
+```
+
+This prevents one user's dashboard from automatically displaying another user's personal favourites or submissions.
+
+## Favourite Permissions
+
+Favourite functionality also requires authentication.
+
+When a favourite is created, ParkMate automatically uses:
+
+```python
+user=request.user
+```
+
+This means users cannot use the normal interface to assign favourites to another account.
+
+## Parking Ownership
+
+When a community user creates a new parking location, ParkMate automatically sets:
+
+```python
+location.submitted_by = request.user
+```
+
+The user therefore becomes associated with the parking record at the backend level.
+
+The owner is not selected manually through the form.
+
+This reduces the risk of a user assigning their submission to another account.
+
+## Edit Permissions
+
+Edit functionality checks the user before allowing access to the form.
+
+The backend checks:
+
+```python
+request.user.is_staff
+or location.submitted_by_id == request.user.id
+```
+
+A normal registered user can therefore edit:
+
+```text
+their own parking records
+```
+
+but cannot edit:
+
+```text
+another user's parking records
+```
+
+If an unauthorised user attempts to edit another user's record, ParkMate displays an error message and redirects them away from the protected edit action.
+
+## Delete Permissions
+
+Delete functionality performs the same ownership check:
+
+```python
+request.user.is_staff
+or location.submitted_by_id == request.user.id
+```
+
+This prevents a normal user from deleting another user's parking location.
+
+The protection exists inside the Django view rather than relying only on whether the Delete button is visible.
+
+This is important because a user could otherwise attempt to enter an Edit or Delete URL manually.
+
+## Front-End Permission Controls
+
+The parking detail page only displays the Edit and Delete controls when:
+
+```text
+can_manage = True
+```
+
+For normal users this means they own the parking record.
+
+Staff accounts can also receive management controls.
+
+This improves the user experience by hiding actions the user is not authorised to perform.
+
+## Back-End Permission Controls
+
+The back-end view still checks ownership independently.
+
+This means security does not rely only on hiding buttons in HTML.
+
+The protection operates at both levels:
+
+```text
+Front End
+   ↓
+Hide unauthorised Edit/Delete controls
+   ↓
+Back End
+   ↓
+Check authenticated user and ownership again
+   ↓
+Allow or block database change
+```
+
+This provides stronger protection than relying on the interface alone.
+
+## Community Verification Permissions
+
+Community users should not be able to mark their own parking record as officially Council/NPP verified.
+
+ParkMate protects this in two ways.
+
+### Form-Level Protection
+
+`CommunityParkingLocationForm` does not include official verification fields such as:
+
+- official source name;
+- official source URL;
+- last checked information; and
+- official image/source administration fields.
+
+### Back-End Protection
+
+When a community parking record is created, the backend explicitly sets:
+
+```python
+location.council_verified = False
+```
+
+When a normal user edits their parking, ParkMate again forces:
+
+```python
+location.council_verified = False
+```
+
+This means manually altering front-end form data would not allow a normal user to make their own record officially verified.
+
+## Staff Permissions
+
+Staff users are handled separately.
+
+When a staff user edits a parking record, ParkMate provides the more detailed:
+
+```python
+ParkingLocationForm
+```
+
+Normal users receive:
+
+```python
+CommunityParkingLocationForm
+```
+
+This separates community functionality from official parking administration.
+
+## Delete Confirmation
+
+Delete is a destructive CRUD action.
+
+ParkMate therefore does not immediately remove a parking record when the Delete link is selected.
+
+Instead, the user is taken to a confirmation page.
+
+The actual deletion only occurs after a:
+
+```text
+POST
+```
+
+request is submitted from the confirmation form.
+
+The form is also protected by a CSRF token.
+
+This reduces both accidental deletion and unauthorised cross-site requests.
+
+## POST Requests for Data Changes
+
+Actions that change application state use POST requests.
+
+Examples include:
+
+- saving/removing favourites;
+- Registration;
+- Login;
+- Add Parking;
+- Edit Parking; and
+- confirming Delete Parking.
+
+Using POST for changes avoids performing destructive database operations through ordinary GET navigation.
+
+## Safe Favourite Redirect
+
+After changing favourite status, ParkMate checks the requested return URL.
+
+The redirect is only accepted when it begins with:
+
+```text
+/
+```
+
+but not:
+
+```text
+//
+```
+
+This prevents the normal favourite workflow from blindly redirecting users to an arbitrary external URL.
+
+## Ownership Protection Evidence
+
+The screenshot below shows ParkMate blocking an attempt to manage a parking record belonging to another user.
+
+![ParkMate ownership and permission security](static/images/testing/security/ownership-permissons-security.png)
+
+## Ownership and Permissions Summary
+
+| Action | Guest | Logged-In Owner | Other Logged-In User | Staff |
+| --- | --- | --- | --- | --- |
+| Search parking | Allowed | Allowed | Allowed | Allowed |
+| View parking | Allowed | Allowed | Allowed | Allowed |
+| View map | Allowed | Allowed | Allowed | Allowed |
+| View My ParkMate | Blocked | Allowed | Allowed for own account | Allowed |
+| Save favourite | Blocked | Allowed | Allowed for own account | Allowed |
+| Add community parking | Blocked | Allowed | Allowed | Allowed |
+| Edit own parking | Blocked | Allowed | Not applicable | Allowed |
+| Edit another user's parking | Blocked | Blocked | Blocked | Allowed |
+| Delete own parking | Blocked | Allowed | Not applicable | Allowed |
+| Delete another user's parking | Blocked | Blocked | Blocked | Allowed |
+| Mark community submission as verified | Blocked | Blocked | Blocked | Controlled through staff functionality |
+
+---
+
+## CSRF Security Evidence
+
+ParkMate forms that submit data include Django's:
+
+```django
+{% csrf_token %}
+```
+
+For example, the Add/Edit Parking form, authentication forms, favourite form and Delete confirmation form are protected.
+
+![ParkMate CSRF form protection](static/images/testing/security/csrf-protection-security.png)
+
+---
+
+## Security Features Summary
+
+| Security Area | Security Feature | Implementation |
+| --- | --- | --- |
+| Secrets | Production secret key | Environment variable |
+| Secrets | Environment file | Excluded using `.gitignore` |
+| Database | Production database credentials | Environment-based `DATABASE_URL` |
+| Development data | Local SQLite database | Excluded from Git |
+| Production | Debug mode | Disabled by default on Heroku |
+| Production | HTTPS | Forced when `DEBUG=False` |
+| Sessions | Session cookie | Secure in production |
+| CSRF | CSRF cookie | Secure in production |
+| CSRF | Form protection | Django CSRF middleware and tokens |
+| Transport security | HSTS | Enabled in production |
+| Browser security | MIME sniffing | Disabled |
+| Browser security | Clickjacking protection | Django middleware |
+| Authentication | Passwords | Django authentication and validators |
+| Authentication | Protected pages | `login_required` |
+| User data | Dashboard | Filtered to authenticated user |
+| Favourites | Ownership | Automatically associated with authenticated user |
+| Create | Ownership | `submitted_by` set by backend |
+| Update | Permissions | Owner or staff only |
+| Delete | Permissions | Owner or staff only |
+| Delete | Confirmation | POST confirmation required |
+| Verification | Community records | Cannot self-verify |
+| Redirects | Favourite return URL | Restricted to local-style paths |
+
+---
+
+## Security Features Evaluation
+
+The final ParkMate application uses security controls at multiple levels rather than relying on a single security mechanism.
+
+Sensitive production information is separated from the public source code through environment variables.
+
+The `.env` file and local database are excluded from Git to reduce the risk of accidentally publishing secrets or development data.
+
+Production settings disable debug mode and apply HTTPS, secure cookies, HSTS and other Django security controls.
+
+Django's authentication system and password validators are used rather than implementing a custom password system.
+
+CSRF middleware and form tokens protect actions that change application data.
+
+Protected account functionality uses `login_required`, while Edit and Delete operations include additional ownership checks.
+
+These ownership checks are performed in the Django backend, meaning that manually entering a protected URL does not bypass the permission rules.
+
+Community parking verification is also protected at both the form and backend levels. Normal users are not given official verification fields and their records are explicitly forced to remain unverified.
+
+Destructive Delete actions require a confirmation POST before the database record is removed.
+
+Overall, ParkMate applies security to configuration, authentication, forms, sessions, production deployment and database-changing actions rather than relying only on front-end controls.
+
+
 
 # Bugs and Fixes
 
