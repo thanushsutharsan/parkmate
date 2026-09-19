@@ -4844,7 +4844,7 @@ After confirmation, the record was successfully removed.
 
 **Status:** Pass
 
-![ParkMate delete parking user story evidence](static/images/testing/user-stories/delete-parking%20user-stories.png)
+![ParkMate delete parking user story evidence](static/images/testing/user-stories/delete-parking-user-stories.png)
 
 ---
 
