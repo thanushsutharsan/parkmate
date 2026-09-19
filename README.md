@@ -6665,6 +6665,294 @@ The main defensive programming techniques used include:
 - active-record filtering; and
 - custom error handling.
 
+
+
+
+## Form Validation
+
+ParkMate uses Django forms to validate user input before data is saved.
+
+For example, the Registration form checks whether an email address is already associated with another account.
+
+```python
+def clean_email(self):
+    email = self.cleaned_data["email"].strip().lower()
+
+    if User.objects.filter(email__iexact=email).exists():
+        raise forms.ValidationError(
+            "An account with this email address already exists."
+        )
+
+    return email
+```
+
+This prevents duplicate email addresses from being accepted through normal Registration.
+
+The parking form also formats postcodes consistently:
+
+```python
+def clean_postcode(self):
+    return (
+        self.cleaned_data
+        .get("postcode", "")
+        .strip()
+        .upper()
+    )
+```
+
+This reduces inconsistent postcode formatting in the database.
+
+## Model-Level Validation
+
+Important parking rules are also enforced within the `ParkingLocation` model rather than relying only on the HTML form.
+
+ParkMate checks that:
+
+- latitude is within the supported United Kingdom range;
+- longitude is within the supported United Kingdom range;
+- disabled parking spaces do not exceed total parking spaces;
+- verified parking has an official source URL;
+- verified parking has a last-checked date; and
+- verified parking contains tariff information.
+
+For example:
+
+```python
+if (
+    self.spaces_total is not None
+    and self.disabled_spaces is not None
+    and self.disabled_spaces > self.spaces_total
+):
+    raise ValidationError(
+        {
+            "disabled_spaces": (
+                "Disabled spaces cannot be greater "
+                "than total spaces."
+            )
+        }
+    )
+```
+
+Using validation at the model level provides an additional layer of protection because the rule applies to the stored data rather than only to one specific front-end form.
+
+## Official Source Validation
+
+ParkMate restricts official parking source URLs to recognised source domains.
+
+The accepted source suffixes are:
+
+```python
+OFFICIAL_HOST_SUFFIXES = ("gov.uk", "npp.org.uk")
+```
+
+The custom validator checks the URL hostname before accepting it as an official source.
+
+This prevents an unrelated website from being stored as the official evidence for a Council/NPP verified parking record.
+
+## Safe Database Retrieval
+
+ParkMate uses Django's:
+
+```python
+get_object_or_404()
+```
+
+when retrieving individual parking records.
+
+For example:
+
+```python
+location = get_object_or_404(
+    active_locations(),
+    pk=pk,
+)
+```
+
+If a requested parking record does not exist, Django safely returns a not-found response instead of allowing the application to fail because an expected object was missing.
+
+## Active Parking Filtering
+
+ParkMate centralises active parking retrieval using:
+
+```python
+def active_locations():
+    return ParkingLocation.objects.filter(is_active=True)
+```
+
+Search, Map, detail and other public parking functionality can therefore work from active records rather than displaying records that have been marked inactive.
+
+## Authentication Checks
+
+Account-specific functionality uses:
+
+```python
+@login_required
+```
+
+This protects features including:
+
+- My ParkMate;
+- favourites;
+- Add Parking;
+- Edit Parking; and
+- Delete Parking.
+
+Users who are not authenticated cannot directly access these protected actions.
+
+## Ownership Checks
+
+Authentication alone is not enough because one authenticated user should not be able to change another user's parking.
+
+ParkMate therefore checks:
+
+```python
+request.user.is_staff
+or location.submitted_by_id == request.user.id
+```
+
+before allowing Edit or Delete operations.
+
+This means manually entering another user's Edit or Delete URL does not bypass the ownership rules.
+
+## Community Verification Protection
+
+Normal community users are not allowed to mark their own submissions as officially Council/NPP verified.
+
+When parking is created:
+
+```python
+location.submitted_by = request.user
+location.council_verified = False
+```
+
+When a normal user edits parking:
+
+```python
+if not request.user.is_staff:
+    location.council_verified = False
+```
+
+This is a defensive backend rule.
+
+Even if a user attempted to alter the submitted form data, the backend still prevents the community record from becoming officially verified.
+
+## Delete Confirmation
+
+Delete is a destructive action.
+
+ParkMate therefore displays a confirmation page before permanently deleting a parking record.
+
+The actual deletion only happens when the user submits a POST request:
+
+```python
+if request.method == "POST":
+    location.delete()
+```
+
+This reduces the chance of accidental deletion through ordinary navigation.
+
+## Favourite Duplicate Protection
+
+ParkMate uses:
+
+```python
+Favourite.objects.get_or_create()
+```
+
+when saving parking.
+
+This prevents unnecessary duplicate favourite records from being created through the normal favourite workflow.
+
+The database model also includes a uniqueness constraint for the user and parking combination.
+
+## Safe Redirect Handling
+
+After changing favourite status, ParkMate checks the requested return path.
+
+```python
+if next_url.startswith("/") and not next_url.startswith("//"):
+    return redirect(next_url)
+```
+
+The application therefore avoids blindly redirecting to an arbitrary external URL supplied through the request.
+
+## External API Failure Handling
+
+Parking images can use the Wikimedia Commons API.
+
+Because this is an external service, ParkMate does not assume that every request will succeed.
+
+The JavaScript checks the response:
+
+```javascript
+if (!response.ok) {
+    return null;
+}
+```
+
+Network or JavaScript request failures are also caught:
+
+```javascript
+try {
+    // external request
+} catch {
+    return null;
+}
+```
+
+If no suitable Wikimedia image can be retrieved, ParkMate uses its local fallback image instead.
+
+```javascript
+if (fallback) {
+    image.src = fallback;
+}
+```
+
+This prevents an unavailable external image API from breaking the main parking functionality.
+
+## Defensive Programming Evidence
+
+The screenshot below demonstrates ParkMate responding to invalid user input through form validation.
+
+![ParkMate defensive form validation](static/images/testing/defensive-programming/form-validation-defensive-programming.png)
+
+The screenshot below demonstrates ownership protection when a user attempts an unauthorised action.
+
+![ParkMate ownership defensive programming](static/images/testing/defensive-programming/ownership-defensive-programming.png)
+
+## Defensive Programming Summary
+
+| Defensive Measure | Risk Addressed | Implementation |
+| --- | --- | --- |
+| Form validation | Invalid user input | Django forms |
+| Duplicate email check | Duplicate accounts | `clean_email()` |
+| Postcode formatting | Inconsistent data | `clean_postcode()` |
+| Coordinate validation | Invalid UK locations | Model validation |
+| Capacity validation | Impossible parking data | Model validation |
+| Official-source validation | False verification source | URL hostname validator |
+| Authentication | Guest access to protected functions | `login_required` |
+| Ownership checks | Users changing other users' data | Backend permission checks |
+| Community verification protection | False official status | Backend forces `False` |
+| Safe object retrieval | Missing database objects | `get_object_or_404()` |
+| Active filtering | Inactive records displayed | `active_locations()` |
+| Favourite duplicate protection | Duplicate saved records | `get_or_create()` |
+| Delete confirmation | Accidental deletion | Confirmation + POST |
+| Safe redirects | Unwanted external redirects | Local-path check |
+| API exception handling | External API failure | `try` / `catch` |
+| Image fallback | Broken external image | Local fallback asset |
+
+## Defensive Programming Evaluation
+
+Defensive programming in ParkMate operates at both the front-end and backend levels.
+
+The most important rules are not dependent only on what controls are visible in the browser.
+
+Authentication, ownership, validation and verification status are also checked by the Django backend before database changes are made.
+
+This provides stronger protection against invalid input, accidental actions, manually altered URLs and external service failures.
+
+---
+
 # Bugs and Fixes
 
 During the development of ParkMate, I identified several issues within the
