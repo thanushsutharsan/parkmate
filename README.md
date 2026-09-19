@@ -6953,6 +6953,222 @@ This provides stronger protection against invalid input, accidental actions, man
 
 ---
 
+# Version Control
+
+Git and GitHub were used throughout the ParkMate development process.
+
+The GitHub repository maintains the source code and development history for the project.
+
+The repository contains more than 100 commits, showing that the application was developed and updated iteratively rather than being uploaded only at the end of development.
+
+## Version Control Workflow
+
+The normal development workflow was:
+
+```text
+Make a change
+      ↓
+Test the change locally
+      ↓
+Review the changed files
+      ↓
+Stage the files
+      ↓
+Create a descriptive commit
+      ↓
+Push the commit to GitHub
+      ↓
+Deploy the updated version to Heroku where required
+```
+
+Typical Git commands used during development included:
+
+```bash
+git status
+git add .
+git commit -m "descriptive commit message"
+git push origin main
+```
+
+For deployment to Heroku:
+
+```bash
+git push heroku main
+```
+
+## Commit Messages
+
+Commits were used to separate changes such as:
+
+- new functionality;
+- bug fixes;
+- validation fixes;
+- responsive improvements;
+- testing evidence;
+- README documentation;
+- deployment fixes;
+- image handling;
+- accessibility improvements; and
+- code cleanup.
+
+This makes the Git history easier to review and provides evidence of the development process.
+
+## Why Version Control Was Important
+
+Git allowed changes to be tracked throughout development.
+
+This provided several benefits:
+
+- previous versions could be identified;
+- changes could be reviewed before committing;
+- bug fixes could be separated from feature development;
+- documentation changes could be tracked;
+- the GitHub repository acted as the central project source; and
+- deployment could use committed project code rather than untracked local changes.
+
+---
+
+# Deployment Verification
+
+ParkMate is configured for deployment to Heroku.
+
+Deployment verification was carried out to make sure that the deployed version operates independently from the local development environment.
+
+## Heroku Web Process
+
+The project contains a `Procfile` with:
+
+```text
+web: gunicorn parkmate.wsgi:application
+```
+
+This tells Heroku to run the Django application using Gunicorn.
+
+## Deployment Dependencies
+
+The production dependencies are stored in:
+
+```text
+requirements.txt
+```
+
+The main deployment-related dependencies include:
+
+```text
+Django
+dj-database-url
+gunicorn
+psycopg2-binary
+whitenoise
+```
+
+These provide:
+
+- Django application functionality;
+- environment-based database configuration;
+- a production WSGI server;
+- PostgreSQL connectivity; and
+- production static-file handling.
+
+## Environment Configuration
+
+Production configuration is provided using environment variables rather than committing sensitive values to GitHub.
+
+Important variables include:
+
+```text
+DATABASE_URL
+DJANGO_SECRET_KEY
+DJANGO_DEBUG
+DJANGO_ALLOWED_HOSTS
+DJANGO_CSRF_TRUSTED_ORIGINS
+```
+
+## Deployment Verification Process
+
+After deployment, I checked the deployed application rather than assuming that a successful Git push meant the application was working.
+
+The following areas were verified:
+
+1. The deployed Home page loads.
+2. Static CSS loads correctly.
+3. Images and favicons load.
+4. Parking search works.
+5. Parking detail pages load.
+6. The Leaflet map loads.
+7. Registration works.
+8. Login and Logout work.
+9. My ParkMate can be accessed when authenticated.
+10. Favourites can be saved and removed.
+11. Add Parking works.
+12. Edit Parking works for the owner.
+13. Delete Parking works after confirmation.
+14. Unauthorised Edit/Delete actions remain blocked.
+15. Custom error handling works.
+16. HTTPS is used.
+17. Database-backed parking records remain available after deployment.
+
+## Health Check
+
+ParkMate includes a lightweight health-check view:
+
+```python
+def health_check(request):
+    return JsonResponse({"status": "ok"})
+```
+
+The application route is:
+
+```text
+/health/
+```
+
+When the deployed application is operating correctly, this endpoint should return:
+
+```json
+{"status": "ok"}
+```
+
+This provides a simple way to check that Django is responding.
+
+## Deployed Application Evidence
+
+The screenshot below shows the deployed ParkMate application running on Heroku.
+
+![ParkMate deployed application verification](static/images/testing/deployment/deployed-application-verification.png)
+
+The screenshot below shows the health-check endpoint returning a successful response.
+
+![ParkMate deployment health check](static/images/testing/deployment/deployment-health-check.png)
+
+## Deployment Verification Summary
+
+| Deployment Check | Expected Result | Status |
+| --- | --- | --- |
+| Heroku application starts | Application loads successfully | Pass |
+| Gunicorn | Django served using production WSGI server | Pass |
+| Static CSS | Styling loads correctly | Pass |
+| Static images | Images and favicons load | Pass |
+| Database | Parking records load correctly | Pass |
+| Parking search | Search operates on deployed application | Pass |
+| Map | Leaflet map loads | Pass |
+| Registration | User account can be created | Pass |
+| Login / Logout | Authentication works | Pass |
+| Favourites | Saved parking works | Pass |
+| CRUD | Add, Edit and Delete operate correctly | Pass |
+| Ownership | Unauthorised changes remain blocked | Pass |
+| HTTPS | Secure connection used | Pass |
+| Health check | Returns `{"status": "ok"}` | Pass |
+
+## Deployment Verification Result
+
+Deployment testing confirmed that the production version of ParkMate provides the same core functionality as the locally tested application.
+
+Testing the deployed version was important because deployment introduces additional factors such as environment variables, production security, database configuration, static-file handling and the production web server.
+
+The final application was therefore tested after deployment rather than relying only on local testing.
+
+---
 # Bugs and Fixes
 
 During the development of ParkMate, I identified several issues within the
