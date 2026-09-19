@@ -7168,6 +7168,1131 @@ Testing the deployed version was important because deployment introduces additio
 
 The final application was therefore tested after deployment rather than relying only on local testing.
 
+
+
+# Code Quality and Organisation
+
+ParkMate follows a structured Django project layout so that different parts of the application have clear responsibilities.
+
+The project separates:
+
+- Django project configuration;
+- Django application logic;
+- database models;
+- forms and validation;
+- URL routing;
+- automated tests;
+- custom error handling;
+- database migrations;
+- custom management commands;
+- HTML templates;
+- CSS;
+- JavaScript;
+- images and media;
+- UX planning files;
+- testing evidence;
+- deployment configuration; and
+- project documentation.
+
+This structure makes the project easier to understand, debug, test and maintain because files are grouped according to their purpose rather than placing unrelated code together.
+
+## Full Project Structure
+
+The ParkMate repository is organised using the following structure:
+
+```text
+parkmate/
+│
+├── assets/
+│   └── wireframes/
+│       └── wireframe files
+│
+├── parking/
+│   ├── management/
+│   │   ├── __init__.py
+│   │   └── commands/
+│   │       ├── __init__.py
+│   │       └── seed_parking.py
+│   │
+│   ├── migrations/
+│   │   ├── __init__.py
+│   │   └── Django migration files
+│   │
+│   ├── __init__.py
+│   ├── admin.py
+│   ├── apps.py
+│   ├── error_handlers.py
+│   ├── forms.py
+│   ├── models.py
+│   ├── tests.py
+│   ├── urls.py
+│   └── views.py
+│
+├── parkmate/
+│   ├── __init__.py
+│   ├── asgi.py
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+│
+├── static/
+│   ├── css/
+│   │   └── style.css
+│   │
+│   ├── images/
+│   │   ├── favicon.svg
+│   │   ├── favicon-16x16.png
+│   │   ├── favicon-32x32.png
+│   │   ├── apple-touch-icon.png
+│   │   ├── parkmate-hero.svg
+│   │   ├── parking-fallback.svg
+│   │   │
+│   │   └── testing/
+│   │       │
+│   │       ├── accessibility/
+│   │       │   ├── home-lighthouse-accessibility.png
+│   │       │   └── keyboard-navigation-accessibility.png
+│   │       │
+│   │       ├── api-test/
+│   │       │   ├── wikimedia-api-working.png
+│   │       │   └── wikimedia-api-fallback.png
+│   │       │
+│   │       ├── browser-compatibility/
+│   │       │   ├── chrome-home-compatibility.png
+│   │       │   ├── safari-home-compatibility.png
+│   │       │   └── firefox-home-compatibility.png
+│   │       │
+│   │       ├── defensive-programming/
+│   │       │   ├── form-validation-defensive-programming.png
+│   │       │   └── ownership-defensive-programming.png
+│   │       │
+│   │       ├── deployment/
+│   │       │   ├── deployed-application-verification.png
+│   │       │   └── deployment-health-check.png
+│   │       │
+│   │       ├── django-tests/
+│   │       │   └── django-automated-test-results.png
+│   │       │
+│   │       ├── lighthouse/
+│   │       │   ├── home-lighthouse.png
+│   │       │   ├── parking-lighthouse.png
+│   │       │   ├── map-lighthouse.png
+│   │       │   ├── parking-detail-lighthouse.png
+│   │       │   ├── registration-lighthouse.png
+│   │       │   ├── login-lighthouse.png
+│   │       │   ├── dashboard-lighthouse.png
+│   │       │   ├── add-parking-lighthouse.png
+│   │       │   ├── edit-parking-lighthouse.png
+│   │       │   └── delete-parking-lighthouse.png
+│   │       │
+│   │       ├── python-validation/
+│   │       │   ├── python-pep8-errors.png
+│   │       │   ├── seed-parking-pep8-pass.png
+│   │       │   └── all-python-pep8-pass.png
+│   │       │
+│   │       ├── reponsiveness/
+│   │       │   ├── desktop-home-responsiveness.png
+│   │       │   ├── tablet-home-responsiveness.png
+│   │       │   ├── mobile-home-responsiveness.png
+│   │       │   ├── mobile-parking-responsiveness.png
+│   │       │   ├── mobile-map-responsiveness.png
+│   │       │   ├── mobile-form-responsiveness.png
+│   │       │   └── mobile-dashboard-responsiveness.png
+│   │       │
+│   │       ├── security/
+│   │       │   ├── production-https-security.png
+│   │       │   ├── ownership-permissons-security.png
+│   │       │   └── csrf-protection-security.png
+│   │       │
+│   │       ├── user-stories/
+│   │       │   ├── parking-search-town.png
+│   │       │   ├── parking-search-postcode.png
+│   │       │   ├── parking-search-postcode-area.png
+│   │       │   ├── parking-search-location-name.png
+│   │       │   ├── parking-price-user-stories.png
+│   │       │   ├── map-user-stories.png
+│   │       │   ├── parking-details-user-stories.png
+│   │       │   ├── parking-verification-user-stories.png
+│   │       │   ├── registration-user-stories.png
+│   │       │   ├── login-user-stories.png
+│   │       │   ├── favourites-user-stories.png
+│   │       │   ├── add-parking-user-stories.png
+│   │       │   ├── edit-parking-user-stories.png
+│   │       │   └── delete-parking user-stories.png
+│   │       │
+│   │       └── validation/
+│   │           ├── home.html-validation-before.png
+│   │           ├── home.html-validation-after.png
+│   │           ├── parking-page-validation.png
+│   │           ├── map-page-validation.png
+│   │           ├── login-page-validation.png
+│   │           ├── registration-page-validation-before.png
+│   │           ├── registration-page-validation-after.png
+│   │           ├── dashboard-page-validation.png
+│   │           ├── add-parking-page-validation.png
+│   │           ├── delete-page-validation.png
+│   │           ├── css-validation.png
+│   │           ├── js-lint-before.png
+│   │           └── js-lint-after.png
+│   │
+│   └── js/
+│       └── parking_images.js
+│
+├── templates/
+│   ├── errors/
+│   │   └── error.html
+│   │
+│   ├── parking/
+│   │   ├── dashboard.html
+│   │   ├── delete.html
+│   │   ├── detail.html
+│   │   ├── form.html
+│   │   ├── home.html
+│   │   ├── list.html
+│   │   └── map.html
+│   │
+│   ├── registration/
+│   │   ├── login.html
+│   │   └── register.html
+│   │
+│   └── base.html
+│
+├── .gitignore
+├── .python-version
+├── Procfile
+├── README.md
+├── manage.py
+└── requirements.txt
+```
+
+The structure keeps backend code, front-end code, templates, testing evidence, documentation and deployment files separated from each other.
+
+## Django Application Organisation
+
+The main application is stored inside:
+
+```text
+parking/
+```
+
+This contains the Python code specifically related to ParkMate functionality.
+
+```text
+parking/
+├── management/
+│   └── commands/
+│       └── seed_parking.py
+├── migrations/
+├── admin.py
+├── apps.py
+├── error_handlers.py
+├── forms.py
+├── models.py
+├── tests.py
+├── urls.py
+└── views.py
+```
+
+Each file has a specific responsibility.
+
+| File | Purpose |
+| --- | --- |
+| `models.py` | Defines the database models and model-level validation |
+| `views.py` | Contains request handling, search, map, favourites, dashboard and CRUD logic |
+| `forms.py` | Contains Registration and parking forms and form validation |
+| `urls.py` | Connects application URLs to Django views |
+| `tests.py` | Contains automated Django tests |
+| `admin.py` | Configures ParkMate models for Django Admin |
+| `apps.py` | Contains the parking application's Django configuration |
+| `error_handlers.py` | Contains the custom 400, 403, 404 and 500 error handlers |
+| `migrations/` | Stores Django-generated database migration files |
+| `management/commands/` | Stores custom Django terminal commands |
+| `seed_parking.py` | Contains the custom command used to seed parking records |
+
+This separation means that database structure, validation, page logic, routing, testing and administration are not mixed together.
+
+## Django Project Organisation
+
+Project-wide Django configuration is stored separately inside:
+
+```text
+parkmate/
+```
+
+The structure is:
+
+```text
+parkmate/
+├── __init__.py
+├── asgi.py
+├── settings.py
+├── urls.py
+└── wsgi.py
+```
+
+| File | Purpose |
+| --- | --- |
+| `settings.py` | Controls Django configuration, security, database, static files and deployment |
+| `urls.py` | Contains the main project URL routing |
+| `wsgi.py` | Provides the WSGI entry point used by Gunicorn |
+| `asgi.py` | Provides the ASGI application configuration |
+| `__init__.py` | Identifies the folder as a Python package |
+
+Keeping project configuration separate from the `parking` application follows Django's normal project structure.
+
+## Management Command Organisation
+
+The custom parking seed command is stored in Django's expected management-command structure:
+
+```text
+parking/
+└── management/
+    ├── __init__.py
+    └── commands/
+        ├── __init__.py
+        └── seed_parking.py
+```
+
+This means the parking data is managed through Django rather than through an unrelated standalone script.
+
+The command can be accessed through:
+
+```bash
+python manage.py
+```
+
+This also makes it clear that `seed_parking.py` belongs specifically to the `parking` application.
+
+## Migration Organisation
+
+Database migrations are stored inside:
+
+```text
+parking/migrations/
+```
+
+Django migration files record changes made to the database structure.
+
+They are kept separate from manually written application code because Django generates them when model changes are converted into database migrations.
+
+This separation was also recognised during PEP8 validation, where migration files were deliberately excluded from the manually written Python validation.
+
+## Template Organisation
+
+HTML templates are stored inside:
+
+```text
+templates/
+```
+
+The full template structure is:
+
+```text
+templates/
+├── base.html
+│
+├── errors/
+│   └── error.html
+│
+├── parking/
+│   ├── dashboard.html
+│   ├── delete.html
+│   ├── detail.html
+│   ├── form.html
+│   ├── home.html
+│   ├── list.html
+│   └── map.html
+│
+└── registration/
+    ├── login.html
+    └── register.html
+```
+
+Templates are grouped by their purpose rather than storing every HTML file in one directory.
+
+### Shared Base Template
+
+The main reusable template is:
+
+```text
+templates/base.html
+```
+
+Other ParkMate pages extend this template.
+
+For example:
+
+```django
+{% extends 'base.html' %}
+```
+
+The base template provides shared interface elements including:
+
+- document structure;
+- navigation;
+- branding;
+- authentication controls;
+- Django messages;
+- footer;
+- shared CSS;
+- Leaflet resources; and
+- JavaScript resources.
+
+This reduces duplicated HTML and makes changes to shared page elements easier to maintain.
+
+## Parking Templates
+
+Parking-related pages are grouped inside:
+
+```text
+templates/parking/
+```
+
+The folder contains:
+
+```text
+dashboard.html
+delete.html
+detail.html
+form.html
+home.html
+list.html
+map.html
+```
+
+Each filename clearly identifies the page it is responsible for.
+
+| Template | Purpose |
+| --- | --- |
+| `home.html` | Home page |
+| `list.html` | Parking search and results |
+| `detail.html` | Individual parking details |
+| `map.html` | Interactive parking map |
+| `dashboard.html` | My ParkMate dashboard |
+| `form.html` | Add and Edit Parking form |
+| `delete.html` | Delete confirmation page |
+
+The same `form.html` template can be reused for both Add and Edit operations.
+
+This avoids maintaining two nearly identical form templates.
+
+## Registration Templates
+
+Authentication templates are kept separately inside:
+
+```text
+templates/registration/
+```
+
+This contains:
+
+```text
+login.html
+register.html
+```
+
+This makes authentication pages easy to identify and keeps them separate from parking-specific templates.
+
+## Error Template Organisation
+
+Custom error pages use:
+
+```text
+templates/errors/error.html
+```
+
+The Python error-handling functions are stored separately in:
+
+```text
+parking/error_handlers.py
+```
+
+The same error template can therefore be reused for different HTTP errors while Python supplies the appropriate:
+
+- status code;
+- title; and
+- message.
+
+This avoids creating several nearly identical HTML error pages.
+
+## Static File Organisation
+
+Front-end files are stored inside:
+
+```text
+static/
+```
+
+The main structure is:
+
+```text
+static/
+├── css/
+├── images/
+└── js/
+```
+
+Each type of front-end resource has its own folder.
+
+## CSS Organisation
+
+The main ParkMate stylesheet is:
+
+```text
+static/css/style.css
+```
+
+Keeping the project's CSS in a dedicated folder separates presentation rules from Python and HTML.
+
+The stylesheet uses logical sections for different parts of the interface, including:
+
+- global styles;
+- navigation;
+- Home page;
+- parking cards;
+- search;
+- parking details;
+- forms;
+- My ParkMate;
+- map;
+- messages;
+- error pages;
+- footer; and
+- responsive behaviour.
+
+CSS custom properties are also used to keep repeated design values consistent.
+
+For example:
+
+```css
+:root {
+    --navy: #072742;
+    --green: #13a957;
+    --ink: #0e2235;
+    --muted: #63717f;
+    --line: #dfe6eb;
+}
+```
+
+## JavaScript Organisation
+
+Custom JavaScript is stored inside:
+
+```text
+static/js/
+```
+
+The main external-image script is:
+
+```text
+parking_images.js
+```
+
+Its responsibilities include:
+
+- searching Wikimedia Commons;
+- using parking information as search terms;
+- attempting geographic image searches;
+- handling unsuccessful requests; and
+- loading the local fallback image when required.
+
+Keeping this functionality in a separate JavaScript file prevents the same code from being duplicated across parking templates.
+
+## Image Organisation
+
+Application images are stored inside:
+
+```text
+static/images/
+```
+
+This contains:
+
+- favicons;
+- ParkMate visual assets;
+- the hero artwork;
+- the parking fallback image; and
+- testing evidence.
+
+For example:
+
+```text
+favicon.svg
+favicon-16x16.png
+favicon-32x32.png
+apple-touch-icon.png
+parkmate-hero.svg
+parking-fallback.svg
+```
+
+## Testing Evidence Organisation
+
+Testing evidence is stored inside:
+
+```text
+static/images/testing/
+```
+
+Instead of storing every screenshot in one large folder, evidence is separated by testing type.
+
+The testing folder is organised as:
+
+```text
+testing/
+├── accessibility/
+├── api-test/
+├── browser-compatibility/
+├── defensive-programming/
+├── deployment/
+├── django-tests/
+├── lighthouse/
+├── python-validation/
+├── reponsiveness/
+├── security/
+├── user-stories/
+└── validation/
+```
+
+This makes it easier to locate evidence and connect each README testing section with the correct screenshots.
+
+## Accessibility Evidence
+
+```text
+testing/accessibility/
+├── home-lighthouse-accessibility.png
+└── keyboard-navigation-accessibility.png
+```
+
+This folder contains evidence for automated and manual accessibility testing.
+
+## External API Evidence
+
+```text
+testing/api-test/
+├── wikimedia-api-working.png
+└── wikimedia-api-fallback.png
+```
+
+These screenshots demonstrate:
+
+- Wikimedia Commons operating normally; and
+- ParkMate continuing to work when the request is blocked.
+
+## Browser Compatibility Evidence
+
+```text
+testing/browser-compatibility/
+├── chrome-home-compatibility.png
+├── safari-home-compatibility.png
+└── firefox-home-compatibility.png
+```
+
+The same Home page is used so Chrome, Safari and Firefox can be compared consistently.
+
+## Defensive Programming Evidence
+
+```text
+testing/defensive-programming/
+├── form-validation-defensive-programming.png
+└── ownership-defensive-programming.png
+```
+
+These screenshots demonstrate:
+
+- invalid data being rejected; and
+- unauthorised ownership actions being blocked.
+
+## Deployment Evidence
+
+```text
+testing/deployment/
+├── deployed-application-verification.png
+└── deployment-health-check.png
+```
+
+These provide evidence that:
+
+- the full application loads after deployment; and
+- the Django health-check endpoint responds successfully.
+
+## Automated Django Test Evidence
+
+```text
+testing/django-tests/
+└── django-automated-test-results.png
+```
+
+This screenshot records the final result of the automated Django test suite.
+
+## Lighthouse Evidence
+
+```text
+testing/lighthouse/
+├── home-lighthouse.png
+├── parking-lighthouse.png
+├── map-lighthouse.png
+├── parking-detail-lighthouse.png
+├── registration-lighthouse.png
+├── login-lighthouse.png
+├── dashboard-lighthouse.png
+├── add-parking-lighthouse.png
+├── edit-parking-lighthouse.png
+└── delete-parking-lighthouse.png
+```
+
+A separate Lighthouse screenshot is stored for each main ParkMate page type because Lighthouse results can differ between pages.
+
+## Python Validation Evidence
+
+```text
+testing/python-validation/
+├── python-pep8-errors.png
+├── seed-parking-pep8-pass.png
+└── all-python-pep8-pass.png
+```
+
+This folder shows the complete PEP8 testing process:
+
+1. initial PEP8 errors;
+2. corrected `seed_parking.py`; and
+3. final project-wide PEP8 validation.
+
+## Responsiveness Evidence
+
+The current project folder is named:
+
+```text
+testing/reponsiveness/
+```
+
+and contains:
+
+```text
+desktop-home-responsiveness.png
+tablet-home-responsiveness.png
+mobile-home-responsiveness.png
+mobile-parking-responsiveness.png
+mobile-map-responsiveness.png
+mobile-form-responsiveness.png
+mobile-dashboard-responsiveness.png
+```
+
+The folder contains desktop, tablet and mobile testing evidence.
+
+The Home page is represented across the three main device widths, while more complex pages use representative mobile screenshots because the smallest layout is the most likely to reveal responsive problems.
+
+## Security Evidence
+
+```text
+testing/security/
+├── production-https-security.png
+├── ownership-permissons-security.png
+└── csrf-protection-security.png
+```
+
+This evidence supports:
+
+- HTTPS production security;
+- ownership permissions; and
+- CSRF protection.
+
+## User Story Evidence
+
+```text
+testing/user-stories/
+├── parking-search-town.png
+├── parking-search-postcode.png
+├── parking-search-postcode-area.png
+├── parking-search-location-name.png
+├── parking-price-user-stories.png
+├── map-user-stories.png
+├── parking-details-user-stories.png
+├── parking-verification-user-stories.png
+├── registration-user-stories.png
+├── login-user-stories.png
+├── favourites-user-stories.png
+├── add-parking-user-stories.png
+├── edit-parking-user-stories.png
+└── delete-parking user-stories.png
+```
+
+Related user stories are grouped where they use the same functionality.
+
+Separate screenshots are used where different functionality needs to be demonstrated, such as the four different parking-search methods.
+
+## Validation Evidence
+
+```text
+testing/validation/
+├── home.html-validation-before.png
+├── home.html-validation-after.png
+├── parking-page-validation.png
+├── map-page-validation.png
+├── login-page-validation.png
+├── registration-page-validation-before.png
+├── registration-page-validation-after.png
+├── dashboard-page-validation.png
+├── add-parking-page-validation.png
+├── delete-page-validation.png
+├── css-validation.png
+├── js-lint-before.png
+└── js-lint-after.png
+```
+
+This folder contains HTML, CSS and JavaScript validation evidence.
+
+Before-and-after screenshots are retained where a validation problem was discovered and corrected.
+
+This demonstrates both:
+
+- the original issue; and
+- the final corrected result.
+
+## Why Testing Evidence Is Organised into Subfolders
+
+Testing generated a large number of screenshots.
+
+Placing every screenshot directly inside:
+
+```text
+static/images/testing/
+```
+
+would make the project difficult to navigate.
+
+The screenshots are therefore grouped by the type of test they support.
+
+For example:
+
+```text
+testing/lighthouse/
+```
+
+contains Lighthouse reports, while:
+
+```text
+testing/validation/
+```
+
+contains HTML, CSS and JavaScript validation evidence.
+
+This makes the project structure clearer and makes README image paths easier to understand.
+
+## Wireframe Organisation
+
+UX planning files are stored separately inside:
+
+```text
+assets/wireframes/
+```
+
+This keeps planning and design evidence separate from application images that are actually served as part of the deployed website.
+
+## Root Project Files
+
+Important project-wide files remain in the root directory.
+
+```text
+.gitignore
+.python-version
+Procfile
+README.md
+manage.py
+requirements.txt
+```
+
+Their purposes are:
+
+| File | Purpose |
+| --- | --- |
+| `.gitignore` | Prevents unwanted local and sensitive files being committed |
+| `.python-version` | Records the Python version used by the project |
+| `Procfile` | Defines how Heroku starts the application |
+| `README.md` | Contains complete project documentation |
+| `manage.py` | Provides Django management commands |
+| `requirements.txt` | Records required Python packages |
+
+## Separation of Responsibilities
+
+ParkMate keeps different types of functionality separate.
+
+| Area | Location |
+| --- | --- |
+| Database models | `parking/models.py` |
+| Form validation | `parking/forms.py` |
+| Backend request logic | `parking/views.py` |
+| Application URLs | `parking/urls.py` |
+| Automated tests | `parking/tests.py` |
+| Custom errors | `parking/error_handlers.py` |
+| Seed command | `parking/management/commands/seed_parking.py` |
+| Project settings | `parkmate/settings.py` |
+| Project URLs | `parkmate/urls.py` |
+| Shared HTML | `templates/base.html` |
+| Parking templates | `templates/parking/` |
+| Authentication templates | `templates/registration/` |
+| Error template | `templates/errors/` |
+| Styling | `static/css/style.css` |
+| JavaScript | `static/js/parking_images.js` |
+| Application images | `static/images/` |
+| Testing screenshots | `static/images/testing/` |
+| UX wireframes | `assets/wireframes/` |
+| Deployment command | `Procfile` |
+| Dependencies | `requirements.txt` |
+| Documentation | `README.md` |
+
+## Reusable Backend Logic
+
+Reusable backend logic is separated into appropriately named functions rather than repeatedly writing the same code.
+
+For example:
+
+```python
+def active_locations():
+    return ParkingLocation.objects.filter(is_active=True)
+```
+
+This provides a reusable query for active parking locations.
+
+Other clearly named functions include:
+
+```text
+postcode_area_query
+parking_list
+parking_detail
+map_view
+dashboard
+register
+toggle_favourite
+parking_create
+parking_edit
+parking_delete
+```
+
+Each function has a focused responsibility.
+
+## Code Validation and Quality Checks
+
+Code quality was checked using several different testing methods.
+
+These included:
+
+- Python PEP8 validation using `pycodestyle`;
+- W3C HTML validation;
+- W3C CSS validation;
+- JSLint validation;
+- automated Django tests;
+- manual functional testing;
+- Lighthouse testing;
+- browser compatibility testing; and
+- responsiveness testing.
+
+The project-wide Python validation command was:
+
+```bash
+pycodestyle --exclude=migrations parking parkmate manage.py
+```
+
+Django migrations were excluded because they are automatically generated rather than manually written application code.
+
+The initial PEP8 test identified issues inside:
+
+```text
+parking/management/commands/seed_parking.py
+```
+
+The formatting issues were corrected and the complete custom Python project was then validated successfully.
+
+---
+
+## File and Naming Conventions
+
+ParkMate uses consistent naming conventions so that the purpose of files, classes, functions, variables and testing evidence can be understood from their names.
+
+## Python File Naming
+
+Python filenames use lowercase naming.
+
+Examples include:
+
+```text
+models.py
+views.py
+forms.py
+urls.py
+tests.py
+admin.py
+apps.py
+error_handlers.py
+seed_parking.py
+```
+
+Files containing more than one word use underscores.
+
+Examples include:
+
+```text
+error_handlers.py
+seed_parking.py
+```
+
+## Python Function and Variable Naming
+
+Python functions and variables use `snake_case`.
+
+Examples include:
+
+```text
+active_locations
+postcode_area_query
+parking_list
+parking_detail
+map_view
+toggle_favourite
+parking_create
+parking_edit
+parking_delete
+favourite_ids
+submitted_by
+council_verified
+```
+
+This follows normal Python and PEP8 naming conventions.
+
+## Python Class Naming
+
+Django models and forms use `PascalCase`.
+
+Examples include:
+
+```text
+ParkingLocation
+Favourite
+AvailabilityReport
+RegisterForm
+ParkingLocationForm
+CommunityParkingLocationForm
+```
+
+This makes classes easy to distinguish from variables and functions.
+
+## Template Naming
+
+HTML templates use short descriptive lowercase filenames.
+
+Examples include:
+
+```text
+home.html
+list.html
+detail.html
+map.html
+dashboard.html
+form.html
+delete.html
+login.html
+register.html
+error.html
+```
+
+The folders around them provide additional context.
+
+For example:
+
+```text
+templates/parking/map.html
+```
+
+is clearly the parking map template.
+
+## CSS Naming
+
+CSS class names use descriptive lowercase names separated with hyphens.
+
+Examples include:
+
+```css
+.site-header
+.main-nav
+.home-hero
+.hero-search
+.result-card
+.green-button
+```
+
+This makes the purpose of CSS selectors easier to identify.
+
+## JavaScript Naming
+
+JavaScript functions and variables use descriptive `camelCase` names.
+
+Examples include:
+
+```javascript
+searchCommons
+searchNearby
+loadImage
+commonsEndpoint
+fullSearch
+commonsImage
+```
+
+## Testing Evidence Naming
+
+Testing screenshots use descriptive names that normally contain:
+
+```text
+page + test type
+```
+
+Examples include:
+
+```text
+mobile-parking-responsiveness.png
+home-lighthouse.png
+parking-page-validation.png
+django-automated-test-results.png
+all-python-pep8-pass.png
+production-https-security.png
+deployment-health-check.png
+```
+
+This makes screenshots understandable without needing to open each file first.
+
+## Naming Convention Summary
+
+| Type | Convention | Example |
+| --- | --- | --- |
+| Python files | lowercase / `snake_case` | `error_handlers.py` |
+| Python functions | `snake_case` | `parking_detail` |
+| Python variables | `snake_case` | `favourite_ids` |
+| Python classes | `PascalCase` | `ParkingLocation` |
+| Django forms | `PascalCase` | `CommunityParkingLocationForm` |
+| HTML templates | lowercase descriptive names | `dashboard.html` |
+| CSS classes | lowercase and hyphenated | `.result-card` |
+| JavaScript functions | `camelCase` | `searchCommons()` |
+| JavaScript variables | `camelCase` | `commonsEndpoint` |
+| Static assets | descriptive filenames | `parking-fallback.svg` |
+| Test screenshots | descriptive hyphenated names | `deployment-health-check.png` |
+
+## Code Quality and Organisation Evaluation
+
+The final ParkMate project has a clear separation between application code, Django configuration, templates, static files, testing evidence, documentation and deployment files.
+
+The `parking` application contains the main application logic, while `parkmate` contains project-level Django configuration.
+
+HTML templates are separated into parking, registration and error folders.
+
+CSS, JavaScript and image assets are stored in dedicated static folders.
+
+Testing evidence is further divided into separate folders for accessibility, API testing, browser compatibility, defensive programming, deployment, automated Django testing, Lighthouse, Python validation, responsiveness, security, user stories and code validation.
+
+This is particularly useful because the project contains a large amount of testing evidence. Grouping screenshots by purpose prevents the `testing` directory from becoming disorganised and makes the evidence referenced throughout the README easier to locate.
+
+Consistent naming conventions are also used across Python, HTML, CSS, JavaScript and testing evidence.
+
+Overall, the project organisation supports readability, maintainability and testing by giving each major part of ParkMate a clear location and responsibility.
+
+
 ---
 # Bugs and Fixes
 
