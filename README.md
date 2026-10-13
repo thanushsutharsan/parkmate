@@ -760,6 +760,44 @@ The Scope plane defines the features that are included in ParkMate.
 
 I keep the scope focused on the main parking problem instead of adding features that are not needed for the project.
 
+
+## MCS Prioritisation
+
+I used the MC	S method to priorities the features of ParkMate during the planning and development stages. This helped me identify which features were essential for the application to work and which features could be improved or added in the future.
+
+The features were divided into three categories:
+
+- **Must Have:** Essential features required for ParkMate to meet its main purpose.
+- **Should Have:** Important features that improve the user experience but are not essential to the basic parking search.
+- **Could Have:** Additional features that could be developed in the future.
+
+
+### MCS Prioritisation Table
+
+| Priority | Feature | Reason | Status |
+| --- | --- | --- | --- |
+| Must Have | Parking search | Users need to search for parking using a town, city, postcode, address or parking name. | Completed |
+| Must Have | Parking results | Matching parking locations need to be displayed so users can compare their options. | Completed |
+| Must Have | Parking details | Users need to view information such as prices, restrictions, charging times and addresses. | Completed |
+| Must Have | Interactive map | Users need to see parking locations geographically using Leaflet and OpenStreetMap. | Completed |
+| Must Have | Database | Parking records and user information need to be stored and retrieved using Django models. | Completed |
+| Must Have | User authentication | Users need to register, log in and log out to access personal features. | Completed |
+| Must Have | CRUD functionality | Registered users need to add, view, edit and delete their own parking submissions. | Completed |
+| Must Have | Ownership protection | Users must not be able to edit or delete parking records belonging to somebody else. | Completed |
+| Must Have | Parking verification | Users need to distinguish Council/NPP price-verified parking from mapped and community-submitted parking. | Completed |
+| Must Have | Responsive design | ParkMate needs to work on mobile phones, tablets and desktop computers. | Completed |
+| Must Have | Form validation and security | User inputs need to be validated and protected against unauthorised actions. | Completed |
+| Should Have | Favourite parking | Registered users should be able to save and remove parking locations for future use. | Completed |
+| Should Have | My ParkMate dashboard | Users should be able to access their saved parking and personal submissions in one place. | Completed |
+| Should Have | Parking images | Images should help users recognise parking locations before travelling. | Completed |
+| Should Have | Image fallback | A suitable fallback image should appear when an external parking image is unavailable. | Completed |
+| Should Have | Clear error messages | Users should receive useful feedback when a form fails or a page cannot be found. | Completed |
+| Could Have | Availability reporting | Users could report the number of available spaces at a parking location. | Partially implemented |
+| Could Have | Additional search filters | Users could filter parking results using more detailed options. | Future development |
+| Could Have | More parking locations | Additional Council/NPP verified parking records could improve UK coverage. | Future development |
+| Could Have | Improved image matching | More accurate location images could improve the visual information displayed. | Future development |
+| Could Have | commenting on parking or to report if parking is out of date| Improve reliability as the application grows and keeps it up to date | Future development |
+
 ## Minimum Viable Product (MVP)
 
 The MVP contains:
