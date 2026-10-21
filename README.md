@@ -983,6 +983,7 @@ Features that are outside the current project scope include:
 - parking payments
 - guaranteed live parking-space information
 
+An additional development feature would be to allow registered users to leave comments and reviews on parking locations aswell as upvote or downvote based on experiences also comment on out of date parking for the admins to review and edit.
 # Python and Django Files
 
 ParkMate will use several Python and Django files because Django will separate different parts of the application into different files.
