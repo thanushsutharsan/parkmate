@@ -33,6 +33,8 @@
   - [User Needs](#user-needs)
 
 - [Scope](#scope)
+  - [MoSCoW Prioritisation](#moscow-prioritisation)
+    - [MoSCoW Prioritisation Table](#moscow-prioritisation-table)
   - [Minimum Viable Product (MVP)](#minimum-viable-product-mvp)
   - [Features](#features)
   - [CRUD Functionality](#crud-functionality)
@@ -761,7 +763,7 @@ The Scope plane defines the features that are included in ParkMate.
 I keep the scope focused on the main parking problem instead of adding features that are not needed for the project.
 
 
-## MCS Prioritisation
+## MoSCoW Prioritisation
 
 I used the MC	S method to priorities the features of ParkMate during the planning and development stages. This helped me identify which features were essential for the application to work and which features could be improved or added in the future.
 
@@ -770,9 +772,10 @@ The features were divided into three categories:
 - **Must Have:** Essential features required for ParkMate to meet its main purpose.
 - **Should Have:** Important features that improve the user experience but are not essential to the basic parking search.
 - **Could Have:** Additional features that could be developed in the future.
+- **Won't Have** Decided not include this because they were not neccessary for the main purpose of the application, which is to help users find parking locations across uk. I wanted to focus on making sure the main features including searching for parking, viewing locations on map worked correctly.
 
 
-### MCS Prioritisation Table
+### MoSCoW Prioritisation Table
 
 | Priority | Feature | Reason | Status |
 | --- | --- | --- | --- |
